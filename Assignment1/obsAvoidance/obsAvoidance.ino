@@ -3,7 +3,6 @@
 const int forwardSpeed   = 70; 
 const int stoppingSpeed = 0; 
 const int stopDistance = 60;
-int distanceFromObject;
 
 ArduinoRuntime arduinoRuntime;
 
@@ -27,10 +26,10 @@ void setup()
 
 void loop()
 { 
-     distanceFromObject = frontSensor.getDistance();
+     int distanceFromObject = frontSensor.getDistance();
      if (distanceFromObject < stopDistance && distanceFromObject > 0){
       car.setSpeed(stoppingSpeed);
      }
-    Serial.println(frontSensor.getDistance());
+    Serial.println(distanceFromObject);
     delay(100);
 }
