@@ -33,9 +33,9 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/AvaliableCars"
+        android:id="@+id/rvAvaliableCars"
         android:layout_width="0dp"
-        android:layout_height="350dp"
+        android:layout_height="375dp"
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="16dp"
@@ -57,7 +57,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/AvaliableCars"
+        app:layout_constraintTop_toBottomOf="@+id/rvAvaliableCars"
         app:layout_constraintVertical_bias="1.0"
         android:backgroundTint="@color/teal_200"/>
 
