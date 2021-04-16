@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">MedCarApp</string>
+
+    <string-array name="carNames">
+        <item>Medcar 1</item>
+        <item>Medcar 2</item>
+        <item>Medcar 3</item>
+        <item>Medcar 4</item>
+    </string-array>
+
+    <string-array name="description">
+        <item>This is the medical car 1.</item>
+        <item>This is the medical car 2.</item>
+        <item>This is the medical car 3.</item>
+        <item>This is the medical car 4.</item>
+    </string-array>
 </resources>
