@@ -9,21 +9,20 @@
 
     <io.github.controlwear.virtual.joystick.android.JoystickView
         android:id="@+id/joystickView2"
-        android:layout_width="0dp"
+        android:layout_width="375dp"
         android:layout_height="0dp"
-        app:JV_backgroundColor="#17afa0"
-        app:JV_borderColor="#000000"
+        android:background="@drawable/joystickbg"
         app:JV_borderWidth="4dp"
         app:JV_buttonColor="#494747"
-        app:JV_buttonSizeRatio="20%"
+        app:JV_buttonImage="@drawable/joystickbutton1"
+        app:JV_buttonSizeRatio="18%"
         app:JV_fixedCenter="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.958"
-        />
+        app:layout_constraintVertical_bias="0.865" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -46,9 +45,9 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="57dp"
-        android:layout_marginLeft="57dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="4dp"
         android:text="Speed"
         app:layout_constraintStart_toStartOf="@+id/joystickView2"
         app:layout_constraintTop_toTopOf="@+id/joystickView2" />
@@ -57,9 +56,9 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="53dp"
-        android:layout_marginRight="53dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
         android:text="Angle"
         app:layout_constraintEnd_toEndOf="@+id/joystickView2"
         app:layout_constraintTop_toTopOf="@+id/joystickView2" />
