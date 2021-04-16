@@ -4,10 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
-
     RecyclerView rvAvaliableCars;
 
     String s1[], s2[];
@@ -25,5 +26,14 @@ public class MainActivity extends AppCompatActivity {
         Adapter adapter = new Adapter(this, s1, s2);
         rvAvaliableCars.setAdapter(adapter);
         rvAvaliableCars.setLayoutManager(new LinearLayoutManager(this));
+
+        Button button = findViewById(R.id.btnConnect);
+
+        button.setOnClickListener(v -> {
+
+            Intent intent = new Intent(this, ManualControl.class);
+
+            startActivity(intent);
+        });
     }
 }
