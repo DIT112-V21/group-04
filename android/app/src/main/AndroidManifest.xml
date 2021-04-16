@@ -18,7 +18,7 @@
         </activity>
         <activity
             android:name=".ManualControl"
-            android:exported="true" />
+        />
         <activity android:name=".MainActivity">
 
         </activity>

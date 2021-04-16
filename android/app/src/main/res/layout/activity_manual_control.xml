@@ -11,18 +11,19 @@
         android:id="@+id/joystickView2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:JV_backgroundColor="#009688"
-        app:JV_borderColor="#00796B"
+        app:JV_backgroundColor="#17afa0"
+        app:JV_borderColor="#000000"
         app:JV_borderWidth="4dp"
-        app:JV_buttonColor="#FF6E40"
-        app:JV_buttonSizeRatio="15%"
+        app:JV_buttonColor="#494747"
+        app:JV_buttonSizeRatio="20%"
         app:JV_fixedCenter="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.958" />
+        app:layout_constraintVertical_bias="0.958"
+        />
 
     <ImageView
         android:id="@+id/imageView"
