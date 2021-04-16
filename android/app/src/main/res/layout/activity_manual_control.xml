@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/offwhite"
     tools:context=".ManualControl">
 
     <io.github.controlwear.virtual.joystick.android.JoystickView
         android:id="@+id/joystickView2"
-        android:layout_width="wrap_content"
-        android:layout_height="346dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:JV_backgroundColor="#009688"
         app:JV_borderColor="#00796B"
         app:JV_borderWidth="4dp"
@@ -18,8 +19,48 @@
         app:JV_fixedCenter="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.576" />
+        app:layout_constraintVertical_bias="0.958" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="24dp"
+        android:src="@drawable/carcam"
+        app:layout_constraintBottom_toTopOf="@+id/joystickView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></ImageView>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="57dp"
+        android:layout_marginLeft="57dp"
+        android:layout_marginTop="15dp"
+        android:text="Speed"
+        app:layout_constraintStart_toStartOf="@+id/joystickView2"
+        app:layout_constraintTop_toTopOf="@+id/joystickView2" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="53dp"
+        android:layout_marginRight="53dp"
+        android:text="Angle"
+        app:layout_constraintEnd_toEndOf="@+id/joystickView2"
+        app:layout_constraintTop_toTopOf="@+id/joystickView2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
