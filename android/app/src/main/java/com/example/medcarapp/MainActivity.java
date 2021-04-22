@@ -4,13 +4,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
     RecyclerView rvAvaliableCars;
+    Dialog creditDialog;
 
     String s1[], s2[];
 
@@ -18,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        creditDialog = new Dialog(this);
 
         rvAvaliableCars = findViewById(R.id.rvAvaliableCars);
 
@@ -36,5 +45,11 @@ public class MainActivity extends AppCompatActivity {
 
             startActivity(intent);
         });
+    }
+    public void CreditPopup(View v) {
+        creditDialog.setContentView(R.layout.credit_popup);
+        creditDialog.setCanceledOnTouchOutside(true);
+        creditDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        creditDialog.show();
     }
 }
