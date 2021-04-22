@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -42,6 +43,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             public void onClick(View v) {
                 row_index = position;
                 notifyDataSetChanged();
+                Toast.makeText(context, "You clicked on Medcar "+(position+1),Toast.LENGTH_SHORT).show();
             }
         });
         if(row_index==position){
