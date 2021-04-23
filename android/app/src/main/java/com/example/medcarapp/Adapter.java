@@ -1,19 +1,23 @@
 package com.example.medcarapp;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     String names[], desc[];
     Context context;
+    int row_index = -1;
 
     public Adapter(Context ct, String s1[], String s2[]) {
         context = ct;
@@ -33,6 +37,23 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.carNames.setText(names[position]);
         holder.description.setText(desc[position]);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                row_index = position;
+                notifyDataSetChanged();
+                Toast.makeText(context, "You clicked on Medcar "+(position+1),Toast.LENGTH_SHORT).show();
+            }
+        });
+        if(row_index==position){
+            holder.row_constraintlayout.setBackgroundColor(Color.parseColor("#add8e6"));
+        }
+        else
+        {
+            holder.row_constraintlayout.setBackgroundColor(Color.parseColor("#e7f4f3"));
+        }
+
     }
 
     @Override
@@ -44,12 +65,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
         TextView carNames, description;
         ImageView carLogo;
+        ConstraintLayout row_constraintlayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             carNames = itemView.findViewById(R.id.carNames);
             description = itemView.findViewById(R.id.description);
             carLogo = itemView.findViewById(R.id.carLogo);
+            row_constraintlayout = (ConstraintLayout) itemView.findViewById(R.id.constraintrv);
         }
     }
 }
