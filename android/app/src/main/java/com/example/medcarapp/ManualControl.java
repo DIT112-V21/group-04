@@ -5,11 +5,14 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import io.github.controlwear.virtual.joystick.android.JoystickView;
+import mqttController.CarConnect;
+import mqttController.MqttClient;
 
 public class ManualControl extends AppCompatActivity {
     // joystick adapted from: https://github.com/controlwear/virtual-joystick-android
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_control);
 
@@ -21,8 +24,8 @@ public class ManualControl extends AppCompatActivity {
                     System.out.println("adjusted angle: " + adjustAngle(angle));
                     System.out.println("joystick speed: " + strength);
                     System.out.println("adjusted speed: " + adjustSpeed(strength, angle));*/
-                    mqttController.MainActivity test=new mqttController.MainActivity();
-                    test.moveForwardLeft();
+                    //CarConnect test=new CarConnect();
+                    //test.moveForwardLeft();
             }
         });
     }

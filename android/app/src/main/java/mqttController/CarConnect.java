@@ -1,5 +1,6 @@
 package mqttController;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -18,9 +19,9 @@ import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-public class MainActivity extends AppCompatActivity {
+public class CarConnect extends AppCompatActivity {
     private static final String TAG = "SmartcarMqttController";
-    private static final String EXTERNAL_MQTT_BROKER = "medCar.dev";
+    private static final String EXTERNAL_MQTT_BROKER = "3.138.188.190";
     private static final String LOCALHOST = "3.138.188.190";
     private static final String MQTT_SERVER = "tcp://" + EXTERNAL_MQTT_BROKER + ":1883";
     private static final String THROTTLE_CONTROL = "/smartcar/control/throttle";
@@ -32,21 +33,17 @@ public class MainActivity extends AppCompatActivity {
     private static final int QOS = 1;
     private static final int IMAGE_WIDTH = 320;
     private static final int IMAGE_HEIGHT = 240;
+    //Context context;
 
     private MqttClient mMqttClient;
     private boolean isConnected = false;
-    private ImageView mCameraView;
-    
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mMqttClient = new MqttClient(getApplicationContext(), MQTT_SERVER, TAG);
-        mCameraView = findViewById(R.id.imageView);
-
-        connectToMqttBroker();
+    public CarConnect(Context context) {
+        context = context;
+        mMqttClient = new MqttClient(context, MQTT_SERVER, TAG);
     }
+
+
 
     @Override
     protected void onResume() {
@@ -71,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void connectToMqttBroker() {
+    public void connectToMqttBroker() {
         if (!isConnected) {
             mMqttClient.connect(TAG, "", new IMqttActionListener() {
                 @Override
@@ -80,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
                     final String successfulConnection = "Connected to MQTT broker";
                     Log.i(TAG, successfulConnection);
-                    Toast.makeText(getApplicationContext(), successfulConnection, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, successfulConnection, Toast.LENGTH_SHORT).show();
 
                     mMqttClient.subscribe("/smartcar/ultrasound/front", QOS, null);
                     mMqttClient.subscribe("/smartcar/camera", QOS, null);
@@ -90,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     final String failedConnection = "Failed to connect to MQTT broker";
                     Log.e(TAG, failedConnection);
-                    Toast.makeText(getApplicationContext(), failedConnection, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, failedConnection, Toast.LENGTH_SHORT).show();
                 }
             }, new MqttCallback() {
                 @Override
@@ -99,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
                     final String connectionLost = "Connection to MQTT broker lost";
                     Log.w(TAG, connectionLost);
-                    Toast.makeText(getApplicationContext(), connectionLost, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, connectionLost, Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -117,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                         bm.setPixels(colors, 0, IMAGE_WIDTH, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
 
-                        mCameraView.setImageBitmap(bm);
                     } else {
                         Log.i(TAG, "[MQTT] Topic: " + topic + " | Message: " + message.toString());
                     }
