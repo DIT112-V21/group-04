@@ -11,9 +11,10 @@
         android:theme="@style/Theme.MedCarApp">
         <activity android:name=".IntroductoryActivity">
             <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+
             </intent-filter>
         </activity>
         <activity

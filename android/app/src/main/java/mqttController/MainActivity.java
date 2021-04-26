@@ -1,3 +1,5 @@
+package mqttController;
+
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private MqttClient mMqttClient;
     private boolean isConnected = false;
     private ImageView mCameraView;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         mMqttClient.publish(STEERING_CONTROL, Integer.toString(steeringAngle), QOS, null);
     }
 
-    public void moveForward(View view) {
+    public void moveForward() {
         drive(MOVEMENT_SPEED, STRAIGHT_ANGLE, "Moving forward");
     }
 
