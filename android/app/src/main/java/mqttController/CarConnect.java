@@ -33,13 +33,13 @@ public class CarConnect extends AppCompatActivity {
     private static final int QOS = 1;
     private static final int IMAGE_WIDTH = 320;
     private static final int IMAGE_HEIGHT = 240;
-    //Context context;
+    Context context;
 
     private MqttClient mMqttClient;
     private boolean isConnected = false;
 
     public CarConnect(Context context) {
-        context = context;
+        this.context = context;
         mMqttClient = new MqttClient(context, MQTT_SERVER, TAG);
     }
 
