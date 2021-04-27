@@ -44,7 +44,6 @@ public class CarConnect extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -101,22 +100,7 @@ public class CarConnect extends AppCompatActivity {
 
                 @Override
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
-                    if (topic.equals("/smartcar/camera")) {
-                        final Bitmap bm = Bitmap.createBitmap(IMAGE_WIDTH, IMAGE_HEIGHT, Bitmap.Config.ARGB_8888);
-
-                        final byte[] payload = message.getPayload();
-                        final int[] colors = new int[IMAGE_WIDTH * IMAGE_HEIGHT];
-                        for (int ci = 0; ci < colors.length; ++ci) {
-                            final byte r = payload[3 * ci];
-                            final byte g = payload[3 * ci + 1];
-                            final byte b = payload[3 * ci + 2];
-                            colors[ci] = Color.rgb(r, g, b);
-                        }
-                        bm.setPixels(colors, 0, IMAGE_WIDTH, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
-
-                    } else {
-                        Log.i(TAG, "[MQTT] Topic: " + topic + " | Message: " + message.toString());
-                    }
+                    Log.i(TAG, "[MQTT] Topic: " + topic + " | Message: " + message.toString());
                 }
 
                 @Override
@@ -127,35 +111,4 @@ public class CarConnect extends AppCompatActivity {
         }
     }
 
-    void drive(int throttleSpeed, int steeringAngle, String actionDescription) {
-        if (!isConnected) {
-            final String notConnected = "Not connected (yet)";
-            Log.e(TAG, notConnected);
-            Toast.makeText(getApplicationContext(), notConnected, Toast.LENGTH_SHORT).show();
-            return;
-        }
-        Log.i(TAG, actionDescription);
-        mMqttClient.publish(THROTTLE_CONTROL, Integer.toString(throttleSpeed), QOS, null);
-        mMqttClient.publish(STEERING_CONTROL, Integer.toString(steeringAngle), QOS, null);
-    }
-
-    public void moveForward() {
-        drive(MOVEMENT_SPEED, STRAIGHT_ANGLE, "Moving forward");
-    }
-
-    public void moveForwardLeft(View view) {
-        drive(MOVEMENT_SPEED, -STEERING_ANGLE, "Moving forward left");
-    }
-
-    public void stop(View view) {
-        drive(IDLE_SPEED, STRAIGHT_ANGLE, "Stopping");
-    }
-
-    public void moveForwardRight(View view) {
-        drive(MOVEMENT_SPEED, STEERING_ANGLE, "Moving forward left");
-    }
-
-    public void moveBackward(View view) {
-        drive(-MOVEMENT_SPEED, STRAIGHT_ANGLE, "Moving backward");
-    }
 }
