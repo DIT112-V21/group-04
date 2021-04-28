@@ -4,28 +4,37 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+
 import io.github.controlwear.virtual.joystick.android.JoystickView;
 import mqttController.CarConnect;
 import mqttController.MqttClient;
 
 public class ManualControl extends AppCompatActivity {
     // joystick adapted from: https://github.com/controlwear/virtual-joystick-android
+    private static final int QOS = 1;
+    private static final String TURNING_TOPIC = "/smartcar/control/turning";
+    private static final String SPEED_TOPIC = "/smartcar/control/speed";
+    CarConnect carConnect;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_control);
 
+        carConnect = new CarConnect(getApplicationContext());
+        carConnect.connectToMqttBroker();
+
         JoystickView joystick = (JoystickView) findViewById(R.id.joystickView2);
         joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
             @Override
             public void onMove(int angle, int strength) {
-                    /*System.out.println("joystick angle: " + angle);
-                    System.out.println("adjusted angle: " + adjustAngle(angle));
-                    System.out.println("joystick speed: " + strength);
-                    System.out.println("adjusted speed: " + adjustSpeed(strength, angle));*/
-                    //CarConnect test=new CarConnect();
-                    //test.moveForwardLeft();
+                    int adjustedAngle = adjustAngle(angle);
+                    int adjustedSpeed = adjustSpeed(strength, adjustedAngle);
+                    carConnect.publish(TURNING_TOPIC, Integer.toString(adjustedAngle), QOS, null);
+                    carConnect.publish(SPEED_TOPIC, Integer.toString(adjustedSpeed), QOS, null);
             }
         });
     }
