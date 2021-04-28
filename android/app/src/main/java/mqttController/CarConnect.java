@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +34,15 @@ public class CarConnect extends AppCompatActivity {
     private static final int QOS = 1;
     private static final int IMAGE_WIDTH = 320;
     private static final int IMAGE_HEIGHT = 240;
+
+    public boolean isConnectionState() {
+        return connectionState;
+    }
+
+    boolean connectionState;
+
+
+    String connectionText;
     Context context;
 
     private MqttClient mMqttClient;
@@ -67,16 +77,22 @@ public class CarConnect extends AppCompatActivity {
         });
     }
 
+
     public void connectToMqttBroker() {
         if (!isConnected) {
             mMqttClient.connect(TAG, "", new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     isConnected = true;
+                    connectionState = true;
+                    connectionText = "connected";
+
+
 
                     final String successfulConnection = "Connected to MQTT broker";
                     Log.i(TAG, successfulConnection);
                     Toast.makeText(context, successfulConnection, Toast.LENGTH_SHORT).show();
+
 
                     mMqttClient.subscribe("/smartcar/ultrasound/front", QOS, null);
                     mMqttClient.subscribe("/smartcar/camera", QOS, null);

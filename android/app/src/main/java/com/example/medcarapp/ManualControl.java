@@ -1,6 +1,7 @@
 package com.example.medcarapp;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,11 +11,18 @@ import mqttController.MqttClient;
 
 public class ManualControl extends AppCompatActivity {
     // joystick adapted from: https://github.com/controlwear/virtual-joystick-android
+    CarConnect carConnect;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_control);
+        TextView connectionText = (TextView)findViewById(R.id.connectionText);
+
+
+       // if(carConnect.isConnectionState() == true){
+         //   connectionText.setText("Connected");
+        //}
 
         JoystickView joystick = (JoystickView) findViewById(R.id.joystickView2);
         joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
