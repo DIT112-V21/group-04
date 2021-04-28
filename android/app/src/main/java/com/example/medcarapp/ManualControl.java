@@ -1,5 +1,6 @@
 package com.example.medcarapp;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +21,7 @@ public class ManualControl extends AppCompatActivity {
     private static final String SPEED_TOPIC = "/smartcar/control/speed";
     CarConnect carConnect;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -30,33 +32,25 @@ public class ManualControl extends AppCompatActivity {
         carConnect.connectToMqttBroker();
 
         JoystickView joystick = (JoystickView) findViewById(R.id.joystickView2);
-        joystick.setOnTouchListener(new View.OnTouchListener() {
+
+        joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
+            @SuppressLint("ClickableViewAccessibility")
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == android.view.MotionEvent.ACTION_DOWN) {
-
-
-                    joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
-                        @Override
-                        public void onMove(int angle, int strength) {
-                            int adjustedAngle = adjustAngle(angle);
-                            int adjustedSpeed = adjustSpeed(strength, angle);
-                            carConnect.publish(TURNING_TOPIC, Integer.toString(adjustedAngle), QOS, null);
-                            carConnect.publish(SPEED_TOPIC, Integer.toString(adjustedSpeed), QOS, null);
-                        }
-                    });
-                } else if (event.getAction() == MotionEvent.ACTION_UP){
-                    joystick.resetButtonPosition();
-                    carConnect.publish(TURNING_TOPIC, Integer.toString(0), QOS, null);
-                    carConnect.publish(SPEED_TOPIC, Integer.toString(0), QOS, null);
-                    return true;
+            public void onMove(int angle, int strength) {
+                int adjustedAngle = adjustAngle(angle);
+                int adjustedSpeed = adjustSpeed(strength, angle);
+                try {
+                    Thread.sleep(32);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-                return false;
+                carConnect.publish(TURNING_TOPIC, Integer.toString(adjustedAngle), QOS, null);
+                carConnect.publish(SPEED_TOPIC, Integer.toString(adjustedSpeed), QOS, null);
             }
         });
     }
 
-   int adjustAngle(int angle){
+    int adjustAngle(int angle){
         int adjustedAngle;
         if (angle >= 90 && angle <= 180) { // go left
             adjustedAngle = 90 - angle;
