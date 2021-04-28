@@ -31,8 +31,6 @@ std::vector<char> frameBuffer;
 void setup() {
   Serial.begin(9600);
 #ifdef __SMCE__
-  Camera.begin(QVGA, RGB888, 15);
-  frameBuffer.resize(Camera.width() * Camera.height() * Camera.bytesPerPixel());
   mqtt.begin("3.138.188.190", 1883, WiFi);
   // mqtt.begin(WiFi); // Will connect to localhost
 #else
@@ -41,9 +39,9 @@ void setup() {
   if (mqtt.connect("arduino", "public", "public")) {
     mqtt.subscribe("/smartcar/control/#", 1);
     mqtt.onMessage([](String topic, String message) {
-      if (topic == "/smartcar/control/throttle") {
+      if (topic == "/smartcar/control/speed") {
         car.setSpeed(message.toInt());
-      } else if (topic == "/smartcar/control/steering") {
+      } else if (topic == "/smartcar/control/turning") {
         car.setAngle(message.toInt());
       } else {
         Serial.println(topic + " " + message);
@@ -57,13 +55,6 @@ void loop() {
     mqtt.loop();
     const auto currentTime = millis();
 #ifdef __SMCE__
-    static auto previousFrame = 0UL;
-    if (currentTime - previousFrame >= 65) {
-      previousFrame = currentTime;
-      Camera.readFrame(frameBuffer.data());
-      mqtt.publish("/smartcar/camera", frameBuffer.data(), frameBuffer.size(),
-                   false, 0);
-    }
 #endif
     static auto previousTransmission = 0UL;
     if (currentTime - previousTransmission >= oneSecond) {
