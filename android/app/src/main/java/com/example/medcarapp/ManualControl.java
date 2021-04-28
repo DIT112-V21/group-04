@@ -19,6 +19,8 @@ public class ManualControl extends AppCompatActivity {
     private static final int QOS = 1;
     private static final String TURNING_TOPIC = "/smartcar/control/turning";
     private static final String SPEED_TOPIC = "/smartcar/control/speed";
+    private static final int IMPOSSIBLE_ANGLE_AND_SPEED = -1000;
+    private static final int REVERSE_CAR_MOVEMENT = -1;
     CarConnect carConnect;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -34,21 +36,21 @@ public class ManualControl extends AppCompatActivity {
         JoystickView joystick = (JoystickView) findViewById(R.id.joystickView2);
 
         joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
-            int prevAngle = -10000;
-            int prevSpeed = -10000;
+            int previousAngle = IMPOSSIBLE_ANGLE_AND_SPEED;
+            int previousSpeed = IMPOSSIBLE_ANGLE_AND_SPEED;
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public void onMove(int angle, int strength) {
                 int adjustedAngle = adjustAngle(angle);
                 int adjustedSpeed = adjustSpeed(strength, angle);
-                if (adjustedAngle != prevAngle){
+                if (adjustedAngle != previousAngle){
                     carConnect.publish(TURNING_TOPIC, Integer.toString(adjustedAngle), QOS, null);
                 }
-                if (adjustedSpeed != prevSpeed){
+                if (adjustedSpeed != previousSpeed){
                     carConnect.publish(SPEED_TOPIC, Integer.toString(adjustedSpeed), QOS, null);
                 }
-                prevAngle = adjustedAngle;
-                prevSpeed = adjustedSpeed;
+                previousAngle = adjustedAngle;
+                previousSpeed = adjustedSpeed;
             }
         });
     }
@@ -72,7 +74,7 @@ public class ManualControl extends AppCompatActivity {
         if (angle <= 180) {
             adjustedSpeed = strength;
         } else {
-            adjustedSpeed = strength*-1;
+            adjustedSpeed = strength*REVERSE_CAR_MOVEMENT;
         }
         return adjustedSpeed;
     }
