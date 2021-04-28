@@ -34,18 +34,21 @@ public class ManualControl extends AppCompatActivity {
         JoystickView joystick = (JoystickView) findViewById(R.id.joystickView2);
 
         joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
+            int prevAngle = -10000;
+            int prevSpeed = -10000;
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public void onMove(int angle, int strength) {
                 int adjustedAngle = adjustAngle(angle);
                 int adjustedSpeed = adjustSpeed(strength, angle);
-                try {
-                    Thread.sleep(32);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                if (adjustedAngle != prevAngle){
+                    carConnect.publish(TURNING_TOPIC, Integer.toString(adjustedAngle), QOS, null);
                 }
-                carConnect.publish(TURNING_TOPIC, Integer.toString(adjustedAngle), QOS, null);
-                carConnect.publish(SPEED_TOPIC, Integer.toString(adjustedSpeed), QOS, null);
+                if (adjustedSpeed != prevSpeed){
+                    carConnect.publish(SPEED_TOPIC, Integer.toString(adjustedSpeed), QOS, null);
+                }
+                prevAngle = adjustedAngle;
+                prevSpeed = adjustedSpeed;
             }
         });
     }
