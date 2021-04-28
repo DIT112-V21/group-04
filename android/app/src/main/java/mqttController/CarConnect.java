@@ -17,6 +17,7 @@ import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class CarConnect extends AppCompatActivity {
@@ -24,15 +25,9 @@ public class CarConnect extends AppCompatActivity {
     private static final String EXTERNAL_MQTT_BROKER = "3.138.188.190";
     private static final String LOCALHOST = "3.138.188.190";
     private static final String MQTT_SERVER = "tcp://" + EXTERNAL_MQTT_BROKER + ":1883";
-    private static final String THROTTLE_CONTROL = "/smartcar/control/throttle";
-    private static final String STEERING_CONTROL = "/smartcar/control/steering";
-    private static final int MOVEMENT_SPEED = 70;
-    private static final int IDLE_SPEED = 0;
-    private static final int STRAIGHT_ANGLE = 0;
-    private static final int STEERING_ANGLE = 50;
+    private static final String TURNING_TOPIC = "/smartcar/control/turning";
+    private static final String SPEED_TOPIC = "/smartcar/control/speed";
     private static final int QOS = 1;
-    private static final int IMAGE_WIDTH = 320;
-    private static final int IMAGE_HEIGHT = 240;
     Context context;
 
     private MqttClient mMqttClient;
@@ -78,8 +73,8 @@ public class CarConnect extends AppCompatActivity {
                     Log.i(TAG, successfulConnection);
                     Toast.makeText(context, successfulConnection, Toast.LENGTH_SHORT).show();
 
-                    mMqttClient.subscribe("/smartcar/ultrasound/front", QOS, null);
-                    mMqttClient.subscribe("/smartcar/camera", QOS, null);
+                    mMqttClient.subscribe(TURNING_TOPIC, QOS, null);
+                    mMqttClient.subscribe(SPEED_TOPIC, QOS, null);
                 }
 
                 @Override
@@ -110,5 +105,24 @@ public class CarConnect extends AppCompatActivity {
             });
         }
     }
+
+    public void disconnect(IMqttActionListener disconnectionCallback) {
+        mMqttClient.disconnect(disconnectionCallback);
+    }
+
+    public void subscribe(String topic, int qos, IMqttActionListener subscriptionCallback) {
+        mMqttClient.subscribe(topic, qos, subscriptionCallback);
+    }
+
+
+    public void unsubscribe(String topic, IMqttActionListener unsubscriptionCallback) {
+        mMqttClient.unsubscribe(topic, unsubscriptionCallback);
+    }
+
+   public void publish(String topic, String message, int qos, IMqttActionListener publishCallback){
+        mMqttClient.publish(topic, message, qos, publishCallback);
+    }
+
+
 
 }

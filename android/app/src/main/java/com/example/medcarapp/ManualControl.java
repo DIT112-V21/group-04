@@ -1,8 +1,13 @@
 package com.example.medcarapp;
 
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
 
 import io.github.controlwear.virtual.joystick.android.JoystickView;
 import mqttController.CarConnect;
@@ -10,22 +15,43 @@ import mqttController.MqttClient;
 
 public class ManualControl extends AppCompatActivity {
     // joystick adapted from: https://github.com/controlwear/virtual-joystick-android
+    private static final int QOS = 1;
+    private static final String TURNING_TOPIC = "/smartcar/control/turning";
+    private static final String SPEED_TOPIC = "/smartcar/control/speed";
+    CarConnect carConnect;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_control);
 
+        carConnect = new CarConnect(getApplicationContext());
+        carConnect.connectToMqttBroker();
+
         JoystickView joystick = (JoystickView) findViewById(R.id.joystickView2);
-        joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
+        joystick.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onMove(int angle, int strength) {
-                    /*System.out.println("joystick angle: " + angle);
-                    System.out.println("adjusted angle: " + adjustAngle(angle));
-                    System.out.println("joystick speed: " + strength);
-                    System.out.println("adjusted speed: " + adjustSpeed(strength, angle));*/
-                    //CarConnect test=new CarConnect();
-                    //test.moveForwardLeft();
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == android.view.MotionEvent.ACTION_DOWN) {
+
+
+                    joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
+                        @Override
+                        public void onMove(int angle, int strength) {
+                            int adjustedAngle = adjustAngle(angle);
+                            int adjustedSpeed = adjustSpeed(strength, angle);
+                            carConnect.publish(TURNING_TOPIC, Integer.toString(adjustedAngle), QOS, null);
+                            carConnect.publish(SPEED_TOPIC, Integer.toString(adjustedSpeed), QOS, null);
+                        }
+                    });
+                } else if (event.getAction() == MotionEvent.ACTION_UP){
+                    joystick.resetButtonPosition();
+                    carConnect.publish(TURNING_TOPIC, Integer.toString(0), QOS, null);
+                    carConnect.publish(SPEED_TOPIC, Integer.toString(0), QOS, null);
+                    return true;
+                }
+                return false;
             }
         });
     }
@@ -53,4 +79,5 @@ public class ManualControl extends AppCompatActivity {
         }
         return adjustedSpeed;
     }
+
 }

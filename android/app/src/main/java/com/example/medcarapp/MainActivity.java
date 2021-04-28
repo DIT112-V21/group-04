@@ -31,7 +31,6 @@ import mqttController.CarConnect;
 public class MainActivity extends AppCompatActivity {
     RecyclerView rvAvaliableCars;
     Dialog creditDialog;
-    CarConnect carConnect;
     Context context;
 
     String s1[], s2[];
@@ -54,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
         Button button = findViewById(R.id.btnConnect);
 
         button.setOnClickListener(v -> {
-            carConnect = new CarConnect(getApplicationContext());
-            carConnect.connectToMqttBroker();
             Intent intent = new Intent(this, ManualControl.class);
 
 
