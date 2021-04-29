@@ -30,6 +30,7 @@ public class CarConnect extends AppCompatActivity {
     private static final String MQTT_SERVER = "tcp://" + EXTERNAL_MQTT_BROKER + ":1883";
     private static final String TURNING_TOPIC = "/smartcar/control/turning";
     private static final String SPEED_TOPIC = "/smartcar/control/speed";
+    private static final String OBSTACLE_TOPIC = "/smartcar/obstacle";
     private static final int QOS = 1;
 
     Context context;
@@ -103,7 +104,13 @@ public class CarConnect extends AppCompatActivity {
 
                 @Override
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
-                    Log.i(TAG, "[MQTT] Topic: " + topic + " | Message: " + message.toString());
+                    if (topic.equals(OBSTACLE_TOPIC)) {
+                        final String obstacleDetected = "Obstacle detected";
+                        Log.e(TAG, obstacleDetected);
+                        Toast.makeText(context,obstacleDetected,Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.i(TAG, "[MQTT] Topic: " + topic + " | Message: " + message.toString());
+                    }
                 }
 
                 @Override
