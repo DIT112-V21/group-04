@@ -1,16 +1,19 @@
 package mqttController;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.medcarapp.ManualControl;
 import com.example.medcarapp.R;
 
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -28,6 +31,7 @@ public class CarConnect extends AppCompatActivity {
     private static final String TURNING_TOPIC = "/smartcar/control/turning";
     private static final String SPEED_TOPIC = "/smartcar/control/speed";
     private static final int QOS = 1;
+
     Context context;
 
     private MqttClient mMqttClient;
@@ -42,8 +46,6 @@ public class CarConnect extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        connectToMqttBroker();
     }
 
     @Override
@@ -62,16 +64,18 @@ public class CarConnect extends AppCompatActivity {
         });
     }
 
-    public void connectToMqttBroker() {
+
+    public void connectToMqttBroker(TextView connectionText) {
         if (!isConnected) {
             mMqttClient.connect(TAG, "", new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     isConnected = true;
-
                     final String successfulConnection = "Connected to MQTT broker";
                     Log.i(TAG, successfulConnection);
                     Toast.makeText(context, successfulConnection, Toast.LENGTH_SHORT).show();
+                    connectionText.setText("Connected");
+                    connectionText.setTextColor(Color.parseColor("#32CD32"));
 
                     mMqttClient.subscribe(TURNING_TOPIC, QOS, null);
                     mMqttClient.subscribe(SPEED_TOPIC, QOS, null);
@@ -82,6 +86,8 @@ public class CarConnect extends AppCompatActivity {
                     final String failedConnection = "Failed to connect to MQTT broker";
                     Log.e(TAG, failedConnection);
                     Toast.makeText(context, failedConnection, Toast.LENGTH_SHORT).show();
+                    connectionText.setText("Disconnected");
+                    connectionText.setTextColor(Color.parseColor("#EF1919"));
                 }
             }, new MqttCallback() {
                 @Override
@@ -91,6 +97,8 @@ public class CarConnect extends AppCompatActivity {
                     final String connectionLost = "Connection to MQTT broker lost";
                     Log.w(TAG, connectionLost);
                     Toast.makeText(context, connectionLost, Toast.LENGTH_SHORT).show();
+                    connectionText.setText("Disconnected");
+                    connectionText.setTextColor(Color.parseColor("#EF1919"));
                 }
 
                 @Override
