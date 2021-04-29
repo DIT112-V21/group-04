@@ -80,6 +80,7 @@ public class CarConnect extends AppCompatActivity {
 
                     mMqttClient.subscribe(TURNING_TOPIC, QOS, null);
                     mMqttClient.subscribe(SPEED_TOPIC, QOS, null);
+                    mMqttClient.subscribe(OBSTACLE_TOPIC,QOS,null);
                 }
 
                 @Override
@@ -106,7 +107,7 @@ public class CarConnect extends AppCompatActivity {
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
                     if (topic.equals(OBSTACLE_TOPIC)) {
                         final String obstacleDetected = "Obstacle detected";
-                        Log.e(TAG, obstacleDetected);
+                        Log.i(TAG, obstacleDetected);
                         Toast.makeText(context,obstacleDetected,Toast.LENGTH_SHORT).show();
                     } else {
                         Log.i(TAG, "[MQTT] Topic: " + topic + " | Message: " + message.toString());
