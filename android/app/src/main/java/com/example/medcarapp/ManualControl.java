@@ -2,12 +2,14 @@ package com.example.medcarapp;
 
 import android.os.Bundle;
 
+import android.os.PersistableBundle;
 import android.widget.TextView;
 
 import android.view.MotionEvent;
 import android.view.View;
 
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -28,18 +30,12 @@ public class ManualControl extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_control);
         TextView connectionText = (TextView)findViewById(R.id.connectionText);
 
-
-       // if(carConnect.isConnectionState() == true){
-         //   connectionText.setText("Connected");
-        //}
-
         carConnect = new CarConnect(getApplicationContext());
-        carConnect.connectToMqttBroker();
+        carConnect.connectToMqttBroker(connectionText);
 
         JoystickView joystick = (JoystickView) findViewById(R.id.joystickView2);
         joystick.setOnTouchListener(new View.OnTouchListener() {
@@ -68,7 +64,7 @@ public class ManualControl extends AppCompatActivity {
         });
     }
 
-   int adjustAngle(int angle){
+    int adjustAngle(int angle){
         int adjustedAngle;
         if (angle >= 90 && angle <= 180) { // go left
             adjustedAngle = 90 - angle;

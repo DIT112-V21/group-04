@@ -67,7 +67,6 @@
         android:id="@+id/connectionText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@{CarConnect.connectionText}"
         android:layout_marginStart="22dp"
         android:layout_marginLeft="22dp"
         android:layout_marginTop="686dp"
