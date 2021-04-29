@@ -2,9 +2,15 @@ package com.example.medcarapp;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+
+import android.os.PersistableBundle;
+import android.widget.TextView;
+
 import android.view.MotionEvent;
 import android.view.View;
 
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -16,6 +22,7 @@ import mqttController.MqttClient;
 
 public class ManualControl extends AppCompatActivity {
     // joystick adapted from: https://github.com/controlwear/virtual-joystick-android
+
     private static final int QOS = 1;
     private static final String TURNING_TOPIC = "/smartcar/control/turning";
     private static final String SPEED_TOPIC = "/smartcar/control/speed";
@@ -26,12 +33,12 @@ public class ManualControl extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_control);
+        TextView connectionText = (TextView)findViewById(R.id.connectionText);
 
         carConnect = new CarConnect(getApplicationContext());
-        carConnect.connectToMqttBroker();
+        carConnect.connectToMqttBroker(connectionText);
 
         JoystickView joystick = (JoystickView) findViewById(R.id.joystickView2);
 
