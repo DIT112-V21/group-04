@@ -30,7 +30,6 @@ public class ManualControl extends AppCompatActivity {
     private static final int REVERSE_CAR_MOVEMENT = -1;
     CarConnect carConnect;
 
-    @SuppressLint("ClickableViewAccessibility")
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,16 +45,18 @@ public class ManualControl extends AppCompatActivity {
         joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
             int previousAngle = IMPOSSIBLE_ANGLE_AND_SPEED;
             int previousSpeed = IMPOSSIBLE_ANGLE_AND_SPEED;
-            @SuppressLint("ClickableViewAccessibility")
             @Override
             public void onMove(int angle, int strength) {
                 int adjustedAngle = adjustAngle(angle);
                 int adjustedSpeed = adjustSpeed(strength, angle);
                 if (adjustedAngle != previousAngle){
                     carConnect.publish(TURNING_TOPIC, Integer.toString(adjustedAngle), QOS, null);
+                    carConnect.publish(SPEED_TOPIC, Integer.toString(adjustedSpeed), QOS, null);
+
                 }
                 if (adjustedSpeed != previousSpeed){
                     carConnect.publish(SPEED_TOPIC, Integer.toString(adjustedSpeed), QOS, null);
+                    carConnect.publish(TURNING_TOPIC, Integer.toString(adjustedAngle), QOS, null);
                 }
                 previousAngle = adjustedAngle;
                 previousSpeed = adjustedSpeed;

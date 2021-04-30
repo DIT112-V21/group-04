@@ -24,7 +24,16 @@ const auto oneSecond = 1000UL;
 const auto triggerPin = 6;
 const auto echoPin = 7;
 const auto maxDistance = 400;
-SR04 front(arduinoRuntime, triggerPin, echoPin, maxDistance);
+const int TRIGGER_PIN           = 6; // D6
+const int ECHO_PIN              = 7; // D7
+const unsigned int MAX_DISTANCE = 100;
+const int SIDE_FRONT_PIN = 0;
+const int stoppingSpeed = 0; 
+const int stopDistance = 80;
+int carSpeed = 0;
+
+SR04 frontSensorUS(arduinoRuntime, triggerPin, echoPin, maxDistance);
+GP2D120 fronSensorIR(arduinoRuntime, SIDE_FRONT_PIN);
 
 std::vector<char> frameBuffer;
 
@@ -40,6 +49,10 @@ void setup() {
     mqtt.subscribe("/smartcar/control/#", 1);
     mqtt.onMessage([](String topic, String message) {
       if (topic == "/smartcar/control/speed") {
+        carSpeed = message.toInt();
+        if (obstacleAvoidance() && carSpeed <=0){
+          car.setSpeed(carSpeed);
+        }
         car.setSpeed(message.toInt());
       } else if (topic == "/smartcar/control/turning") {
         car.setAngle(message.toInt());
@@ -59,12 +72,23 @@ void loop() {
     static auto previousTransmission = 0UL;
     if (currentTime - previousTransmission >= oneSecond) {
       previousTransmission = currentTime;
-      const auto distance = String(front.getDistance());
-      mqtt.publish("/smartcar/ultrasound/front", distance);
     }
   }
 #ifdef __SMCE__
   // Avoid over-using the CPU if we are running in the emulator
+  obstacleAvoidance();
   delay(35);
 #endif
+}
+
+boolean obstacleAvoidance()
+{
+     int distanceFromObject = frontSensorUS.getDistance();
+     if (distanceFromObject < stopDistance && distanceFromObject > 1 && !(carSpeed <= 0)){
+      car.setSpeed(stoppingSpeed);
+      return true;
+     } else {
+          Serial.println(distanceFromObject);
+          return false;
+     }
 }
