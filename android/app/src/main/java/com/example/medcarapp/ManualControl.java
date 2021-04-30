@@ -49,15 +49,7 @@ public class ManualControl extends AppCompatActivity {
             public void onMove(int angle, int strength) {
                 int adjustedAngle = adjustAngle(angle);
                 int adjustedSpeed = adjustSpeed(strength, angle);
-                if (adjustedAngle != previousAngle){
-                    carConnect.publish(TURNING_TOPIC, Integer.toString(adjustedAngle), QOS, null);
-                    carConnect.publish(SPEED_TOPIC, Integer.toString(adjustedSpeed), QOS, null);
-
-                }
-                if (adjustedSpeed != previousSpeed){
-                    carConnect.publish(SPEED_TOPIC, Integer.toString(adjustedSpeed), QOS, null);
-                    carConnect.publish(TURNING_TOPIC, Integer.toString(adjustedAngle), QOS, null);
-                }
+                turnCar(adjustedSpeed, adjustedAngle, previousAngle, previousSpeed);
                 previousAngle = adjustedAngle;
                 previousSpeed = adjustedSpeed;
             }
@@ -86,6 +78,15 @@ public class ManualControl extends AppCompatActivity {
             adjustedSpeed = strength*REVERSE_CAR_MOVEMENT;
         }
         return adjustedSpeed;
+    }
+
+    void turnCar(int adjustedSpeed, int adjustedAngle, int previousAngle, int previousSpeed){
+        if (adjustedAngle != previousAngle || adjustedSpeed != previousSpeed){
+            if (adjustedSpeed == 0)
+                adjustedAngle = 0;
+            carConnect.publish(TURNING_TOPIC, Integer.toString(adjustedAngle), QOS, null);
+            carConnect.publish(SPEED_TOPIC, Integer.toString(adjustedSpeed), QOS, null);
+        }
     }
 
 }
