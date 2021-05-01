@@ -53,7 +53,7 @@ void setup() {
         if (obstacleAvoidance() && carSpeed <=0){
           car.setSpeed(carSpeed);
         }
-        car.setSpeed(message.toInt());
+        car.setSpeed(carSpeed);
       } else if (topic == "/smartcar/control/turning") {
         car.setAngle(message.toInt());
       } else {
