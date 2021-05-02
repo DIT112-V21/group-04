@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 
 import androidx.annotation.Nullable;
@@ -28,6 +29,7 @@ public class ManualControl extends AppCompatActivity {
     private static final String SPEED_TOPIC = "/smartcar/control/speed";
     private static final int IMPOSSIBLE_ANGLE_AND_SPEED = -1000;
     private static final int REVERSE_CAR_MOVEMENT = -1;
+    private static final String DISCONNECT_FROM_CAR_MESSAGE = "Disconnected from car.";
     CarConnect carConnect;
 
 
@@ -80,6 +82,15 @@ public class ManualControl extends AppCompatActivity {
         return adjustedSpeed;
     }
 
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Toast.makeText(getApplicationContext(), DISCONNECT_FROM_CAR_MESSAGE, Toast.LENGTH_SHORT).show();
+        carConnect.disconnect(null);
+    }
+
     void turnCar(int adjustedSpeed, int adjustedAngle, int previousAngle, int previousSpeed){
         if (adjustedAngle != previousAngle || adjustedSpeed != previousSpeed){
             if (adjustedSpeed == 0)
@@ -88,5 +99,6 @@ public class ManualControl extends AppCompatActivity {
             carConnect.publish(SPEED_TOPIC, Integer.toString(adjustedSpeed), QOS, null);
         }
     }
+
 
 }
