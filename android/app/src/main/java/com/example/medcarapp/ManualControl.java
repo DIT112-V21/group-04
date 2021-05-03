@@ -32,7 +32,6 @@ public class ManualControl extends AppCompatActivity {
     private static final String DISCONNECT_FROM_CAR_MESSAGE = "Disconnected from car.";
     CarConnect carConnect;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +46,8 @@ public class ManualControl extends AppCompatActivity {
         joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
             int previousAngle = IMPOSSIBLE_ANGLE_AND_SPEED;
             int previousSpeed = IMPOSSIBLE_ANGLE_AND_SPEED;
+            TextView angleIndicator = (TextView)findViewById(R.id.angleIndicator);
+            TextView speedIndicator = (TextView)findViewById(R.id.speedIndicator);
             @Override
             public void onMove(int angle, int strength) {
                 int adjustedAngle = adjustAngle(angle);
@@ -54,6 +55,8 @@ public class ManualControl extends AppCompatActivity {
                 turnCar(adjustedSpeed, adjustedAngle, previousAngle, previousSpeed);
                 previousAngle = adjustedAngle;
                 previousSpeed = adjustedSpeed;
+                speedIndicator.setText(adjustedSpeed + "%");
+                angleIndicator.setText(adjustedAngle + "°");
             }
         });
     }
@@ -82,8 +85,6 @@ public class ManualControl extends AppCompatActivity {
         return adjustedSpeed;
     }
 
-
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -99,6 +100,4 @@ public class ManualControl extends AppCompatActivity {
             carConnect.publish(SPEED_TOPIC, Integer.toString(adjustedSpeed), QOS, null);
         }
     }
-
-
 }
