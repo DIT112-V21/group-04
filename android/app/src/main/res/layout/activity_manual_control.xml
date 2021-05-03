@@ -25,7 +25,7 @@
         app:layout_constraintVertical_bias="0.865" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/cameraView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
@@ -34,7 +34,6 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="24dp"
-        android:src="@drawable/carcam"
         app:layout_constraintBottom_toTopOf="@+id/joystickView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

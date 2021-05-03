@@ -32,7 +32,6 @@ public class ManualControl extends AppCompatActivity {
     private static final String DISCONNECT_FROM_CAR_MESSAGE = "Disconnected from car.";
     CarConnect carConnect;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
