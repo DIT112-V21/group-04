@@ -2,6 +2,7 @@ package com.example.medcarapp;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     String names[], desc[];
     Context context;
     int row_index = -1;
+    private static final int VERTICAL_OFFSET = 350;
 
     public Adapter(Context ct, String s1[], String s2[]) {
         context = ct;
@@ -43,7 +45,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             public void onClick(View v) {
                 row_index = position;
                 notifyDataSetChanged();
-                Toast.makeText(context, "You clicked on Medcar "+(position+1),Toast.LENGTH_SHORT).show();
+                Toast toast = Toast.makeText(context, "You clicked on Medcar "+(position+1),Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.TOP,0,VERTICAL_OFFSET);
+                toast.show();
             }
         });
         if(row_index==position){

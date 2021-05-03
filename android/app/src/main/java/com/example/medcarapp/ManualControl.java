@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import android.os.PersistableBundle;
+import android.view.Gravity;
 import android.widget.TextView;
 
 import android.view.MotionEvent;
@@ -30,6 +31,7 @@ public class ManualControl extends AppCompatActivity {
     private static final int IMPOSSIBLE_ANGLE_AND_SPEED = -1000;
     private static final int REVERSE_CAR_MOVEMENT = -1;
     private static final String DISCONNECT_FROM_CAR_MESSAGE = "Disconnected from car.";
+    private static final int VERTICAL_OFFSET = 350;
     CarConnect carConnect;
 
 
@@ -87,7 +89,9 @@ public class ManualControl extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Toast.makeText(getApplicationContext(), DISCONNECT_FROM_CAR_MESSAGE, Toast.LENGTH_SHORT).show();
+        Toast toast = Toast.makeText(getApplicationContext(), DISCONNECT_FROM_CAR_MESSAGE, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.TOP,0,VERTICAL_OFFSET);
+        toast.show();
         carConnect.disconnect(null);
     }
 
