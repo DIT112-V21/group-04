@@ -37,6 +37,8 @@ public class ManualControl extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_control);
         TextView connectionText = (TextView)findViewById(R.id.connectionText);
+        TextView angleIndicator = (TextView)findViewById(R.id.angleIndicator);
+        TextView speedIndicator = (TextView)findViewById(R.id.speedIndicator);
 
         carConnect = new CarConnect(getApplicationContext());
         carConnect.connectToMqttBroker(connectionText);
@@ -46,8 +48,6 @@ public class ManualControl extends AppCompatActivity {
         joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
             int previousAngle = IMPOSSIBLE_ANGLE_AND_SPEED;
             int previousSpeed = IMPOSSIBLE_ANGLE_AND_SPEED;
-            TextView angleIndicator = (TextView)findViewById(R.id.angleIndicator);
-            TextView speedIndicator = (TextView)findViewById(R.id.speedIndicator);
             @Override
             public void onMove(int angle, int strength) {
                 int adjustedAngle = adjustAngle(angle);
