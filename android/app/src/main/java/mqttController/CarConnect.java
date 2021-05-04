@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -39,11 +40,12 @@ public class CarConnect extends AppCompatActivity {
 
     private MqttClient mMqttClient;
     private boolean isConnected = false;
-    private ImageView mCameraView = findViewById(R.id.cameraView);
+    private ImageView mCameraView;
 
-    public CarConnect(Context context) {
+    public CarConnect(Context context, ImageView mCameraView) {
         this.context = context;
         mMqttClient = new MqttClient(context, MQTT_SERVER, TAG);
+        this.mCameraView = mCameraView;
     }
 
     @Override
