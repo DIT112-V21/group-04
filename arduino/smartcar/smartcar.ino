@@ -12,6 +12,7 @@
 WiFiClient net;
 #endif
 MQTTClient mqtt;
+MQTTClient mqtt2;
 
 ArduinoRuntime arduinoRuntime;
 BrushedMotor leftMotor(arduinoRuntime, smartcarlib::pins::v2::leftMotorPins);
@@ -40,10 +41,14 @@ std::vector<char> frameBuffer;
 void setup() {
   Serial.begin(9600);
 #ifdef __SMCE__
+  Camera.begin(QVGA, RGB888, 15);
+  frameBuffer.resize(Camera.width() * Camera.height() * Camera.bytesPerPixel());
   mqtt.begin("3.138.188.190", 1883, WiFi);
+  mqtt2.begin("3.138.188.190", 1883, WiFi);
   // mqtt.begin(WiFi); // Will connect to localhost
 #else
   mqtt.begin(net);
+  mqtt2.begin(net);
 #endif
   if (mqtt.connect("arduino", "public", "public")) {
     mqtt.subscribe("/smartcar/control/#", 1);
@@ -68,6 +73,13 @@ void loop() {
     mqtt.loop();
     const auto currentTime = millis();
 #ifdef __SMCE__
+static auto previousFrame = 0UL;
+    if (currentTime - previousFrame >= 65) {
+      previousFrame = currentTime;
+      Camera.readFrame(frameBuffer.data());
+      mqtt2.publish("/smartcar/control/Camera_Stream", frameBuffer.data(), frameBuffer.size(),
+                   false, 0);
+    }
 #endif
     static auto previousTransmission = 0UL;
     if (currentTime - previousTransmission >= oneSecond) {
