@@ -46,8 +46,8 @@
         android:id="@+id/speedHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginLeft="28dp"
         android:layout_marginBottom="8dp"
         android:fontFamily="serif"
         android:text="Speed:"
@@ -55,15 +55,27 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/joystickView2"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/speedIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginLeft="44dp"
+        android:fontFamily="serif"
+        android:text="0%"
+        android:textColor="@color/teal_700"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/speedHeader" />
 
     <TextView
         android:id="@+id/angleHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginRight="28dp"
         android:layout_marginBottom="8dp"
         android:fontFamily="serif"
         android:text="Angle:"
@@ -71,8 +83,20 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/joystickView2"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/angleIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="44dp"
+        android:layout_marginRight="44dp"
+        android:fontFamily="serif"
+        android:text="90°"
+        android:textColor="@color/teal_700"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/angleHeader" />
 
     <TextView
         android:id="@+id/connectionText"
@@ -84,31 +108,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/joystickView2"
         app:layout_constraintVertical_bias="0.428" />
-
-    <TextView
-        android:id="@+id/speedIndicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:fontFamily="serif"
-        android:text="0%"
-        android:textSize="20sp"
-        android:textColor="@color/teal_700"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/speedHeader" />
-
-    <TextView
-        android:id="@+id/angleIndicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="40dp"
-        android:layout_marginRight="40dp"
-        android:fontFamily="serif"
-        android:textSize="20sp"
-        android:text="90°"
-        android:textColor="@color/teal_700"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/angleHeader" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
