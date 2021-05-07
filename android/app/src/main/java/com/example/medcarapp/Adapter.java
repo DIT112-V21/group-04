@@ -42,11 +42,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                row_index = position;
-                notifyDataSetChanged();
-                Toast toast = Toast.makeText(context, "You clicked on Medcar "+(position+1),Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.TOP,0,0);
-                toast.show();
+                adapterFeedbackMessage(position);
             }
         });
         if(row_index==position){
@@ -77,5 +73,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             carLogo = itemView.findViewById(R.id.carLogo);
             row_constraintlayout = (ConstraintLayout) itemView.findViewById(R.id.constraintrv);
         }
+    }
+    public void adapterFeedbackMessage(int position){
+        row_index = position;
+        notifyDataSetChanged();
+        Toast toast = Toast.makeText(context, "You clicked on Medcar "+(position+1),Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.TOP,0,0);
+        toast.show();
     }
 }
