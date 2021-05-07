@@ -31,7 +31,6 @@ public class CarConnect extends AppCompatActivity {
     private static final String MQTT_SERVER = "tcp://" + EXTERNAL_MQTT_BROKER + ":1883";
     private static final String TURNING_TOPIC = "/smartcar/control/turning";
     private static final String SPEED_TOPIC = "/smartcar/control/speed";
-    private static final int VERTICAL_OFFSET = 350;
     private static final int QOS = 1;
 
     Context context;
@@ -103,7 +102,7 @@ public class CarConnect extends AppCompatActivity {
                     final String connectionLost = "Connection to MQTT broker lost";
                     Log.w(TAG, connectionLost);
                     Toast toast = Toast.makeText(context, connectionLost, Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.TOP,0,VERTICAL_OFFSET);
+                    toast.setGravity(Gravity.TOP,0,0);
                     toast.show();
                     connectionText.setText("Disconnected");
                     connectionText.setTextColor(Color.parseColor("#EF1919"));

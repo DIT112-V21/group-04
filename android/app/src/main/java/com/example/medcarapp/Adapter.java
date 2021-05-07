@@ -19,7 +19,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     String names[], desc[];
     Context context;
     int row_index = -1;
-    private static final int VERTICAL_OFFSET = 350;
 
     public Adapter(Context ct, String s1[], String s2[]) {
         context = ct;
@@ -46,7 +45,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                 row_index = position;
                 notifyDataSetChanged();
                 Toast toast = Toast.makeText(context, "You clicked on Medcar "+(position+1),Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.TOP,0,VERTICAL_OFFSET);
+                toast.setGravity(Gravity.TOP,0,0);
                 toast.show();
             }
         });
