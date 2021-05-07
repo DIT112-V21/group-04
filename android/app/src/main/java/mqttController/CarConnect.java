@@ -76,7 +76,7 @@ public class CarConnect extends AppCompatActivity {
                 public void onSuccess(IMqttToken asyncActionToken) {
                     isConnected = true;
                     Log.i(TAG, SUCCESSFUL_CONNECTION);
-                    successFeedbackMessage();
+                    feedbackMessage(SUCCESSFUL_CONNECTION);
                     connectionText.setText("Connected");
                     connectionText.setTextColor(Color.parseColor("#32CD32"));
 
@@ -87,7 +87,7 @@ public class CarConnect extends AppCompatActivity {
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     Log.e(TAG, FAILED_CONNECTION);
-                    failedFeedbackMessage();
+                    feedbackMessage(FAILED_CONNECTION);
                     connectionText.setText("Disconnected");
                     connectionText.setTextColor(Color.parseColor("#EF1919"));
                 }
@@ -96,7 +96,7 @@ public class CarConnect extends AppCompatActivity {
                 public void connectionLost(Throwable cause) {
                     isConnected = false;
                     Log.w(TAG, LOST_CONNECTION);
-                    lostFeedbackMessage();
+                    feedbackMessage(LOST_CONNECTION);
                     connectionText.setText("Disconnected");
                     connectionText.setTextColor(Color.parseColor("#EF1919"));
                 }
@@ -131,20 +131,8 @@ public class CarConnect extends AppCompatActivity {
         mMqttClient.publish(topic, message, qos, publishCallback);
     }
 
-    public void successFeedbackMessage(){
-        Toast toast = Toast.makeText(context, SUCCESSFUL_CONNECTION, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.TOP,0,0);
-        toast.show();
-    }
-
-    public void failedFeedbackMessage(){
-        Toast toast = Toast.makeText(context, FAILED_CONNECTION, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.TOP,0,0);
-        toast.show();
-    }
-
-    public void lostFeedbackMessage(){
-        Toast toast = Toast.makeText(context, LOST_CONNECTION, Toast.LENGTH_SHORT);
+    public void feedbackMessage(String message){
+        Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.TOP,0,0);
         toast.show();
     }

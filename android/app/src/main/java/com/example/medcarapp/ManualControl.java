@@ -89,7 +89,7 @@ public class ManualControl extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        disconnectFeedbackMessage();
+        carConnect.feedbackMessage(DISCONNECT_FROM_CAR_MESSAGE);
         carConnect.disconnect(null);
     }
 
@@ -100,11 +100,5 @@ public class ManualControl extends AppCompatActivity {
             carConnect.publish(TURNING_TOPIC, Integer.toString(adjustedAngle), QOS, null);
             carConnect.publish(SPEED_TOPIC, Integer.toString(adjustedSpeed), QOS, null);
         }
-    }
-
-    public void disconnectFeedbackMessage(){
-        Toast toast = Toast.makeText(getApplicationContext(), DISCONNECT_FROM_CAR_MESSAGE, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.TOP,0,0);
-        toast.show();
     }
 }
