@@ -34,12 +34,13 @@ public class ManualControl extends AppCompatActivity {
     private static final int VERTICAL_OFFSET = 350;
     CarConnect carConnect;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_control);
         TextView connectionText = (TextView)findViewById(R.id.connectionText);
+        TextView angleIndicator = (TextView)findViewById(R.id.angleIndicator);
+        TextView speedIndicator = (TextView)findViewById(R.id.speedIndicator);
 
         carConnect = new CarConnect(getApplicationContext());
         carConnect.connectToMqttBroker(connectionText);
@@ -56,6 +57,8 @@ public class ManualControl extends AppCompatActivity {
                 turnCar(adjustedSpeed, adjustedAngle, previousAngle, previousSpeed);
                 previousAngle = adjustedAngle;
                 previousSpeed = adjustedSpeed;
+                speedIndicator.setText(adjustedSpeed + "%");
+                angleIndicator.setText(adjustedAngle + "°");
             }
         });
     }
@@ -84,8 +87,6 @@ public class ManualControl extends AppCompatActivity {
         return adjustedSpeed;
     }
 
-
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -103,6 +104,4 @@ public class ManualControl extends AppCompatActivity {
             carConnect.publish(SPEED_TOPIC, Integer.toString(adjustedSpeed), QOS, null);
         }
     }
-
-
 }
