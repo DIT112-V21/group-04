@@ -27,14 +27,15 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 public class CarConnect extends AppCompatActivity {
     private static final String TAG = "SmartcarMqttController";
     private static final String EXTERNAL_MQTT_BROKER = "3.138.188.190";
-    private static final String LOCALHOST = "3.138.188.190";
-    private static final String MQTT_SERVER = "tcp://" + EXTERNAL_MQTT_BROKER + ":1883";
+    private static final String LOCALHOST = "10.0.2.2";
+    private static final String TA_SERVER = "aerostun.dev";
+    private static final String MQTT_SERVER = "tcp://" + LOCALHOST + ":1883";
     private static final String TURNING_TOPIC = "/smartcar/control/turning";
     private static final String SPEED_TOPIC = "/smartcar/control/speed";
-    private static final String CAMERA_TOPIC = "/smartcar/control/Camera_Stream";
-    private static final int QOS = 1;
-    private static final int IMAGE_WIDTH = 320;
-    private static final int IMAGE_HEIGHT = 240;
+    private static final String CAMERA_TOPIC = "Camera_Stream";
+    private static final int QOS = 0;
+    private static final int IMAGE_WIDTH = 160;
+    private static final int IMAGE_HEIGHT = 120;
 
     Context context;
 
@@ -81,8 +82,8 @@ public class CarConnect extends AppCompatActivity {
                     connectionText.setText("Connected");
                     connectionText.setTextColor(Color.parseColor("#32CD32"));
 
-                    mMqttClient.subscribe(TURNING_TOPIC, QOS, null);
-                    mMqttClient.subscribe(SPEED_TOPIC, QOS, null);
+                    //mMqttClient.subscribe(TURNING_TOPIC, QOS, null);
+                    //mMqttClient.subscribe(SPEED_TOPIC, QOS, null);
                     mMqttClient.subscribe(CAMERA_TOPIC, QOS, null);
                 }
 
@@ -123,6 +124,7 @@ public class CarConnect extends AppCompatActivity {
 
                         mCameraView.setImageBitmap(bm);
                     } else {
+                        mCameraView.setImageResource(R.drawable.intermission);
                         Log.i(TAG, "[MQTT] Topic: " + topic + " | Message: " + message.toString());
                     }
                 }
