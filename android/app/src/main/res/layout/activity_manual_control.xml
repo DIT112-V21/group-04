@@ -26,7 +26,6 @@
 
     <ImageView
         android:id="@+id/cameraView"
-        android:src="@drawable/intermission"
         android:layout_width="375dp"
         android:layout_height="231dp"
         android:layout_marginStart="16dp"
@@ -34,13 +33,14 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/joystickView2"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/intermission"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"></ImageView>
+        app:layout_constraintVertical_bias="0.07"></ImageView>
 
     <TextView
         android:id="@+id/textView2"
