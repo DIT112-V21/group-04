@@ -92,6 +92,7 @@ public class CarConnect extends AppCompatActivity {
                     final String failedConnection = "Failed to connect to MQTT broker";
                     Log.e(TAG, failedConnection);
                     Toast.makeText(context, failedConnection, Toast.LENGTH_SHORT).show();
+                    mCameraView.setImageResource(R.drawable.intermission);
                     connectionText.setText("Disconnected");
                     connectionText.setTextColor(Color.parseColor("#EF1919"));
                 }
@@ -103,6 +104,7 @@ public class CarConnect extends AppCompatActivity {
                     final String connectionLost = "Connection to MQTT broker lost";
                     Log.w(TAG, connectionLost);
                     Toast.makeText(context, connectionLost, Toast.LENGTH_SHORT).show();
+                    mCameraView.setImageResource(R.drawable.intermission);
                     connectionText.setText("Disconnected");
                     connectionText.setTextColor(Color.parseColor("#EF1919"));
                 }
@@ -124,7 +126,6 @@ public class CarConnect extends AppCompatActivity {
 
                         mCameraView.setImageBitmap(bm);
                     } else {
-                        mCameraView.setImageResource(R.drawable.intermission);
                         Log.i(TAG, "[MQTT] Topic: " + topic + " | Message: " + message.toString());
                     }
                 }
