@@ -90,7 +90,9 @@ public class ManualControl extends AppCompatActivity {
         if (angle <= 180) {
             adjustedSpeed = strength;
         } else {
-            adjustedSpeed = strength*REVERSE_CAR_MOVEMENT;
+            adjustedSpeed = strength > 70 ?
+                    (strength-30)*REVERSE_CAR_MOVEMENT
+                    : strength*REVERSE_CAR_MOVEMENT;
         }
         return adjustedSpeed;
     }
