@@ -31,6 +31,7 @@ const int SIDE_FRONT_PIN = 0;
 const int stoppingSpeed = 0; 
 const int stopDistance = 80;
 int carSpeed = 0;
+boolean autoDriving = false;
 
 SR04 frontSensorUS(arduinoRuntime, triggerPin, echoPin, maxDistance);
 GP2D120 fronSensorIR(arduinoRuntime, SIDE_FRONT_PIN);
@@ -51,14 +52,16 @@ Camera.begin(QQVGA, RGB888, 15);
   if (mqtt.connect("arduino", "public", "public")) {
     mqtt.subscribe("/smartcar/control/#", 1);
     mqtt.onMessage([](String topic, String message) {
-      if (topic == "/smartcar/control/speed") {
+      if (topic == "/smartcar/control/speed" && !autoDriving) {
         carSpeed = message.toInt();
         if (obstacleAvoidance() && carSpeed <=0){
           car.setSpeed(carSpeed);
         }
         car.setSpeed(carSpeed);
-      } else if (topic == "/smartcar/control/turning") {
+      } else if (topic == "/smartcar/control/turning" && !autoDriving) {
         car.setAngle(message.toInt());
+      } else if (topic == "/smartcar/control/auto") {
+        autoDriving = message.toInt();
       } else {
         Serial.println(topic + " " + message);
       }
@@ -81,7 +84,11 @@ void loop() {
   }
 #ifdef __SMCE__
   // Avoid over-using the CPU if we are running in the emulator
+  if (autoDriving){
+    autonomousDriving();
+  } else {
   obstacleAvoidance();
+  }
   delay(35);
 #endif
 }
@@ -91,6 +98,31 @@ boolean obstacleAvoidance()
      int distanceFromObject = frontSensorUS.getDistance();
      if (distanceFromObject < stopDistance && distanceFromObject > 1 && !(carSpeed <= 0)){
       car.setSpeed(stoppingSpeed);
+      return true;
+     } else {
+          Serial.println(distanceFromObject);
+          return false;
+     }
+}
+
+boolean autonomousDriving()
+{
+     int distanceFromObject = frontSensorUS.getDistance();
+     if (distanceFromObject < stopDistance && distanceFromObject > 0 && !(carSpeed <= 0)){
+      car.setSpeed(stoppingSpeed);
+      delay(1000);
+      car.setSpeed(-40);
+    delay(1000);
+    car.setSpeed(0);
+    delay(1000);
+    car.setSpeed(100);
+    car.setAngle(-90);
+    delay(1000);
+    car.setSpeed(0);
+    car.setAngle(0);
+    delay(1000);
+    autonomousDriving();
+    car.setSpeed(90);
       return true;
      } else {
           Serial.println(distanceFromObject);
