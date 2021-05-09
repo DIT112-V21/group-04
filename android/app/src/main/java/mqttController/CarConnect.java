@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -36,6 +37,9 @@ public class CarConnect extends AppCompatActivity {
     private static final int QOS = 0;
     private static final int IMAGE_WIDTH = 160;
     private static final int IMAGE_HEIGHT = 120;
+    private static final String SUCCESSFUL_CONNECTION = "Connected to MQTT broker";
+    private static final String FAILED_CONNECTION = "Failed to connect to MQTT broker";
+    private static final String LOST_CONNECTION = "Connection to MQTT broker lost";
 
     Context context;
 
@@ -76,9 +80,8 @@ public class CarConnect extends AppCompatActivity {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     isConnected = true;
-                    final String successfulConnection = "Connected to MQTT broker";
-                    Log.i(TAG, successfulConnection);
-                    Toast.makeText(context, successfulConnection, Toast.LENGTH_SHORT).show();
+                    Log.i(TAG, SUCCESSFUL_CONNECTION);
+                    feedbackMessage(SUCCESSFUL_CONNECTION);
                     connectionText.setText("Connected");
                     connectionText.setTextColor(Color.parseColor("#32CD32"));
 
@@ -89,22 +92,26 @@ public class CarConnect extends AppCompatActivity {
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    final String failedConnection = "Failed to connect to MQTT broker";
-                    Log.e(TAG, failedConnection);
-                    Toast.makeText(context, failedConnection, Toast.LENGTH_SHORT).show();
+
                     mCameraView.setImageResource(R.drawable.intermission);
+
+                    Log.e(TAG, FAILED_CONNECTION);
+                    feedbackMessage(FAILED_CONNECTION);
+
                     connectionText.setText("Disconnected");
                     connectionText.setTextColor(Color.parseColor("#EF1919"));
                 }
             }, new MqttCallback() {
                 @Override
                 public void connectionLost(Throwable cause) {
-                    isConnected = false;
 
-                    final String connectionLost = "Connection to MQTT broker lost";
-                    Log.w(TAG, connectionLost);
-                    Toast.makeText(context, connectionLost, Toast.LENGTH_SHORT).show();
+
+
                     mCameraView.setImageResource(R.drawable.intermission);
+
+                    Log.w(TAG, LOST_CONNECTION);
+                    feedbackMessage(LOST_CONNECTION);
+                  
                     connectionText.setText("Disconnected");
                     connectionText.setTextColor(Color.parseColor("#EF1919"));
                 }
@@ -153,5 +160,13 @@ public class CarConnect extends AppCompatActivity {
    public void publish(String topic, String message, int qos, IMqttActionListener publishCallback){
         mMqttClient.publish(topic, message, qos, publishCallback);
     }
+
+
+    public void feedbackMessage(String message){
+        Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.TOP,0,0);
+        toast.show();
+    }
+
 
 }

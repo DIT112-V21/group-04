@@ -4,7 +4,11 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import android.os.PersistableBundle;
+
 import android.widget.ImageView;
+
+import android.view.Gravity;
+
 import android.widget.TextView;
 
 import android.view.MotionEvent;
@@ -94,7 +98,7 @@ public class ManualControl extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Toast.makeText(getApplicationContext(), DISCONNECT_FROM_CAR_MESSAGE, Toast.LENGTH_SHORT).show();
+        carConnect.feedbackMessage(DISCONNECT_FROM_CAR_MESSAGE);
         carConnect.disconnect(null);
     }
 
