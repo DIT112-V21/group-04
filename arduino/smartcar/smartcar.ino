@@ -20,7 +20,7 @@ DifferentialControl control(leftMotor, rightMotor);
 
 SimpleCar car(control);
 
-const auto oneSecond = 1000UL;
+const auto oneSecond = 1UL;
 const auto triggerPin = 6;
 const auto echoPin = 7;
 const auto maxDistance = 400;
@@ -40,8 +40,11 @@ std::vector<char> frameBuffer;
 void setup() {
   Serial.begin(9600);
 #ifdef __SMCE__
-  mqtt.begin("3.138.188.190", 1883, WiFi);
-  // mqtt.begin(WiFi); // Will connect to localhost
+Camera.begin(QQVGA, RGB888, 15);
+  frameBuffer.resize(Camera.width() * Camera.height() * Camera.bytesPerPixel());
+  //mqtt.begin("3.138.188.190", 1883, WiFi);
+  //mqtt.begin("aerostun.dev", 1883, WiFi);
+  mqtt.begin(WiFi); // Will connect to localhost
 #else
   mqtt.begin(net);
 #endif
@@ -68,11 +71,13 @@ void loop() {
     mqtt.loop();
     const auto currentTime = millis();
 #ifdef __SMCE__
-#endif
     static auto previousTransmission = 0UL;
     if (currentTime - previousTransmission >= oneSecond) {
       previousTransmission = currentTime;
+      Camera.readFrame(frameBuffer.data());
+      mqtt.publish("Camera_Stream", frameBuffer.data(), frameBuffer.size(), false, 0);
     }
+#endif
   }
 #ifdef __SMCE__
   // Avoid over-using the CPU if we are running in the emulator

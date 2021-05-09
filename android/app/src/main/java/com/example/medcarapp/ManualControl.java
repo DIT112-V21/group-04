@@ -4,7 +4,11 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import android.os.PersistableBundle;
+
+import android.widget.ImageView;
+
 import android.view.Gravity;
+
 import android.widget.TextView;
 
 import android.view.MotionEvent;
@@ -31,17 +35,22 @@ public class ManualControl extends AppCompatActivity {
     private static final int IMPOSSIBLE_ANGLE_AND_SPEED = -1000;
     private static final int REVERSE_CAR_MOVEMENT = -1;
     private static final String DISCONNECT_FROM_CAR_MESSAGE = "Disconnected from car.";
-    CarConnect carConnect;
+    private CarConnect carConnect;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_control);
         TextView connectionText = (TextView)findViewById(R.id.connectionText);
+
+        ImageView carCamera = findViewById(R.id.cameraView);
+
         TextView angleIndicator = (TextView)findViewById(R.id.angleIndicator);
         TextView speedIndicator = (TextView)findViewById(R.id.speedIndicator);
 
-        carConnect = new CarConnect(getApplicationContext());
+
+        carConnect = new CarConnect(this.getApplicationContext(), carCamera);
         carConnect.connectToMqttBroker(connectionText);
 
         JoystickView joystick = (JoystickView) findViewById(R.id.joystickView2);
@@ -62,7 +71,7 @@ public class ManualControl extends AppCompatActivity {
         });
     }
 
-    int adjustAngle(int angle){
+    private int adjustAngle(int angle){
         int adjustedAngle;
         if (angle >= 90 && angle <= 180) { // go left
             adjustedAngle = 90 - angle;
@@ -76,7 +85,7 @@ public class ManualControl extends AppCompatActivity {
         return adjustedAngle;
     }
 
-    int adjustSpeed(int strength, int angle){
+    private int adjustSpeed(int strength, int angle){
         int adjustedSpeed;
         if (angle <= 180) {
             adjustedSpeed = strength;
@@ -93,7 +102,7 @@ public class ManualControl extends AppCompatActivity {
         carConnect.disconnect(null);
     }
 
-    void turnCar(int adjustedSpeed, int adjustedAngle, int previousAngle, int previousSpeed){
+    private void turnCar(int adjustedSpeed, int adjustedAngle, int previousAngle, int previousSpeed){
         if (adjustedAngle != previousAngle || adjustedSpeed != previousSpeed){
             if (adjustedSpeed == 0)
                 adjustedAngle = 0;
