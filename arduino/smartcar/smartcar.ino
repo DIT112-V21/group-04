@@ -31,7 +31,7 @@ const int SIDE_FRONT_PIN = 0;
 const int stoppingSpeed = 0; 
 const int stopDistance = 80;
 int carSpeed = 0;
-boolean autoDriving = false;
+int autoDriving = 0;
 
 SR04 frontSensorUS(arduinoRuntime, triggerPin, echoPin, maxDistance);
 GP2D120 fronSensorIR(arduinoRuntime, SIDE_FRONT_PIN);
@@ -43,22 +43,22 @@ void setup() {
 #ifdef __SMCE__
 Camera.begin(QQVGA, RGB888, 15);
   frameBuffer.resize(Camera.width() * Camera.height() * Camera.bytesPerPixel());
-  //mqtt.begin("3.138.188.190", 1883, WiFi);
+  mqtt.begin("3.138.188.190", 1883, WiFi);
   //mqtt.begin("aerostun.dev", 1883, WiFi);
-  mqtt.begin(WiFi); // Will connect to localhost
+  //mqtt.begin(WiFi); // Will connect to localhost
 #else
   mqtt.begin(net);
 #endif
   if (mqtt.connect("arduino", "public", "public")) {
     mqtt.subscribe("/smartcar/control/#", 1);
     mqtt.onMessage([](String topic, String message) {
-      if (topic == "/smartcar/control/speed" && !autoDriving) {
+      if (topic == "/smartcar/control/speed" && autoDriving == 0) {
         carSpeed = message.toInt();
         if (obstacleAvoidance() && carSpeed <=0){
           car.setSpeed(carSpeed);
         }
         car.setSpeed(carSpeed);
-      } else if (topic == "/smartcar/control/turning" && !autoDriving) {
+      } else if (topic == "/smartcar/control/turning" && autoDriving == 0) {
         car.setAngle(message.toInt());
       } else if (topic == "/smartcar/control/auto") {
         autoDriving = message.toInt();
@@ -84,8 +84,14 @@ void loop() {
   }
 #ifdef __SMCE__
   // Avoid over-using the CPU if we are running in the emulator
-  if (autoDriving){
+  if (autoDriving == 1){
+    if (carSpeed == 80){
+      autonomousDriving();
+    } else {
+    car.setSpeed(80);
+    carSpeed = 80;
     autonomousDriving();
+    }
   } else {
   obstacleAvoidance();
   }

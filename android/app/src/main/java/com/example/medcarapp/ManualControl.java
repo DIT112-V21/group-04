@@ -1,30 +1,20 @@
 package com.example.medcarapp;
 
-import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 
-import android.os.PersistableBundle;
-
+import android.widget.Button;
 import android.widget.ImageView;
-
-import android.view.Gravity;
 
 import android.widget.TextView;
 
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import org.eclipse.paho.client.mqttv3.IMqttActionListener;
-import org.eclipse.paho.client.mqttv3.IMqttToken;
 
 import io.github.controlwear.virtual.joystick.android.JoystickView;
 import mqttController.CarConnect;
-import mqttController.MqttClient;
 
 public class ManualControl extends AppCompatActivity {
     // joystick adapted from: https://github.com/controlwear/virtual-joystick-android
@@ -32,9 +22,13 @@ public class ManualControl extends AppCompatActivity {
     private static final int QOS = 1;
     private static final String TURNING_TOPIC = "/smartcar/control/turning";
     private static final String SPEED_TOPIC = "/smartcar/control/speed";
+    private static final String AUTO_TOPIC = "/smartcar/control/auto";
     private static final int IMPOSSIBLE_ANGLE_AND_SPEED = -1000;
     private static final int REVERSE_CAR_MOVEMENT = -1;
     private static final String DISCONNECT_FROM_CAR_MESSAGE = "Disconnected from car.";
+    private static final String AUTONOMOUS_DRIVING_ON = "Auto-on";
+    private static final String AUTONOMOUS_DRIVING_OFF = "Auto-off";
+    private static int auto = 0;
     private CarConnect carConnect;
 
 
@@ -109,5 +103,20 @@ public class ManualControl extends AppCompatActivity {
             carConnect.publish(TURNING_TOPIC, Integer.toString(adjustedAngle), QOS, null);
             carConnect.publish(SPEED_TOPIC, Integer.toString(adjustedSpeed), QOS, null);
         }
+    }
+
+    /** Called when the user touches the button */
+    public void sendMessage(View view) {
+        Button button = findViewById(R.id.button2);
+        if (auto == 0){
+            auto = 1;
+            button.setText(AUTONOMOUS_DRIVING_ON);
+            button.setBackgroundColor(Color.GREEN);
+        } else {
+            auto = 0;
+            button.setText(AUTONOMOUS_DRIVING_OFF);
+            button.setBackgroundColor(Color.RED);
+        }
+        carConnect.publish(AUTO_TOPIC, Integer.toString(auto), QOS, null);
     }
 }

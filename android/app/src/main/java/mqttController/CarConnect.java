@@ -30,7 +30,7 @@ public class CarConnect extends AppCompatActivity {
     private static final String EXTERNAL_MQTT_BROKER = "3.138.188.190";
     private static final String LOCALHOST = "10.0.2.2";
     private static final String TA_SERVER = "aerostun.dev";
-    private static final String MQTT_SERVER = "tcp://" + LOCALHOST + ":1883";
+    private static final String MQTT_SERVER = "tcp://" + EXTERNAL_MQTT_BROKER + ":1883";
     private static final String TURNING_TOPIC = "/smartcar/control/turning";
     private static final String SPEED_TOPIC = "/smartcar/control/speed";
     private static final String CAMERA_TOPIC = "Camera_Stream";
