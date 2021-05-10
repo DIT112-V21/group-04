@@ -30,3 +30,8 @@
 *.exe
 *.out
 *.app
+
+.DS_Store
+.idea/
+Assignment1/.DS_Store
+arduino/.DS_Store

@@ -4,10 +4,16 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import android.os.PersistableBundle;
+
+import android.widget.ImageView;
+
+import android.view.Gravity;
+
 import android.widget.TextView;
 
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 
 import androidx.annotation.Nullable;
@@ -28,9 +34,9 @@ public class ManualControl extends AppCompatActivity {
     private static final String SPEED_TOPIC = "/smartcar/control/speed";
     private static final int IMPOSSIBLE_ANGLE_AND_SPEED = -1000;
     private static final int REVERSE_CAR_MOVEMENT = -1;
-    CarConnect carConnect;
+    private static final String DISCONNECT_FROM_CAR_MESSAGE = "Disconnected from car.";
+    private CarConnect carConnect;
 
-    @SuppressLint("ClickableViewAccessibility")
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +44,13 @@ public class ManualControl extends AppCompatActivity {
         setContentView(R.layout.activity_manual_control);
         TextView connectionText = (TextView)findViewById(R.id.connectionText);
 
-        carConnect = new CarConnect(getApplicationContext());
+        ImageView carCamera = findViewById(R.id.cameraView);
+
+        TextView angleIndicator = (TextView)findViewById(R.id.angleIndicator);
+        TextView speedIndicator = (TextView)findViewById(R.id.speedIndicator);
+
+
+        carConnect = new CarConnect(this.getApplicationContext(), carCamera);
         carConnect.connectToMqttBroker(connectionText);
 
         JoystickView joystick = (JoystickView) findViewById(R.id.joystickView2);
@@ -46,24 +58,20 @@ public class ManualControl extends AppCompatActivity {
         joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
             int previousAngle = IMPOSSIBLE_ANGLE_AND_SPEED;
             int previousSpeed = IMPOSSIBLE_ANGLE_AND_SPEED;
-            @SuppressLint("ClickableViewAccessibility")
             @Override
             public void onMove(int angle, int strength) {
                 int adjustedAngle = adjustAngle(angle);
                 int adjustedSpeed = adjustSpeed(strength, angle);
-                if (adjustedAngle != previousAngle){
-                    carConnect.publish(TURNING_TOPIC, Integer.toString(adjustedAngle), QOS, null);
-                }
-                if (adjustedSpeed != previousSpeed){
-                    carConnect.publish(SPEED_TOPIC, Integer.toString(adjustedSpeed), QOS, null);
-                }
+                turnCar(adjustedSpeed, adjustedAngle, previousAngle, previousSpeed);
                 previousAngle = adjustedAngle;
                 previousSpeed = adjustedSpeed;
+                speedIndicator.setText(adjustedSpeed + "%");
+                angleIndicator.setText(adjustedAngle + "°");
             }
         });
     }
 
-    int adjustAngle(int angle){
+    private int adjustAngle(int angle){
         int adjustedAngle;
         if (angle >= 90 && angle <= 180) { // go left
             adjustedAngle = 90 - angle;
@@ -77,7 +85,7 @@ public class ManualControl extends AppCompatActivity {
         return adjustedAngle;
     }
 
-    int adjustSpeed(int strength, int angle){
+    private int adjustSpeed(int strength, int angle){
         int adjustedSpeed;
         if (angle <= 180) {
             adjustedSpeed = strength;
@@ -87,4 +95,19 @@ public class ManualControl extends AppCompatActivity {
         return adjustedSpeed;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        carConnect.feedbackMessage(DISCONNECT_FROM_CAR_MESSAGE);
+        carConnect.disconnect(null);
+    }
+
+    private void turnCar(int adjustedSpeed, int adjustedAngle, int previousAngle, int previousSpeed){
+        if (adjustedAngle != previousAngle || adjustedSpeed != previousSpeed){
+            if (adjustedSpeed == 0)
+                adjustedAngle = 0;
+            carConnect.publish(TURNING_TOPIC, Integer.toString(adjustedAngle), QOS, null);
+            carConnect.publish(SPEED_TOPIC, Integer.toString(adjustedSpeed), QOS, null);
+        }
+    }
 }
