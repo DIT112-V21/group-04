@@ -31,6 +31,7 @@ const int SIDE_FRONT_PIN = 0;
 const int stoppingSpeed = 0; 
 const int stopDistance = 80;
 int carSpeed = 0;
+boolean isObstacleDetectedPublished = false; //keeps track of when an obstacle has been detected message is published to mqtt
 
 SR04 frontSensorUS(arduinoRuntime, triggerPin, echoPin, maxDistance);
 GP2D120 fronSensorIR(arduinoRuntime, SIDE_FRONT_PIN);
@@ -50,7 +51,7 @@ Camera.begin(QQVGA, RGB888, 15);
 #endif
   if (mqtt.connect("arduino", "public", "public")) {
     mqtt.subscribe("/smartcar/control/#", 1);
-    mqtt.onMessage([](String topic, String message) {
+    mqtt.onMessage(+[](String& topic, String& message) {
       if (topic == "/smartcar/control/speed") {
         carSpeed = message.toInt();
         if (obstacleAvoidance() && carSpeed <=0){
@@ -91,9 +92,14 @@ boolean obstacleAvoidance()
      int distanceFromObject = frontSensorUS.getDistance();
      if (distanceFromObject < stopDistance && distanceFromObject > 1 && !(carSpeed <= 0)){
       car.setSpeed(stoppingSpeed);
+      if (!isObstacleDetectedPublished){
+        mqtt.publish("/smartcar/obstacle");
+        isObstacleDetectedPublished = true;
+      }
       return true;
      } else {
           Serial.println(distanceFromObject);
+          isObstacleDetectedPublished = false;
           return false;
      }
 }
