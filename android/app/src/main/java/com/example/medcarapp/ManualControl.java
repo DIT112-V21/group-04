@@ -88,9 +88,9 @@ public class ManualControl extends AppCompatActivity {
     private int adjustSpeed(int strength, int angle){
         double adjustedSpeed;
         if (angle <= 180) {
-            adjustedSpeed = strength*0.7;
+            adjustedSpeed = strength*0.6;
         } else {
-            adjustedSpeed = (strength*0.7)*REVERSE_CAR_MOVEMENT;
+            adjustedSpeed = (strength*0.6)*REVERSE_CAR_MOVEMENT;
 
         }
         return (int) adjustedSpeed;
