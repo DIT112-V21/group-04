@@ -13,10 +13,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Adapter.ItemClickListener {
     RecyclerView rvAvailableCars;
     Dialog creditDialog;
-    Context context;
 
 
     @Override
@@ -27,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
         creditDialog();
         carSelection();
         connectButton();
-
     }
 
     public void CreditPopup(View v) {
@@ -45,12 +43,14 @@ public class MainActivity extends AppCompatActivity {
         s2 = getResources().getStringArray(R.array.description);
 
         Adapter adapter = new Adapter(this, s1, s2);
+        adapter.addItemClickListener(this);
         rvAvailableCars.setAdapter(adapter);
         rvAvailableCars.setLayoutManager(new LinearLayoutManager(this));
     }
 
     public void connectButton(){
         Button button = findViewById(R.id.btnConnect);
+        button.setEnabled(false);
 
         button.setOnClickListener(v -> {
             Intent intent = new Intent(this, ManualControl.class);
@@ -62,5 +62,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void creditDialog(){
         creditDialog = new Dialog(this);
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Button button = findViewById(R.id.btnConnect);
+        button.setEnabled(true);
     }
 }
