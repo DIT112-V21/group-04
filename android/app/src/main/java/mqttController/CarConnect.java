@@ -161,12 +161,9 @@ public class CarConnect extends AppCompatActivity {
         mMqttClient.publish(topic, message, qos, publishCallback);
     }
 
-
     public void feedbackMessage(String message){
         Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.TOP,0,0);
         toast.show();
     }
-
-
 }

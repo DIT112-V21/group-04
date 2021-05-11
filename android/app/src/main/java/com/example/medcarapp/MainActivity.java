@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
         creditDialog();
         carSelection();
         connectButton();
-
     }
 
     public void CreditPopup(View v) {
