@@ -29,7 +29,7 @@ import mqttController.MqttClient;
 public class ManualControl extends AppCompatActivity {
     // joystick adapted from: https://github.com/controlwear/virtual-joystick-android
 
-    private static final int QOS = 1;
+    private static final int QOS = 0;
     private static final String TURNING_TOPIC = "/smartcar/control/turning";
     private static final String SPEED_TOPIC = "/smartcar/control/speed";
     private static final int IMPOSSIBLE_ANGLE_AND_SPEED = -1000;
@@ -86,13 +86,14 @@ public class ManualControl extends AppCompatActivity {
     }
 
     private int adjustSpeed(int strength, int angle){
-        int adjustedSpeed;
+        double adjustedSpeed;
         if (angle <= 180) {
-            adjustedSpeed = strength;
+            adjustedSpeed = strength*0.6;
         } else {
-            adjustedSpeed = strength*REVERSE_CAR_MOVEMENT;
+            adjustedSpeed = (strength*0.6)*REVERSE_CAR_MOVEMENT;
+
         }
-        return adjustedSpeed;
+        return (int) adjustedSpeed;
     }
 
     @Override
