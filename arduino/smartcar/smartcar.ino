@@ -87,6 +87,7 @@ void loop() {
 }
 
 boolean obstacleAvoidance(){
+  boolean isObstacleDetected = false;
   
   auto frontDistanceFromObject = frontSensorUS.getDistance();
   auto backDistanceFromObject = backSensorIR.getDistance();
@@ -94,10 +95,11 @@ boolean obstacleAvoidance(){
   boolean isFrontDetected = frontDistanceFromObject < stopDistanceFront && frontDistanceFromObject > 1 && !(carSpeed <= 0);
   boolean isBackDetected = backDistanceFromObject < stopDistanceBack && backDistanceFromObject > 1 && !(carSpeed >= 0);
   
+  
   if (isFrontDetected || isBackDetected){
     car.setSpeed(stoppingSpeed);
-    return true;
-  } else {
-    return false;  
+    isObstacleDetected = true;
   }
+  
+  return isObstacleDetected;
 }
