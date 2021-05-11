@@ -27,10 +27,10 @@ const auto maxDistance = 400;
 const int TRIGGER_PIN           = 6; // D6
 const int ECHO_PIN              = 7; // D7
 const unsigned int MAX_DISTANCE = 100;
-const int BACK_PIN = 3;
-const int stoppingSpeed = 0; 
-const int stopDistanceFront = 80;
-const int stopDistanceBack = 100;
+const auto BACK_PIN = 3;
+const auto stoppingSpeed = 0; 
+const auto stopDistanceFront = 80;
+const auto stopDistanceBack = 100;
 int carSpeed = 0;
 boolean isObstacleDetectedPublished = false; //keeps track of when an obstacle has been detected message is published to mqtt
 
@@ -93,8 +93,8 @@ boolean obstacleAvoidance(){
   auto frontDistanceFromObject = frontSensorUS.getDistance();
   auto backDistanceFromObject = backSensorIR.getDistance();
   
-  boolean isFrontDetected = frontDistanceFromObject < stopDistanceFront && frontDistanceFromObject > 1 && !(carSpeed <= 0);
-  boolean isBackDetected = backDistanceFromObject < stopDistanceBack && backDistanceFromObject > 1 && !(carSpeed >= 0);
+  boolean isFrontDetected = frontDistanceFromObject < stopDistanceFront && frontDistanceFromObject > 1 && (carSpeed > 0);
+  boolean isBackDetected = backDistanceFromObject < stopDistanceBack && backDistanceFromObject > 1 && (carSpeed < 0);
   
   
   if (isFrontDetected || isBackDetected){

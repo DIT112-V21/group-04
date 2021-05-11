@@ -41,6 +41,7 @@ public class CarConnect extends AppCompatActivity {
     private static final String SUCCESSFUL_CONNECTION = "Connected to MQTT broker";
     private static final String FAILED_CONNECTION = "Failed to connect to MQTT broker";
     private static final String LOST_CONNECTION = "Connection to MQTT broker lost";
+    private static final String OBSTACLE_DETECTED = "Obstacle detected";
 
 
     Context context;
@@ -122,10 +123,11 @@ public class CarConnect extends AppCompatActivity {
 
                 @Override
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
+
                     if (topic.equals(OBSTACLE_TOPIC)) {
-                        final String obstacleDetected = "Obstacle detected";
-                        Log.i(TAG, obstacleDetected);
-                        Toast.makeText(context, obstacleDetected, Toast.LENGTH_SHORT).show();
+                        Log.i(TAG, OBSTACLE_DETECTED);
+                        feedbackMessage(OBSTACLE_DETECTED);
+
                     }
 
                     if (topic.equals(CAMERA_TOPIC)) {
