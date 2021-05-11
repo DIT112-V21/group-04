@@ -28,7 +28,9 @@ public class ManualControl extends AppCompatActivity {
     private static final String DISCONNECT_FROM_CAR_MESSAGE = "Disconnected from car.";
     private static final String AUTONOMOUS_DRIVING_ON = "Auto-on";
     private static final String AUTONOMOUS_DRIVING_OFF = "Auto-off";
-    private static int auto = 0;
+    private static final String STARTING_AUTONOMOUS = "AUTO";
+    private static int autoOptions = 0;
+    private Button autoButton;
     private CarConnect carConnect;
 
 
@@ -43,8 +45,9 @@ public class ManualControl extends AppCompatActivity {
         TextView angleIndicator = (TextView)findViewById(R.id.angleIndicator);
         TextView speedIndicator = (TextView)findViewById(R.id.speedIndicator);
 
+        autoButton = findViewById(R.id.button2);
 
-        carConnect = new CarConnect(this.getApplicationContext(), carCamera);
+        carConnect = new CarConnect(this.getApplicationContext(), carCamera, autoButton);
         carConnect.connectToMqttBroker(connectionText);
 
         JoystickView joystick = (JoystickView) findViewById(R.id.joystickView2);
@@ -92,6 +95,7 @@ public class ManualControl extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        autoButton.setText(STARTING_AUTONOMOUS);
         carConnect.feedbackMessage(DISCONNECT_FROM_CAR_MESSAGE);
         carConnect.disconnect(null);
     }
@@ -105,18 +109,17 @@ public class ManualControl extends AppCompatActivity {
         }
     }
 
-    /** Called when the user touches the button */
+
     public void sendMessage(View view) {
-        Button button = findViewById(R.id.button2);
-        if (auto == 0){
-            auto = 1;
-            button.setText(AUTONOMOUS_DRIVING_ON);
-            button.setBackgroundColor(Color.GREEN);
+        if (autoOptions == 0){
+            autoOptions = 1;
+            autoButton.setText(AUTONOMOUS_DRIVING_ON);
+            autoButton.setBackgroundColor(Color.GREEN);
         } else {
-            auto = 0;
-            button.setText(AUTONOMOUS_DRIVING_OFF);
-            button.setBackgroundColor(Color.RED);
+            autoOptions = 0;
+            autoButton.setText(AUTONOMOUS_DRIVING_OFF);
+            autoButton.setBackgroundColor(Color.RED);
         }
-        carConnect.publish(AUTO_TOPIC, Integer.toString(auto), QOS, null);
+        carConnect.publish(AUTO_TOPIC, Integer.toString(autoOptions), QOS, null);
     }
 }

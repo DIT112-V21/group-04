@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,17 +41,20 @@ public class CarConnect extends AppCompatActivity {
     private static final String SUCCESSFUL_CONNECTION = "Connected to MQTT broker";
     private static final String FAILED_CONNECTION = "Failed to connect to MQTT broker";
     private static final String LOST_CONNECTION = "Connection to MQTT broker lost";
+    private static final String STARTING_AUTONOMOUS = "AUTO";
 
     Context context;
 
     private MqttClient mMqttClient;
     private boolean isConnected = false;
     private ImageView mCameraView;
+    private Button autoButton;
 
-    public CarConnect(Context context, ImageView mCameraView) {
+    public CarConnect(Context context, ImageView mCameraView, Button autoButton) {
         this.context = context;
         mMqttClient = new MqttClient(context, MQTT_SERVER, TAG);
         this.mCameraView = mCameraView;
+        this.autoButton = autoButton;
     }
 
     @Override
@@ -93,6 +97,8 @@ public class CarConnect extends AppCompatActivity {
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
 
+                    autoButton.setText(STARTING_AUTONOMOUS);
+
                     mCameraView.setImageResource(R.drawable.intermission);
 
                     Log.e(TAG, FAILED_CONNECTION);
@@ -105,7 +111,7 @@ public class CarConnect extends AppCompatActivity {
                 @Override
                 public void connectionLost(Throwable cause) {
 
-
+                    autoButton.setText(STARTING_AUTONOMOUS);
 
                     mCameraView.setImageResource(R.drawable.intermission);
 

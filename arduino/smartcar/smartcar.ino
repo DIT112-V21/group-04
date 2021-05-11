@@ -29,7 +29,10 @@ const int ECHO_PIN              = 7; // D7
 const unsigned int MAX_DISTANCE = 100;
 const int SIDE_FRONT_PIN = 0;
 const int stoppingSpeed = 0; 
+const int stopAngle = 0;
 const int stopDistance = 80;
+const int autoSpeed = 60;
+const int autoAngle = 90;
 int carSpeed = 0;
 int autoDriving = 0;
 
@@ -62,6 +65,15 @@ Camera.begin(QQVGA, RGB888, 15);
         car.setAngle(message.toInt());
       } else if (topic == "/smartcar/control/auto") {
         autoDriving = message.toInt();
+        Serial.println(autoDriving);
+        if (autoDriving == 0){
+          car.setSpeed(stoppingSpeed);
+          car.setAngle(stopAngle);
+          carSpeed = stoppingSpeed;
+        } else {
+          car.setSpeed(autoSpeed);
+          carSpeed = autoSpeed;
+        }
       } else {
         Serial.println(topic + " " + message);
       }
@@ -84,17 +96,7 @@ void loop() {
   }
 #ifdef __SMCE__
   // Avoid over-using the CPU if we are running in the emulator
-  if (autoDriving == 1){
-    if (carSpeed == 80){
-      autonomousDriving();
-    } else {
-    car.setSpeed(80);
-    carSpeed = 80;
-    autonomousDriving();
-    }
-  } else {
   obstacleAvoidance();
-  }
   delay(35);
 #endif
 }
@@ -102,36 +104,32 @@ void loop() {
 boolean obstacleAvoidance()
 {
      int distanceFromObject = frontSensorUS.getDistance();
-     if (distanceFromObject < stopDistance && distanceFromObject > 1 && !(carSpeed <= 0)){
-      car.setSpeed(stoppingSpeed);
+     if (distanceFromObject < stopDistance && distanceFromObject > 1 && carSpeed > 0){
+      if (autoDriving == 0){
+        car.setSpeed(stoppingSpeed);
+      } else {
+        autonomousMoving();
+      }
       return true;
      } else {
-          Serial.println(distanceFromObject);
+          //Serial.println(distanceFromObject);
           return false;
      }
 }
 
-boolean autonomousDriving()
-{
-     int distanceFromObject = frontSensorUS.getDistance();
-     if (distanceFromObject < stopDistance && distanceFromObject > 0 && !(carSpeed <= 0)){
-      car.setSpeed(stoppingSpeed);
-      delay(1000);
-      car.setSpeed(-40);
-    delay(1000);
-    car.setSpeed(0);
-    delay(1000);
-    car.setSpeed(100);
-    car.setAngle(-90);
-    delay(1000);
-    car.setSpeed(0);
-    car.setAngle(0);
-    delay(1000);
-    autonomousDriving();
-    car.setSpeed(90);
-      return true;
-     } else {
-          Serial.println(distanceFromObject);
-          return false;
-     }
+void autonomousMoving(){
+  car.setSpeed(stoppingSpeed);
+        delay(1000);
+        car.setSpeed(-autoSpeed);
+        delay(1000);
+        car.setSpeed(stoppingSpeed);
+        delay(1000);
+        car.setSpeed(autoSpeed);
+        car.setAngle(-autoAngle);
+        delay(1000);
+        car.setSpeed(stoppingSpeed);
+        car.setAngle(stopAngle);
+        delay(1000);
+        car.setSpeed(autoSpeed);
+        delay(1000);
 }
