@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         Button button = findViewById(R.id.btnConnect);
 
         button.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ManualControl.class);
+            Intent intent = new Intent(this, ServerSelection.class);
 
 
             startActivity(intent);

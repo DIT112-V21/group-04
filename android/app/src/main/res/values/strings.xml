@@ -14,4 +14,14 @@
         <item>This is the medical car 3.</item>
         <item>This is the medical car 4.</item>
     </string-array>
+
+    <string-array name="serverOption">
+        <item>Offline mode</item>
+        <item>Online mode</item>
+    </string-array>
+
+    <string-array name="serverDescription">
+        <item>Use the car within the same department</item>
+        <item>Use the car from a different department</item>
+    </string-array>
 </resources>
