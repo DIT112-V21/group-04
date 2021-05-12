@@ -9,4 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="offwhite">#e7f4f3</color>
     <color name="greenblue">#009d9d</color>
+    <color name="disabled_text">#aaa</color>
+    <color name="disabled_background">#10181818</color>
 </resources>
