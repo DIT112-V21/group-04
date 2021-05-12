@@ -1,6 +1,7 @@
 package com.example.medcarapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +42,13 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ViewHolder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context,"hi",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent();
+                if(holder.getAdapterPosition()==0){
+                    intent = new Intent(context, MainActivity.class);
+                } else if(holder.getAdapterPosition()==1){
+                    intent = new Intent(context, ManualControl.class);
+                }
+                context.startActivity(intent);
             }
         });
     }
