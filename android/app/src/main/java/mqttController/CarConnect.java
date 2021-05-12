@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.os.Vibrator;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -127,7 +128,7 @@ public class CarConnect extends AppCompatActivity {
                     if (topic.equals(OBSTACLE_TOPIC)) {
                         Log.i(TAG, OBSTACLE_DETECTED);
                         feedbackMessage(OBSTACLE_DETECTED);
-
+                        phoneVibration(1000);
                     }
 
                     if (topic.equals(CAMERA_TOPIC)) {
@@ -178,6 +179,11 @@ public class CarConnect extends AppCompatActivity {
         Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.TOP,0,0);
         toast.show();
+    }
+
+    private void phoneVibration(int milliSeconds){
+        Vibrator obstacleAvoidanceVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        obstacleAvoidanceVibrator.vibrate(milliSeconds);
     }
 
 
