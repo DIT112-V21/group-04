@@ -34,7 +34,6 @@ public class ManualControl extends AppCompatActivity {
     private static final String SPEED_TOPIC = "/smartcar/control/speed";
     private static final int IMPOSSIBLE_ANGLE_AND_SPEED = -1000;
     private static final int REVERSE_CAR_MOVEMENT = -1;
-    private static final String DISCONNECT_FROM_CAR_MESSAGE = "Disconnected from car.";
     private CarConnect carConnect;
 
 
@@ -65,8 +64,10 @@ public class ManualControl extends AppCompatActivity {
                 turnCar(adjustedSpeed, adjustedAngle, previousAngle, previousSpeed);
                 previousAngle = adjustedAngle;
                 previousSpeed = adjustedSpeed;
-                speedIndicator.setText(adjustedSpeed + "%");
-                angleIndicator.setText(adjustedAngle + "°");
+                String percentageSymbol = getString(R.string.percentageSymbol);
+                String degreeSymbol = getString(R.string.degreeSymbol);
+                speedIndicator.setText(adjustedSpeed + percentageSymbol);
+                angleIndicator.setText(adjustedAngle + degreeSymbol);
             }
         });
     }
@@ -99,7 +100,8 @@ public class ManualControl extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        carConnect.feedbackMessage(DISCONNECT_FROM_CAR_MESSAGE);
+        String disconnectFromCarMessage = getString(R.string.disconnectFromCarMessage);
+        carConnect.feedbackMessage(disconnectFromCarMessage);
         carConnect.disconnect(null);
     }
 

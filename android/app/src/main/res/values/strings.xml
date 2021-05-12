@@ -14,4 +14,15 @@
         <item>This is the medical car 3.</item>
         <item>This is the medical car 4.</item>
     </string-array>
+
+    <string name="selectMedcarMessage">You clicked on Medcar </string>
+    <string name="connectButtonDisabled">Button disabled select a car</string>
+    <string name="disconnectFromCarMessage">Disconnected from car.</string>
+    <string name="percentageSymbol">%</string>
+    <string name="degreeSymbol">°</string>
+    <string name="connectedToMQTTBrokerMessage">Connected to MQTT broker</string>
+    <string name="failedToConnectToMQTTBrokerMessage">Failed to connect to MQTT broker</string>
+    <string name="connectionToMQTTBrokerLostMessage">Connection to MQTT broker lost</string>
+    <string name="connectedIndicator">Connected</string>
+    <string name="disconnectedIndicator">Disconnected</string>
 </resources>

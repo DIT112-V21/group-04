@@ -19,7 +19,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity implements Adapter.ItemClickListener {
     RecyclerView rvAvailableCars;
     Dialog creditDialog;
-    private static final String BUTTON_DISABLED = "Button disabled select a car";
+
 
 
     @Override
@@ -60,7 +60,8 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
             @Override
             public void onClick(View v) {
                 if (!button.isActivated()) {
-                    disabledFeedbackMessage(BUTTON_DISABLED);
+                    String connectButtonDisabledMessage = getString(R.string.connectButtonDisabled);
+                    disabledFeedbackMessage(connectButtonDisabledMessage);
                     return;
                 } else {
                     Intent intent = new Intent(MainActivity.this, ManualControl.class);

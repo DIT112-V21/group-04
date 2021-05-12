@@ -37,9 +37,6 @@ public class CarConnect extends AppCompatActivity {
     private static final int QOS = 0;
     private static final int IMAGE_WIDTH = 160;
     private static final int IMAGE_HEIGHT = 120;
-    private static final String SUCCESSFUL_CONNECTION = "Connected to MQTT broker";
-    private static final String FAILED_CONNECTION = "Failed to connect to MQTT broker";
-    private static final String LOST_CONNECTION = "Connection to MQTT broker lost";
 
     Context context;
 
@@ -80,9 +77,13 @@ public class CarConnect extends AppCompatActivity {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     isConnected = true;
-                    Log.i(TAG, SUCCESSFUL_CONNECTION);
-                    feedbackMessage(SUCCESSFUL_CONNECTION);
-                    connectionText.setText("Connected");
+
+                    String successfulConnectionMessage = context.getString(R.string.connectedToMQTTBrokerMessage);
+                    Log.i(TAG, successfulConnectionMessage);
+                    feedbackMessage(successfulConnectionMessage);
+
+                    String connectedMessage = context.getString(R.string.connectedIndicator);
+                    connectionText.setText(connectedMessage);
                     connectionText.setTextColor(Color.parseColor("#32CD32"));
 
                     //mMqttClient.subscribe(TURNING_TOPIC, QOS, null);
@@ -94,9 +95,9 @@ public class CarConnect extends AppCompatActivity {
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
 
                     mCameraView.setImageResource(R.drawable.intermission);
-
-                    Log.e(TAG, FAILED_CONNECTION);
-                    feedbackMessage(FAILED_CONNECTION);
+                    String failedConnectionMessage = context.getString(R.string.failedToConnectToMQTTBrokerMessage);
+                    Log.e(TAG, failedConnectionMessage);
+                    feedbackMessage(failedConnectionMessage);
 
                     connectionText.setText("Disconnected");
                     connectionText.setTextColor(Color.parseColor("#EF1919"));
@@ -109,10 +110,12 @@ public class CarConnect extends AppCompatActivity {
 
                     mCameraView.setImageResource(R.drawable.intermission);
 
-                    Log.w(TAG, LOST_CONNECTION);
-                    feedbackMessage(LOST_CONNECTION);
-                  
-                    connectionText.setText("Disconnected");
+                    String lostConnectionMessage = context.getString(R.string.connectionToMQTTBrokerLostMessage);
+                    Log.w(TAG, lostConnectionMessage);
+                    feedbackMessage(lostConnectionMessage);
+
+                    String disconnectedMessage = context.getString(R.string.disconnectedIndicator);
+                    connectionText.setText(disconnectedMessage);
                     connectionText.setTextColor(Color.parseColor("#EF1919"));
                 }
 
