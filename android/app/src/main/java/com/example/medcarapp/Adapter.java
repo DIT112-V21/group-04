@@ -19,6 +19,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     String names[], desc[];
     Context context;
     int row_index = -1;
+    private ItemClickListener enableItemClickListener;
 
     public Adapter(Context ct, String s1[], String s2[]) {
         context = ct;
@@ -43,6 +44,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 adapterFeedbackMessage(position);
+                enableItemClickListener.onItemClick(position);
             }
         });
         if(row_index==position){
@@ -80,5 +82,13 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         Toast toast = Toast.makeText(context, "You clicked on Medcar "+(position+1),Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.TOP,0,0);
         toast.show();
+    }
+
+    public void addItemClickListener(ItemClickListener listener) {
+        enableItemClickListener = listener;
+    }
+
+    public interface ItemClickListener {
+        void onItemClick(int position);
     }
 }

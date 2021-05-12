@@ -1,6 +1,7 @@
 package com.example.medcarapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,13 +11,15 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Adapter.ItemClickListener {
     RecyclerView rvAvailableCars;
     Dialog creditDialog;
-    Context context;
+    private static final String BUTTON_DISABLED = "Button disabled select a car";
 
 
     @Override
@@ -27,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
         creditDialog();
         carSelection();
         connectButton();
-
     }
 
     public void CreditPopup(View v) {
@@ -45,22 +47,51 @@ public class MainActivity extends AppCompatActivity {
         s2 = getResources().getStringArray(R.array.description);
 
         Adapter adapter = new Adapter(this, s1, s2);
+        adapter.addItemClickListener(this);
         rvAvailableCars.setAdapter(adapter);
         rvAvailableCars.setLayoutManager(new LinearLayoutManager(this));
     }
 
     public void connectButton(){
         Button button = findViewById(R.id.btnConnect);
+        button.setActivated(false);
+        buttonStatus(getApplicationContext(),R.color.disabled_background,R.color.disabled_text);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!button.isActivated()) {
+                    disabledFeedbackMessage(BUTTON_DISABLED);
+                    return;
+                } else {
+                    Intent intent = new Intent(MainActivity.this, ManualControl.class);
 
-        button.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ServerSelection.class);
 
-
-            startActivity(intent);
+                    startActivity(intent);
+                }
+            }
         });
     }
 
     public void creditDialog(){
         creditDialog = new Dialog(this);
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Button button = findViewById(R.id.btnConnect);
+        button.setActivated(true);
+        buttonStatus(getApplicationContext(),R.color.teal_200,R.color.white);
+    }
+
+    public void buttonStatus(Context context, int backgroundColor, int textColor) {
+        Button button = findViewById(R.id.btnConnect);
+        button.setBackgroundColor(ContextCompat.getColor(context, backgroundColor));
+        button.setTextColor(ContextCompat.getColor(context, textColor));
+    }
+
+    public void disabledFeedbackMessage(String message){
+        Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.TOP,0,0);
+        toast.show();
     }
 }
