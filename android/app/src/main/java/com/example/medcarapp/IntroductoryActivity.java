@@ -32,7 +32,7 @@ public class IntroductoryActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(IntroductoryActivity.this, MainActivity.class);
+                Intent intent = new Intent(IntroductoryActivity.this, ServerSelection.class);
                 startActivity(intent);
                 finish();
             }

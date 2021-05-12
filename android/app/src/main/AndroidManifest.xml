@@ -27,7 +27,9 @@
         <activity android:name=".MainActivity">
 
         </activity>
-        <activity android:name=".ServerSelection"></activity>
+        <activity android:name=".ServerSelection">
+
+        </activity>
         <service android:name="org.eclipse.paho.android.service.MqttService">
         </service>
     </application>

@@ -17,22 +17,23 @@ public class ServerSelection extends AppCompatActivity {
         setContentView(R.layout.server_selection);
 
         serverSelection();
-        connectButton();
+        confirmButton();
     }
 
     public void serverSelection(){
         String[] serverName, serverDesc;
+        int images[] = {R.drawable.offline,R.drawable.online};
         rvServerSelection = findViewById(R.id.rvServerSelection);
 
         serverName = getResources().getStringArray(R.array.serverOption);
         serverDesc = getResources().getStringArray(R.array.serverDescription);
 
-        Adapter serverAdapter = new Adapter(this, serverName, serverDesc);
+        ServerAdapter serverAdapter = new ServerAdapter(this, serverName, serverDesc, images);
         rvServerSelection.setAdapter(serverAdapter);
         rvServerSelection.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    public void connectButton(){
+    public void confirmButton(){
         Button button = findViewById(R.id.btnConfirm);
 
         button.setOnClickListener(v -> {

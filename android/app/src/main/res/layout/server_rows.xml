@@ -23,15 +23,15 @@
 
             <ImageView
                 android:id="@+id/serverPic"
-                android:layout_width="77dp"
-                android:layout_height="71dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
-                app:srcCompat="@drawable/offline_icon" />
+                app:srcCompat="@mipmap/ic_launcher" />
 
             <TextView
                 android:id="@+id/serverNames"
@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Description"
-                android:textSize="10sp"
+                android:textSize="15sp"
                 app:layout_constraintStart_toStartOf="@+id/serverNames"
                 app:layout_constraintTop_toBottomOf="@+id/serverNames" />
         </androidx.constraintlayout.widget.ConstraintLayout>
