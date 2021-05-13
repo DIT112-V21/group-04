@@ -6,13 +6,14 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.os.Vibrator;
+import Vibrator.VibratorWrapper;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -111,8 +112,6 @@ public class CarConnect extends AppCompatActivity {
                 @Override
                 public void connectionLost(Throwable cause) {
 
-
-
                     mCameraView.setImageResource(R.drawable.intermission);
 
                     Log.w(TAG, LOST_CONNECTION);
@@ -181,8 +180,8 @@ public class CarConnect extends AppCompatActivity {
         toast.show();
     }
 
-    private void phoneVibration(int milliSeconds){
-        Vibrator obstacleAvoidanceVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+    private void phoneVibration(int milliSeconds) {
+        VibratorWrapper obstacleAvoidanceVibrator = new VibratorWrapper(context);
         obstacleAvoidanceVibrator.vibrate(milliSeconds);
     }
 
