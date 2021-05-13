@@ -79,6 +79,8 @@ The car should be able to enter a auto driving mode where it will move forward w
 #### Sprint 1 progress
 [![Sprint 1 progress video](https://img.youtube.com/vi/gAemX8FFedU/0.jpg)](https://www.youtube.com/watch?v=gAemX8FFedU)
 
+#### Sprint 2 progress
+[![Sprint 1 progress video](https://img.youtube.com/vi/H1MaOK4zTDE/0.jpg)](https://www.youtube.com/watch?v=H1MaOK4zTDE)
 
 ## Team Overview
 - [Nils Dunlop](https://github.com/NilsDunlop) - gusdunlni@student.gu.se
