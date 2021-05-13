@@ -1,6 +1,6 @@
 //Code adapted from: https://stackoverflow.com/questions/29862965/detect-the-device-is-vibrating
-//This wrapper class was mainly used due to its implementation of isVibrating().
-//as there isn't way to see if the phone is vibrating in the emulator
+/*This wrapper class was added due to its implementation of isVibrating().
+as there isn't a way to see if the phone is vibrating in the emulator. */
 package Vibrator;
 
 import android.content.Context;
