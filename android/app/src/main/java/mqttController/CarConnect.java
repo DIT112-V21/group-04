@@ -37,11 +37,9 @@ public class CarConnect extends AppCompatActivity{
     private static final String FAILED_CONNECTION = "Failed to connect to MQTT broker";
     private static final String LOST_CONNECTION = "Connection to MQTT broker lost";
     private static final String EXTERNAL_MQTT_BROKER = "tcp://3.138.188.190:1883";
-    //private static final String LOCALHOST = "10.0.2.2";
+    private static final String LOCALHOST = "tcp://10.0.2.2:1883";
+    private static String MQTT_SERVER = LOCALHOST;
     // private static String MQTT_SERVER = "tcp://" + LOCALHOST + ":1883";
-    private static String MQTT_SERVER = "tcp://10.0.2.2:1883";
-
-
 
     Context context;
 
@@ -170,7 +168,7 @@ public class CarConnect extends AppCompatActivity{
         toast.show();
     }
 
-    public static void setMQTTServer(){
+    public static void setExternalMQTTServer(){
         MQTT_SERVER = EXTERNAL_MQTT_BROKER;
     }
 

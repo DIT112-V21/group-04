@@ -50,7 +50,7 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ViewHolder
                     intent = new Intent(context, MainActivity.class);
                 } else if(holder.getAdapterPosition()==1){
                     intent = new Intent(context, ManualControl.class);
-                    CarConnect.setMQTTServer();
+                    CarConnect.setExternalMQTTServer();
                 }
                 context.startActivity(intent);
             }
