@@ -38,8 +38,8 @@ public class CarConnect extends AppCompatActivity{
     private static final String LOST_CONNECTION = "Connection to MQTT broker lost";
     private static final String EXTERNAL_MQTT_BROKER = "tcp://3.138.188.190:1883";
     private static final String LOCALHOST = "tcp://10.0.2.2:1883";
-    private static String MQTT_SERVER = LOCALHOST;
-    // private static String MQTT_SERVER = "tcp://" + LOCALHOST + ":1883";
+    private String MQTT_SERVER;
+
 
     Context context;
 
@@ -47,8 +47,15 @@ public class CarConnect extends AppCompatActivity{
     private boolean isConnected = false;
     private ImageView mCameraView;
 
-    public CarConnect(Context context, ImageView mCameraView) {
+    public CarConnect(Context context, ImageView mCameraView, boolean shouldSwitch) {
         this.context = context;
+        if (shouldSwitch){
+            MQTT_SERVER = EXTERNAL_MQTT_BROKER;
+            mMqttClient = new MqttClient(context, MQTT_SERVER, TAG);
+        } else {
+            MQTT_SERVER = LOCALHOST;
+            mMqttClient = new MqttClient(context, MQTT_SERVER, TAG);
+        }
         mMqttClient = new MqttClient(context, MQTT_SERVER, TAG);
         this.mCameraView = mCameraView;
     }
@@ -168,8 +175,8 @@ public class CarConnect extends AppCompatActivity{
         toast.show();
     }
 
-    public static void setExternalMQTTServer(){
+    /*public static void setExternalMQTTServer(){
         MQTT_SERVER = EXTERNAL_MQTT_BROKER;
-    }
+    }*/
 
 }

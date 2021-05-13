@@ -50,8 +50,10 @@ public class ManualControl extends AppCompatActivity {
         TextView speedIndicator = (TextView)findViewById(R.id.speedIndicator);
 
 
-        carConnect = new CarConnect(this.getApplicationContext(), carCamera);
+        boolean shouldSwitch = Boolean.parseBoolean(getIntent().getStringExtra("Switch server"));
+        carConnect = new CarConnect(this.getApplicationContext(), carCamera, shouldSwitch);
         carConnect.connectToMqttBroker(connectionText);
+
 
         JoystickView joystick = (JoystickView) findViewById(R.id.joystickView2);
 

@@ -50,8 +50,16 @@ Camera.begin(QQVGA, RGB888, 15);
   mqtt.begin(net);
 #endif
   if (mqtt.connect("arduino", "public", "public")) {
+    mqtt.subscribe("/smartcar/switchServer", 0);
     mqtt.subscribe("/smartcar/control/#", 0);
     mqtt.onMessage(+[](String& topic, String& message) {
+      if (topic == "/smartcar/switchServer"){
+        #ifdef __SMCE__
+        mqtt.begin("3.138.188.190", 1883, WiFi);
+        #else
+        mqtt.begin(net);
+        #endif
+      }
       if (topic == "/smartcar/control/speed") {
         carSpeed = message.toInt();
         if (!(obstacleAvoidance())){
