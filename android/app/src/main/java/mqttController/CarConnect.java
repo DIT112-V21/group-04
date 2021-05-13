@@ -25,12 +25,8 @@ import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-public class CarConnect extends AppCompatActivity {
+public class CarConnect extends AppCompatActivity{
     private static final String TAG = "SmartcarMqttController";
-    private static final String EXTERNAL_MQTT_BROKER = "3.138.188.190";
-    private static final String LOCALHOST = "10.0.2.2";
-    private static final String TA_SERVER = "aerostun.dev";
-    private static final String MQTT_SERVER = "tcp://" + LOCALHOST + ":1883";
     private static final String TURNING_TOPIC = "/smartcar/control/turning";
     private static final String SPEED_TOPIC = "/smartcar/control/speed";
     private static final String CAMERA_TOPIC = "Camera_Stream";
@@ -40,6 +36,12 @@ public class CarConnect extends AppCompatActivity {
     private static final String SUCCESSFUL_CONNECTION = "Connected to MQTT broker";
     private static final String FAILED_CONNECTION = "Failed to connect to MQTT broker";
     private static final String LOST_CONNECTION = "Connection to MQTT broker lost";
+    private static final String EXTERNAL_MQTT_BROKER = "tcp://3.138.188.190:1883";
+    //private static final String LOCALHOST = "10.0.2.2";
+    // private static String MQTT_SERVER = "tcp://" + LOCALHOST + ":1883";
+    private static String MQTT_SERVER = "tcp://10.0.2.2:1883";
+
+
 
     Context context;
 
@@ -168,5 +170,8 @@ public class CarConnect extends AppCompatActivity {
         toast.show();
     }
 
+    public static void setMQTTServer(){
+        MQTT_SERVER = EXTERNAL_MQTT_BROKER;
+    }
 
 }

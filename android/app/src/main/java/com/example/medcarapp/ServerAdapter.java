@@ -13,6 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import mqttController.CarConnect;
+
+
 public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ViewHolder> {
     String serverName[], serverDesc[];
     int images[];
@@ -47,6 +50,7 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ViewHolder
                     intent = new Intent(context, MainActivity.class);
                 } else if(holder.getAdapterPosition()==1){
                     intent = new Intent(context, ManualControl.class);
+                    CarConnect.setMQTTServer();
                 }
                 context.startActivity(intent);
             }
