@@ -29,6 +29,7 @@ public class CarConnect extends AppCompatActivity{
     private static final String TAG = "SmartcarMqttController";
     private static final String TURNING_TOPIC = "/smartcar/control/turning";
     private static final String SPEED_TOPIC = "/smartcar/control/speed";
+    private static final String SWITCH_SERVER_TOPIC = "/smartcar/switchServer";
     private static final String CAMERA_TOPIC = "Camera_Stream";
     private static final int QOS = 0;
     private static final int IMAGE_WIDTH = 160;
@@ -43,20 +44,22 @@ public class CarConnect extends AppCompatActivity{
 
     Context context;
 
+    private MqttClient mMqttClientLocal;
+    private MqttClient mMqttClientExternal;
     private MqttClient mMqttClient;
     private boolean isConnected = false;
     private ImageView mCameraView;
 
     public CarConnect(Context context, ImageView mCameraView, boolean shouldSwitch) {
         this.context = context;
+        MQTT_SERVER = LOCALHOST;
+        mMqttClientLocal = new MqttClient(context, LOCALHOST, TAG);
+        mMqttClientExternal = new MqttClient(context, EXTERNAL_MQTT_BROKER, TAG);
         if (shouldSwitch){
             MQTT_SERVER = EXTERNAL_MQTT_BROKER;
-            mMqttClient = new MqttClient(context, MQTT_SERVER, TAG);
-        } else {
-            MQTT_SERVER = LOCALHOST;
-            mMqttClient = new MqttClient(context, MQTT_SERVER, TAG);
+            switchServer();
+            System.out.println("HERE......................................" + shouldSwitch);
         }
-        mMqttClient = new MqttClient(context, MQTT_SERVER, TAG);
         this.mCameraView = mCameraView;
     }
 
@@ -82,10 +85,16 @@ public class CarConnect extends AppCompatActivity{
     }
 
     public void connectToMqttBroker(TextView connectionText) {
+        if (MQTT_SERVER.equals(EXTERNAL_MQTT_BROKER)){
+            mMqttClient = mMqttClientExternal;
+        } else {
+            mMqttClient = mMqttClientLocal;
+        }
         if (!isConnected) {
             mMqttClient.connect(TAG, "", new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
+                    System.out.println("ON SUCCESS ABOVE ABOVE ------");
                     isConnected = true;
                     Log.i(TAG, SUCCESSFUL_CONNECTION);
                     feedbackMessage(SUCCESSFUL_CONNECTION);
@@ -173,6 +182,22 @@ public class CarConnect extends AppCompatActivity{
         Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.TOP,0,0);
         toast.show();
+    }
+
+    private void switchServer(){
+        mMqttClientLocal.connect(TAG, "", new IMqttActionListener() {
+            @Override
+            public void onSuccess(IMqttToken asyncActionToken) {
+                System.out.println("CONNECT SUCCESS _____________________________________");
+                mMqttClientLocal.publish(SWITCH_SERVER_TOPIC, "Switch", QOS, null);
+            }
+
+            @Override
+            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                Log.e(TAG, "Could not send switch message");
+            }
+        }, null);
+        //this.mMqttClient.disconnect(null);
     }
 
     /*public static void setExternalMQTTServer(){
