@@ -94,4 +94,14 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         toast.setGravity(Gravity.TOP,0,0);
         toast.show();
     }
+
+    @Override
+    public void onBackPressed() {
+        boolean allowBack = false;
+        if (allowBack) {
+            super.onBackPressed();
+        } else {
+            disabledFeedbackMessage(getApplicationContext().getString(R.string.restrictBackButton));
+        }
+    }
 }
