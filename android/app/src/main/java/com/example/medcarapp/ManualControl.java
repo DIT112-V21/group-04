@@ -45,7 +45,7 @@ public class ManualControl extends AppCompatActivity {
         TextView angleIndicator = (TextView)findViewById(R.id.angleIndicator);
         TextView speedIndicator = (TextView)findViewById(R.id.speedIndicator);
 
-        autoButton = findViewById(R.id.button2);
+        autoButton = findViewById(R.id.autonomousDrivingButton);
 
         carConnect = new CarConnect(this.getApplicationContext(), carCamera, autoButton);
         carConnect.connectToMqttBroker(connectionText);
