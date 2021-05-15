@@ -31,8 +31,13 @@ const auto BACK_PIN = 3;
 const auto stoppingSpeed = 0; 
 const auto stopDistanceFront = 80;
 const auto stopDistanceBack = 100;
+const int stopAngle = 0;
+const int autoSpeed = 60;
+const int autoAngle = 90;
+int autoDriving = 0;
 int carSpeed = 0;
 boolean isObstacleDetectedPublished = false; //keeps track of when an obstacle has been detected message is published to mqtt
+
 
 SR04 frontSensorUS(arduinoRuntime, triggerPin, echoPin, maxDistance);
 GP2D120 backSensorIR(arduinoRuntime, BACK_PIN);
@@ -53,13 +58,24 @@ Camera.begin(QQVGA, RGB888, 15);
   if (mqtt.connect("arduino", "public", "public")) {
     mqtt.subscribe("/smartcar/control/#", 0);
     mqtt.onMessage(+[](String& topic, String& message) {
-      if (topic == "/smartcar/control/speed") {
+      if (topic == "/smartcar/control/speed" && autoDriving == 0) {
         carSpeed = message.toInt();
         if (!(obstacleAvoidance())){
           car.setSpeed(carSpeed);
         }
-      } else if (topic == "/smartcar/control/turning") {
+      } else if (topic == "/smartcar/control/turning" && autoDriving == 0) {
         car.setAngle(message.toInt());
+      } else if (topic == "/smartcar/control/auto") {
+        autoDriving = message.toInt();
+        Serial.println(autoDriving);
+        if (autoDriving == 0){
+          car.setSpeed(stoppingSpeed);
+          car.setAngle(stopAngle);
+          carSpeed = stoppingSpeed;
+        } else {
+          car.setSpeed(autoSpeed);
+          carSpeed = autoSpeed;
+        }
       } else {
         Serial.println(topic + " " + message);
       }
@@ -98,15 +114,20 @@ boolean obstacleAvoidance(){
   
   
   if (isFrontDetected || isBackDetected){
-    car.setSpeed(stoppingSpeed);
-    isObstacleDetected = true;
     sendObstacleDetectedNotification(true);
+    if(autoDriving == 0){
+      car.setSpeed(stoppingSpeed);
+      isObstacleDetected = true;
+    } else {
+      autonomousMoving();
+    }
   } else {
-    sendObstacleDetectedNotification(false);
-  }
+      sendObstacleDetectedNotification(false);
+  }  
   
   return isObstacleDetected;
 }
+
 
 void sendObstacleDetectedNotification(boolean shouldSend){
   if (shouldSend){
@@ -117,4 +138,21 @@ void sendObstacleDetectedNotification(boolean shouldSend){
   } else {
       isObstacleDetectedPublished = false;
   }
+}  
+
+void autonomousMoving(){
+  car.setSpeed(stoppingSpeed);
+        delay(1000);
+        car.setSpeed(-autoSpeed);
+        delay(1000);
+        car.setSpeed(stoppingSpeed);
+        delay(1000);
+        car.setSpeed(autoSpeed);
+        car.setAngle(-autoAngle);
+        delay(1000);
+        car.setSpeed(stoppingSpeed);
+        car.setAngle(stopAngle);
+        delay(1000);
+        car.setSpeed(autoSpeed);
+        delay(1000);
 }
