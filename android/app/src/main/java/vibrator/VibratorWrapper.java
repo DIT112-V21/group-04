@@ -1,15 +1,11 @@
 //Code adapted from: https://stackoverflow.com/questions/29862965/detect-the-device-is-vibrating
-/*This wrapper class was added due to its implementation of isVibrating().
+/*This wrapper class was added due to its implementation of isVibrating(),
 as there isn't a way to see if the phone is vibrating in the emulator. */
-package Vibrator;
+package vibrator;
 
 import android.content.Context;
-import android.media.AudioAttributes;
-import android.os.Build;
 import android.os.Vibrator;
 import android.util.Log;
-
-import androidx.annotation.RequiresApi;
 
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ScheduledThreadPoolExecutor;

@@ -100,13 +100,21 @@ boolean obstacleAvoidance(){
   if (isFrontDetected || isBackDetected){
     car.setSpeed(stoppingSpeed);
     isObstacleDetected = true;
+    sendObstacleDetectedNotification(true);
+  } else {
+    sendObstacleDetectedNotification(false);
+  }
+  
+  return isObstacleDetected;
+}
+
+void sendObstacleDetectedNotification(boolean shouldSend){
+  if (shouldSend){
     if (!isObstacleDetectedPublished){
       mqtt.publish("/smartcar/obstacle");
       isObstacleDetectedPublished = true;
     }
   } else {
-    isObstacleDetectedPublished = false;
+      isObstacleDetectedPublished = false;
   }
-  
-  return isObstacleDetected;
 }
