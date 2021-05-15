@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,11 +47,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             }
         });
         if(row_index==position){
-            holder.row_constraintlayout.setBackgroundColor(Color.parseColor("#add8e6"));
+            holder.row_ConstraintLayout.setBackgroundColor(Color.parseColor("#add8e6"));
         }
         else
         {
-            holder.row_constraintlayout.setBackgroundColor(Color.parseColor("#e7f4f3"));
+            holder.row_ConstraintLayout.setBackgroundColor(Color.parseColor("#e7f4f3"));
         }
     }
 
@@ -65,14 +64,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
         TextView carNames, description;
         ImageView carLogo;
-        ConstraintLayout row_constraintlayout;
+        ConstraintLayout row_ConstraintLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             carNames = itemView.findViewById(R.id.carNames);
             description = itemView.findViewById(R.id.description);
             carLogo = itemView.findViewById(R.id.carLogo);
-            row_constraintlayout = (ConstraintLayout) itemView.findViewById(R.id.constraintrv);
+            row_ConstraintLayout = (ConstraintLayout) itemView.findViewById(R.id.constraintrv);
         }
     }
     public void adapterFeedbackMessage(int position){

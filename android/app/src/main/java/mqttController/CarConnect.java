@@ -1,39 +1,27 @@
 package mqttController;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.media.Image;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.medcarapp.ManualControl;
 import com.example.medcarapp.R;
-
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
-import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-public class CarConnect extends AppCompatActivity {
+public class CarConnect extends AppCompatActivity{
     private static final String TAG = "SmartcarMqttController";
-    private static final String EXTERNAL_MQTT_BROKER = "3.138.188.190";
-    private static final String LOCALHOST = "10.0.2.2";
-    private static final String TA_SERVER = "aerostun.dev";
-    private static final String MQTT_SERVER = "tcp://" + LOCALHOST + ":1883";
     private static final String TURNING_TOPIC = "/smartcar/control/turning";
     private static final String SPEED_TOPIC = "/smartcar/control/speed";
+    private static final String SWITCH_SERVER_TOPIC = "/smartcar/switchServer";
     private static final String CAMERA_TOPIC = "Camera_Stream";
     private static final int QOS = 0;
     private static final int IMAGE_WIDTH = 160;
@@ -42,17 +30,28 @@ public class CarConnect extends AppCompatActivity {
     private static final String FAILED_CONNECTION = "Failed to connect to MQTT broker";
     private static final String LOST_CONNECTION = "Connection to MQTT broker lost";
     private static final String STARTING_AUTONOMOUS = "AUTO";
+    private static final String EXTERNAL_MQTT_BROKER = "tcp://3.138.188.190:1883";
+    private static final String LOCALHOST = "tcp://10.0.2.2:1883";
+    private String MQTT_SERVER;
 
     Context context;
 
+    private MqttClient mMqttClientLocal;
+    private MqttClient mMqttClientExternal;
     private MqttClient mMqttClient;
     private boolean isConnected = false;
     private ImageView mCameraView;
     private Button autoButton;
 
-    public CarConnect(Context context, ImageView mCameraView, Button autoButton) {
+    public CarConnect(Context context, ImageView mCameraView, boolean shouldSwitch, Button autoButton) {
         this.context = context;
-        mMqttClient = new MqttClient(context, MQTT_SERVER, TAG);
+        MQTT_SERVER = LOCALHOST;
+        mMqttClientLocal = new MqttClient(context, LOCALHOST, TAG);
+        mMqttClientExternal = new MqttClient(context, EXTERNAL_MQTT_BROKER, TAG);
+        if (shouldSwitch){
+            MQTT_SERVER = EXTERNAL_MQTT_BROKER;
+            switchServer();
+        }
         this.mCameraView = mCameraView;
         this.autoButton = autoButton;
     }
@@ -79,6 +78,11 @@ public class CarConnect extends AppCompatActivity {
     }
 
     public void connectToMqttBroker(TextView connectionText) {
+        if (MQTT_SERVER.equals(EXTERNAL_MQTT_BROKER)){
+            mMqttClient = mMqttClientExternal;
+        } else {
+            mMqttClient = mMqttClientLocal;
+        }
         if (!isConnected) {
             mMqttClient.connect(TAG, "", new IMqttActionListener() {
                 @Override
@@ -171,5 +175,19 @@ public class CarConnect extends AppCompatActivity {
         Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.TOP,0,0);
         toast.show();
+    }
+
+    private void switchServer(){
+        mMqttClientLocal.connect(TAG, "", new IMqttActionListener() {
+            @Override
+            public void onSuccess(IMqttToken asyncActionToken) {
+                mMqttClientLocal.publish(SWITCH_SERVER_TOPIC, "Switch", QOS, null);
+            }
+
+            @Override
+            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                Log.e(TAG, "Could not send switch message");
+            }
+        }, null);
     }
 }
