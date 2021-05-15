@@ -54,7 +54,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         {
             holder.row_ConstraintLayout.setBackgroundColor(Color.parseColor("#e7f4f3"));
         }
-
     }
 
     @Override

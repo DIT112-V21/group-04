@@ -94,7 +94,6 @@ public class CarConnect extends AppCompatActivity{
             mMqttClient.connect(TAG, "", new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
-                    System.out.println("ON SUCCESS ABOVE ABOVE ------");
                     isConnected = true;
                     Log.i(TAG, SUCCESSFUL_CONNECTION);
                     feedbackMessage(SUCCESSFUL_CONNECTION);
@@ -176,7 +175,6 @@ public class CarConnect extends AppCompatActivity{
    public void publish(String topic, String message, int qos, IMqttActionListener publishCallback){
         mMqttClient.publish(topic, message, qos, publishCallback);
     }
-
 
     public void feedbackMessage(String message){
         Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
