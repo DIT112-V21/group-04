@@ -17,7 +17,6 @@ public class ServerSelection extends AppCompatActivity {
         setContentView(R.layout.server_selection);
 
         serverSelection();
-        confirmButton();
     }
 
     public void serverSelection(){
@@ -31,16 +30,5 @@ public class ServerSelection extends AppCompatActivity {
         ServerAdapter serverAdapter = new ServerAdapter(this, serverName, serverDesc, images);
         rvServerSelection.setAdapter(serverAdapter);
         rvServerSelection.setLayoutManager(new LinearLayoutManager(this));
-    }
-
-    public void confirmButton(){
-        Button button = findViewById(R.id.btnConfirm);
-
-        button.setOnClickListener(v -> {
-            Intent intent = new Intent(this, MainActivity.class);
-
-
-            startActivity(intent);
-        });
     }
 }

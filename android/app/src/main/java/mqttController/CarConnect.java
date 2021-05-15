@@ -41,7 +41,6 @@ public class CarConnect extends AppCompatActivity{
     private static final String LOCALHOST = "tcp://10.0.2.2:1883";
     private String MQTT_SERVER;
 
-
     Context context;
 
     private MqttClient mMqttClientLocal;
@@ -58,7 +57,6 @@ public class CarConnect extends AppCompatActivity{
         if (shouldSwitch){
             MQTT_SERVER = EXTERNAL_MQTT_BROKER;
             switchServer();
-            System.out.println("HERE......................................" + shouldSwitch);
         }
         this.mCameraView = mCameraView;
     }
@@ -119,9 +117,6 @@ public class CarConnect extends AppCompatActivity{
             }, new MqttCallback() {
                 @Override
                 public void connectionLost(Throwable cause) {
-
-
-
                     mCameraView.setImageResource(R.drawable.intermission);
 
                     Log.w(TAG, LOST_CONNECTION);
@@ -186,7 +181,6 @@ public class CarConnect extends AppCompatActivity{
         mMqttClientLocal.connect(TAG, "", new IMqttActionListener() {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {
-                System.out.println("CONNECT SUCCESS _____________________________________");
                 mMqttClientLocal.publish(SWITCH_SERVER_TOPIC, "Switch", QOS, null);
             }
 
@@ -195,11 +189,5 @@ public class CarConnect extends AppCompatActivity{
                 Log.e(TAG, "Could not send switch message");
             }
         }, null);
-        //this.mMqttClient.disconnect(null);
     }
-
-    /*public static void setExternalMQTTServer(){
-        MQTT_SERVER = EXTERNAL_MQTT_BROKER;
-    }*/
-
 }

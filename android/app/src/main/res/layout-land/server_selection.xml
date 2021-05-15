@@ -8,6 +8,18 @@
     tools:context=".MainActivity">
 
 
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="276dp"
+        android:layout_height="189dp"
+        android:src="@drawable/logo7"
+        app:layout_constraintBottom_toTopOf="@+id/Introtext"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.481"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.367" />
+
     <TextView
         android:id="@+id/Introtext"
         android:layout_width="wrap_content"
@@ -19,31 +31,20 @@
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.261" />
-
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="298dp"
-        android:layout_height="232dp"
-        android:src="@drawable/logo7"
-        app:layout_constraintBottom_toTopOf="@+id/Introtext"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintVertical_bias="0.278" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvServerSelection"
         android:layout_width="411dp"
         android:layout_height="371dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="112dp"
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Introtext"
+        app:layout_constraintTop_toTopOf="parent"
         tools:itemCount="2" />
 
 
