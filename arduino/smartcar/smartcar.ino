@@ -27,15 +27,17 @@ const auto maxDistance = 400;
 const int TRIGGER_PIN           = 6; // D6
 const int ECHO_PIN              = 7; // D7
 const unsigned int MAX_DISTANCE = 100;
-const int BACK_PIN = 3;
-const int stoppingSpeed = 0;
+const auto BACK_PIN = 3;
+const auto stoppingSpeed = 0; 
+const auto stopDistanceFront = 80;
+const auto stopDistanceBack = 100;
 const int stopAngle = 0;
 const int autoSpeed = 60;
 const int autoAngle = 90;
-const int stopDistanceFront = 80;
-const int stopDistanceBack = 100;
-int carSpeed = 0;
 int autoDriving = 0;
+int carSpeed = 0;
+boolean isObstacleDetectedPublished = false; //keeps track of when an obstacle has been detected message is published to mqtt
+
 
 SR04 frontSensorUS(arduinoRuntime, triggerPin, echoPin, maxDistance);
 GP2D120 backSensorIR(arduinoRuntime, BACK_PIN);
@@ -117,21 +119,36 @@ boolean obstacleAvoidance(){
   auto frontDistanceFromObject = frontSensorUS.getDistance();
   auto backDistanceFromObject = backSensorIR.getDistance();
   
-  boolean isFrontDetected = frontDistanceFromObject < stopDistanceFront && frontDistanceFromObject > 1 && !(carSpeed <= 0);
-  boolean isBackDetected = backDistanceFromObject < stopDistanceBack && backDistanceFromObject > 1 && !(carSpeed >= 0);
+  boolean isFrontDetected = frontDistanceFromObject < stopDistanceFront && frontDistanceFromObject > 1 && (carSpeed > 0);
+  boolean isBackDetected = backDistanceFromObject < stopDistanceBack && backDistanceFromObject > 1 && (carSpeed < 0);
   
   
   if (isFrontDetected || isBackDetected){
+    sendObstacleDetectedNotification(true);
     if(autoDriving == 0){
-    car.setSpeed(stoppingSpeed);
-    isObstacleDetected = true;
+      car.setSpeed(stoppingSpeed);
+      isObstacleDetected = true;
     } else {
       autonomousMoving();
     }
-  }
+  } else {
+      sendObstacleDetectedNotification(false);
+  }  
   
   return isObstacleDetected;
 }
+
+
+void sendObstacleDetectedNotification(boolean shouldSend){
+  if (shouldSend){
+    if (!isObstacleDetectedPublished){
+      mqtt.publish("/smartcar/obstacle");
+      isObstacleDetectedPublished = true;
+    }
+  } else {
+      isObstacleDetectedPublished = false;
+  }
+}  
 
 void autonomousMoving(){
   car.setSpeed(stoppingSpeed);

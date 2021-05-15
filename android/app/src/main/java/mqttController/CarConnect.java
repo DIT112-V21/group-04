@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import vibrator.VibratorWrapper;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.medcarapp.R;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -21,6 +22,7 @@ public class CarConnect extends AppCompatActivity{
     private static final String TAG = "SmartcarMqttController";
     private static final String TURNING_TOPIC = "/smartcar/control/turning";
     private static final String SPEED_TOPIC = "/smartcar/control/speed";
+    private static final String OBSTACLE_TOPIC = "/smartcar/obstacle";
     private static final String SWITCH_SERVER_TOPIC = "/smartcar/switchServer";
     private static final String CAMERA_TOPIC = "Camera_Stream";
     private static final int QOS = 0;
@@ -29,6 +31,7 @@ public class CarConnect extends AppCompatActivity{
     private static final String SUCCESSFUL_CONNECTION = "Connected to MQTT broker";
     private static final String FAILED_CONNECTION = "Failed to connect to MQTT broker";
     private static final String LOST_CONNECTION = "Connection to MQTT broker lost";
+    private static final String OBSTACLE_DETECTED = "Obstacle detected";
     private static final String STARTING_AUTONOMOUS = "AUTO";
     private static final String EXTERNAL_MQTT_BROKER = "tcp://3.138.188.190:1883";
     private static final String LOCALHOST = "tcp://10.0.2.2:1883";
@@ -93,6 +96,8 @@ public class CarConnect extends AppCompatActivity{
                     connectionText.setText("Connected");
                     connectionText.setTextColor(Color.parseColor("#32CD32"));
 
+
+                    mMqttClient.subscribe(OBSTACLE_TOPIC,QOS,null);
                     //mMqttClient.subscribe(TURNING_TOPIC, QOS, null);
                     //mMqttClient.subscribe(SPEED_TOPIC, QOS, null);
                     mMqttClient.subscribe(CAMERA_TOPIC, QOS, null);
@@ -117,6 +122,7 @@ public class CarConnect extends AppCompatActivity{
 
                     autoButton.setText(STARTING_AUTONOMOUS);
 
+
                     mCameraView.setImageResource(R.drawable.intermission);
 
                     Log.w(TAG, LOST_CONNECTION);
@@ -128,6 +134,13 @@ public class CarConnect extends AppCompatActivity{
 
                 @Override
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
+
+                    if (topic.equals(OBSTACLE_TOPIC)) {
+                        Log.i(TAG, OBSTACLE_DETECTED);
+                        feedbackMessage(OBSTACLE_DETECTED);
+                        phoneVibration(1000);
+                    }
+
                     if (topic.equals(CAMERA_TOPIC)) {
                         final Bitmap bm = Bitmap.createBitmap(IMAGE_WIDTH, IMAGE_HEIGHT, Bitmap.Config.ARGB_8888);
 
@@ -175,6 +188,11 @@ public class CarConnect extends AppCompatActivity{
         Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.TOP,0,0);
         toast.show();
+    }
+
+    private void phoneVibration(int milliSeconds) {
+        VibratorWrapper obstacleAvoidanceVibrator = new VibratorWrapper(context);
+        obstacleAvoidanceVibrator.vibrate(milliSeconds);
     }
 
     private void switchServer(){
