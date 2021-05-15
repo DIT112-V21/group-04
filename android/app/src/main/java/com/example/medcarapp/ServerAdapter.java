@@ -10,8 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-
-
 public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ViewHolder> {
     String serverName[], serverDesc[];
     int images[];
