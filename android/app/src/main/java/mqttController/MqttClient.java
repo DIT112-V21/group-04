@@ -68,8 +68,4 @@ public class MqttClient {
             e.printStackTrace();
         }
     }
-
-    public void switchServer(String newServerUrl){
-        this.mMqttAndroidClient = new MqttAndroidClient(this.context, newServerUrl, clientId);
-    }
 }

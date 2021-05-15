@@ -44,14 +44,6 @@ void setup() {
   //mqtt.begin("3.138.188.190", 1883, WiFi);
   //mqtt.begin("aerostun.dev", 1883, WiFi);
   mqtt.begin(WiFi); // Will connect to localhost
-  /*if (mqtt.connect("arduino", "public", "public")) {
-    mqtt.subscribe("/smartcar/switchServer", 0);
-    mqtt.onMessage(+[](String& topic, String& message) {
-      if (topic == "/smartcar/switchServer", 0){
-        mqtt.setHost("3.138.188.190", 1883);
-      }
-    });
-  }*/
   Camera.begin(QQVGA, RGB888, 15);
   frameBuffer.resize(Camera.width() * Camera.height() * Camera.bytesPerPixel());
 #else

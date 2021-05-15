@@ -25,5 +25,5 @@
         <item>Use from a different department</item>
     </string-array>
     
-    <string name="restrictBackButton">Restart the app to change server</string>
+    <string name="restrictBackButton">Restart the app and car to change server</string>
 </resources>
