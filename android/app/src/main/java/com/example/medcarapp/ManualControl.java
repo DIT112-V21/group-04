@@ -1,6 +1,7 @@
 package com.example.medcarapp;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.os.PersistableBundle;
@@ -103,6 +104,9 @@ public class ManualControl extends AppCompatActivity {
         super.onBackPressed();
         carConnect.feedbackMessage(DISCONNECT_FROM_CAR_MESSAGE);
         carConnect.disconnect(null);
+        Intent intent = new Intent(ManualControl.this,MainActivity.class);
+        intent.putExtra("Restrict back", true);
+        startActivity(intent);
     }
 
     private void turnCar(int adjustedSpeed, int adjustedAngle, int previousAngle, int previousSpeed){

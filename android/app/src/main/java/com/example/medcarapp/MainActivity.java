@@ -98,7 +98,9 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
     @Override
     public void onBackPressed() {
         boolean allowBack = false;
-        if (allowBack) {
+        boolean restrictBack = getIntent().getExtras().getBoolean("Restrict back");
+        allowBack = restrictBack;
+        if (allowBack == false) {
             super.onBackPressed();
         } else {
             disabledFeedbackMessage(getApplicationContext().getString(R.string.restrictBackButton));
