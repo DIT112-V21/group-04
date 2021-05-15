@@ -1,18 +1,13 @@
 package com.example.medcarapp;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-
 import android.widget.Button;
 import android.widget.ImageView;
-
 import android.widget.TextView;
-
 import android.view.View;
-
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import io.github.controlwear.virtual.joystick.android.JoystickView;
 import mqttController.CarConnect;
 
@@ -46,8 +41,8 @@ public class ManualControl extends AppCompatActivity {
         TextView speedIndicator = (TextView)findViewById(R.id.speedIndicator);
 
         autoButton = findViewById(R.id.autonomousDrivingButton);
-
-        carConnect = new CarConnect(this.getApplicationContext(), carCamera, autoButton);
+        boolean shouldSwitch = getIntent().getExtras().getBoolean("Switch server");
+        carConnect = new CarConnect(this.getApplicationContext(), carCamera, shouldSwitch, autoButton);
         carConnect.connectToMqttBroker(connectionText);
 
         JoystickView joystick = (JoystickView) findViewById(R.id.joystickView2);
@@ -99,6 +94,9 @@ public class ManualControl extends AppCompatActivity {
         autoButton.setText(STARTING_AUTONOMOUS);
         carConnect.feedbackMessage(DISCONNECT_FROM_CAR_MESSAGE);
         carConnect.disconnect(null);
+        Intent intent = new Intent(ManualControl.this,MainActivity.class);
+        intent.putExtra("Restrict back", true);
+        startActivity(intent);
     }
 
     private void turnCar(int adjustedSpeed, int adjustedAngle, int previousAngle, int previousSpeed){
@@ -109,7 +107,6 @@ public class ManualControl extends AppCompatActivity {
             carConnect.publish(SPEED_TOPIC, Integer.toString(adjustedSpeed), QOS, null);
         }
     }
-
 
     public void sendMessage(View view) {
         if (autoOptions == 0){

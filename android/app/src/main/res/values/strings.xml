@@ -14,4 +14,16 @@
         <item>This is the medical car 3.</item>
         <item>This is the medical car 4.</item>
     </string-array>
+
+    <string-array name="serverOption">
+        <item>Offline mode</item>
+        <item>Online mode</item>
+    </string-array>
+
+    <string-array name="serverDescription">
+        <item>Use within the same department</item>
+        <item>Use from a different department</item>
+    </string-array>
+    
+    <string name="restrictBackButton">Restart the app and car to change server</string>
 </resources>
