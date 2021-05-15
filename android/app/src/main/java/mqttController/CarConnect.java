@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +38,7 @@ public class CarConnect extends AppCompatActivity{
     private static final String SUCCESSFUL_CONNECTION = "Connected to MQTT broker";
     private static final String FAILED_CONNECTION = "Failed to connect to MQTT broker";
     private static final String LOST_CONNECTION = "Connection to MQTT broker lost";
+    private static final String STARTING_AUTONOMOUS = "AUTO";
     private static final String EXTERNAL_MQTT_BROKER = "tcp://3.138.188.190:1883";
     private static final String LOCALHOST = "tcp://10.0.2.2:1883";
     private String MQTT_SERVER;
@@ -48,8 +50,9 @@ public class CarConnect extends AppCompatActivity{
     private MqttClient mMqttClient;
     private boolean isConnected = false;
     private ImageView mCameraView;
+    private Button autoButton;
 
-    public CarConnect(Context context, ImageView mCameraView, boolean shouldSwitch) {
+    public CarConnect(Context context, ImageView mCameraView, boolean shouldSwitch, Button autoButton) {
         this.context = context;
         MQTT_SERVER = LOCALHOST;
         mMqttClientLocal = new MqttClient(context, LOCALHOST, TAG);
@@ -59,6 +62,7 @@ public class CarConnect extends AppCompatActivity{
             switchServer();
         }
         this.mCameraView = mCameraView;
+        this.autoButton = autoButton;
     }
 
     @Override
@@ -106,6 +110,8 @@ public class CarConnect extends AppCompatActivity{
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
 
+                    autoButton.setText(STARTING_AUTONOMOUS);
+
                     mCameraView.setImageResource(R.drawable.intermission);
 
                     Log.e(TAG, FAILED_CONNECTION);
@@ -117,6 +123,9 @@ public class CarConnect extends AppCompatActivity{
             }, new MqttCallback() {
                 @Override
                 public void connectionLost(Throwable cause) {
+
+                    autoButton.setText(STARTING_AUTONOMOUS);
+
                     mCameraView.setImageResource(R.drawable.intermission);
 
                     Log.w(TAG, LOST_CONNECTION);

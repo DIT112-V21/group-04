@@ -29,9 +29,13 @@ const int ECHO_PIN              = 7; // D7
 const unsigned int MAX_DISTANCE = 100;
 const int BACK_PIN = 3;
 const int stoppingSpeed = 0;
+const int stopAngle = 0;
+const int autoSpeed = 60;
+const int autoAngle = 90;
 const int stopDistanceFront = 80;
 const int stopDistanceBack = 100;
 int carSpeed = 0;
+int autoDriving = 0;
 
 SR04 frontSensorUS(arduinoRuntime, triggerPin, echoPin, maxDistance);
 GP2D120 backSensorIR(arduinoRuntime, BACK_PIN);
@@ -62,13 +66,24 @@ void setup() {
         mqtt.subscribe("/smartcar/control/#", 0);
         mqtt.publish("test", "test");
       }
-      if (topic == "/smartcar/control/speed") {
+      if (topic == "/smartcar/control/speed" && autoDriving == 0) {
         carSpeed = message.toInt();
         if (!(obstacleAvoidance())){
           car.setSpeed(carSpeed);
         }
-      } else if (topic == "/smartcar/control/turning") {
+      } else if (topic == "/smartcar/control/turning" && autoDriving == 0) {
         car.setAngle(message.toInt());
+      } else if (topic == "/smartcar/control/auto") {
+        autoDriving = message.toInt();
+        Serial.println(autoDriving);
+        if (autoDriving == 0){
+          car.setSpeed(stoppingSpeed);
+          car.setAngle(stopAngle);
+          carSpeed = stoppingSpeed;
+        } else {
+          car.setSpeed(autoSpeed);
+          carSpeed = autoSpeed;
+        }
       } else {
         Serial.println(topic + " " + message);
       }
@@ -107,9 +122,30 @@ boolean obstacleAvoidance(){
   
   
   if (isFrontDetected || isBackDetected){
+    if(autoDriving == 0){
     car.setSpeed(stoppingSpeed);
     isObstacleDetected = true;
+    } else {
+      autonomousMoving();
+    }
   }
   
   return isObstacleDetected;
+}
+
+void autonomousMoving(){
+  car.setSpeed(stoppingSpeed);
+        delay(1000);
+        car.setSpeed(-autoSpeed);
+        delay(1000);
+        car.setSpeed(stoppingSpeed);
+        delay(1000);
+        car.setSpeed(autoSpeed);
+        car.setAngle(-autoAngle);
+        delay(1000);
+        car.setSpeed(stoppingSpeed);
+        car.setAngle(stopAngle);
+        delay(1000);
+        car.setSpeed(autoSpeed);
+        delay(1000);
 }
