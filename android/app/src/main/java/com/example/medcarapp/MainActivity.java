@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
             @Override
             public void onClick(View v) {
                 if (!button.isActivated()) {
-                    String connectButtonDisabledMessage = getString(R.string.connectButtonDisabled);
+                    String connectButtonDisabledMessage = getString(R.string.connectButtonDisabledMessage);
                     disabledFeedbackMessage(connectButtonDisabledMessage);
                     return;
                 } else {

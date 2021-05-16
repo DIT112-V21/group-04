@@ -17,7 +17,7 @@
 
 
     <string name="selectMedcarMessage">You clicked on Medcar </string>
-    <string name="connectButtonDisabled">Button disabled select a car</string>
+    <string name="connectButtonDisabledMessage">Button disabled select a car</string>
     <string name="disconnectFromCarMessage">Disconnected from car.</string>
     <string name="percentageSymbol">%</string>
     <string name="degreeSymbol">°</string>
@@ -26,6 +26,27 @@
     <string name="connectionToMQTTBrokerLostMessage">Connection to MQTT broker lost</string>
     <string name="connectedIndicator">Connected</string>
     <string name="disconnectedIndicator">Disconnected</string>
+    <string name="autonomousDrivingOnButtonText">Auto-on</string>
+    <string name="autonomousDrivingOffButtonText">Auto-off</string>
+    <string name="startingAutonomousButtonText">AUTO</string>
+    <string name="obstacleDetectedMessage">Obstacle detected</string>
+    <string name="chooseCarFromListInstruction">Choose a car from the list below</string>
+    <string name="connectButtonText">Connect</string>
+    <string name="speedIndicator">Speed:</string>
+    <string name="initialSpeedIndicatorValue">0%</string>
+    <string name="angleIndicator">Angle:</string>
+    <string name="initialAngleIndicatorValue">90°</string>
+    <string name="creditsTitle">Credits</string>
+    <string name="creditsTextSmartcar_shield">Library: smartcar_shield</string>
+    <string name="creditsTextCopyrightDimitris">Copyright: Dimitris Platis 2019</string>
+    <string name="creditsTextLicenseMIT">License: MIT</string>
+    <string name="creditsTextJoystick">Library: virtual-joystick-android</string>
+    <string name="creditsTextCopyrightDamien">Copyright: Damien Brun 2016</string>
+    <string name="creditsTextLicenseApache">License: Apache 2:0</string>
+    <string name="rowsTitle">Title</string>
+    <string name="rowsDescription">Description</string>
+    <string name="chooseServerText">Choose a server from the list below</string>
+
 
     <string-array name="serverOption">
         <item>Offline mode</item>

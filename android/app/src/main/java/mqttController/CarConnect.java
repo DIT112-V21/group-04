@@ -20,16 +20,12 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class CarConnect extends AppCompatActivity{
     private static final String TAG = "SmartcarMqttController";
-    private static final String TURNING_TOPIC = "/smartcar/control/turning";
-    private static final String SPEED_TOPIC = "/smartcar/control/speed";
     private static final String OBSTACLE_TOPIC = "/smartcar/obstacle";
     private static final String SWITCH_SERVER_TOPIC = "/smartcar/switchServer";
     private static final String CAMERA_TOPIC = "Camera_Stream";
     private static final int QOS = 0;
     private static final int IMAGE_WIDTH = 160;
     private static final int IMAGE_HEIGHT = 120;
-    private static final String OBSTACLE_DETECTED = "Obstacle detected";
-    private static final String STARTING_AUTONOMOUS = "AUTO";
     private static final String EXTERNAL_MQTT_BROKER = "tcp://3.138.188.190:1883";
     private static final String LOCALHOST = "tcp://10.0.2.2:1883";
     private String MQTT_SERVER;
@@ -100,29 +96,30 @@ public class CarConnect extends AppCompatActivity{
 
 
                     mMqttClient.subscribe(OBSTACLE_TOPIC,QOS,null);
-                    //mMqttClient.subscribe(TURNING_TOPIC, QOS, null);
-                    //mMqttClient.subscribe(SPEED_TOPIC, QOS, null);
                     mMqttClient.subscribe(CAMERA_TOPIC, QOS, null);
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
 
-                    autoButton.setText(STARTING_AUTONOMOUS);
+                    String startingAutonomousButtonText = context.getString(R.string.startingAutonomousButtonText);
+                    autoButton.setText(startingAutonomousButtonText);
 
                     mCameraView.setImageResource(R.drawable.intermission);
                     String failedConnectionMessage = context.getString(R.string.failedToConnectToMQTTBrokerMessage);
                     Log.e(TAG, failedConnectionMessage);
                     feedbackMessage(failedConnectionMessage);
 
-                    connectionText.setText("Disconnected");
+                    String disconnectedMessage = context.getString(R.string.disconnectedIndicator);
+                    connectionText.setText(disconnectedMessage);
                     connectionText.setTextColor(Color.parseColor("#EF1919"));
                 }
             }, new MqttCallback() {
                 @Override
                 public void connectionLost(Throwable cause) {
 
-                    autoButton.setText(STARTING_AUTONOMOUS);
+                    String startingAutonomousButtonText = context.getString(R.string.startingAutonomousButtonText);
+                    autoButton.setText(startingAutonomousButtonText);
 
 
                     mCameraView.setImageResource(R.drawable.intermission);
@@ -140,8 +137,9 @@ public class CarConnect extends AppCompatActivity{
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
 
                     if (topic.equals(OBSTACLE_TOPIC)) {
-                        Log.i(TAG, OBSTACLE_DETECTED);
-                        feedbackMessage(OBSTACLE_DETECTED);
+                        String obstacleDetectedMessage = context.getString(R.string.obstacleDetectedMessage);
+                        Log.i(TAG, obstacleDetectedMessage);
+                        feedbackMessage(obstacleDetectedMessage);
                         phoneVibration(1000);
                     }
 
