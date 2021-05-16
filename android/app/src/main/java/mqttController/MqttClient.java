@@ -1,7 +1,6 @@
 package mqttController;
 
 import android.content.Context;
-
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.*;
 
@@ -10,9 +9,13 @@ import org.eclipse.paho.client.mqttv3.*;
 public class MqttClient {
 
     private MqttAndroidClient mMqttAndroidClient;
+    private Context context;
+    private String clientId;
 
     public MqttClient(Context context, String serverUrl, String clientId) {
         mMqttAndroidClient = new MqttAndroidClient(context, serverUrl, clientId);
+        this.context = context;
+        this.clientId = clientId;
     }
 
     public void connect(String username, String password, IMqttActionListener connectionCallback, MqttCallback clientCallback) {
@@ -22,7 +25,6 @@ public class MqttClient {
         options.setPassword(password.toCharArray());
         options.setAutomaticReconnect(true);
         options.setCleanSession(true);
-
         try {
             mMqttAndroidClient.connect(options, null, connectionCallback);
         } catch (MqttException e) {

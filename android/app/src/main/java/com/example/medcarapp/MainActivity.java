@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -65,8 +64,8 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
                     return;
                 } else {
                     Intent intent = new Intent(MainActivity.this, ManualControl.class);
-
-
+                    boolean shouldSwitch = getIntent().getExtras().getBoolean("Switch server");
+                    intent.putExtra("Switch server", shouldSwitch);
                     startActivity(intent);
                 }
             }
@@ -94,5 +93,17 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.TOP,0,0);
         toast.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        boolean allowBack = false;
+        boolean restrictBack = getIntent().getExtras().getBoolean("Restrict back");
+        allowBack = restrictBack;
+        if (allowBack == false) {
+            super.onBackPressed();
+        } else {
+            disabledFeedbackMessage(getApplicationContext().getString(R.string.restrictBackButton));
+        }
     }
 }

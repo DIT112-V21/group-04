@@ -1,30 +1,15 @@
 package com.example.medcarapp;
 
-import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-
-import android.os.PersistableBundle;
-
+import android.widget.Button;
 import android.widget.ImageView;
-
-import android.view.Gravity;
-
 import android.widget.TextView;
-
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
-
-
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import org.eclipse.paho.client.mqttv3.IMqttActionListener;
-import org.eclipse.paho.client.mqttv3.IMqttToken;
-
 import io.github.controlwear.virtual.joystick.android.JoystickView;
 import mqttController.CarConnect;
-import mqttController.MqttClient;
 
 public class ManualControl extends AppCompatActivity {
     // joystick adapted from: https://github.com/controlwear/virtual-joystick-android
@@ -32,8 +17,15 @@ public class ManualControl extends AppCompatActivity {
     private static final int QOS = 0;
     private static final String TURNING_TOPIC = "/smartcar/control/turning";
     private static final String SPEED_TOPIC = "/smartcar/control/speed";
+    private static final String AUTO_TOPIC = "/smartcar/control/auto";
     private static final int IMPOSSIBLE_ANGLE_AND_SPEED = -1000;
     private static final int REVERSE_CAR_MOVEMENT = -1;
+    private static final String DISCONNECT_FROM_CAR_MESSAGE = "Disconnected from car.";
+    private static final String AUTONOMOUS_DRIVING_ON = "Auto-on";
+    private static final String AUTONOMOUS_DRIVING_OFF = "Auto-off";
+    private static final String STARTING_AUTONOMOUS = "AUTO";
+    private static int autoOptions = 0;
+    private Button autoButton;
     private CarConnect carConnect;
 
 
@@ -48,8 +40,9 @@ public class ManualControl extends AppCompatActivity {
         TextView angleIndicator = (TextView)findViewById(R.id.angleIndicator);
         TextView speedIndicator = (TextView)findViewById(R.id.speedIndicator);
 
-
-        carConnect = new CarConnect(this.getApplicationContext(), carCamera);
+        autoButton = findViewById(R.id.autonomousDrivingButton);
+        boolean shouldSwitch = getIntent().getExtras().getBoolean("Switch server");
+        carConnect = new CarConnect(this.getApplicationContext(), carCamera, shouldSwitch, autoButton);
         carConnect.connectToMqttBroker(connectionText);
 
         JoystickView joystick = (JoystickView) findViewById(R.id.joystickView2);
@@ -100,9 +93,16 @@ public class ManualControl extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+
         String disconnectFromCarMessage = getString(R.string.disconnectFromCarMessage);
         carConnect.feedbackMessage(disconnectFromCarMessage);
+
+        autoButton.setText(STARTING_AUTONOMOUS);
+
         carConnect.disconnect(null);
+        Intent intent = new Intent(ManualControl.this,MainActivity.class);
+        intent.putExtra("Restrict back", true);
+        startActivity(intent);
     }
 
     private void turnCar(int adjustedSpeed, int adjustedAngle, int previousAngle, int previousSpeed){
@@ -112,5 +112,18 @@ public class ManualControl extends AppCompatActivity {
             carConnect.publish(TURNING_TOPIC, Integer.toString(adjustedAngle), QOS, null);
             carConnect.publish(SPEED_TOPIC, Integer.toString(adjustedSpeed), QOS, null);
         }
+    }
+
+    public void sendMessage(View view) {
+        if (autoOptions == 0){
+            autoOptions = 1;
+            autoButton.setText(AUTONOMOUS_DRIVING_ON);
+            autoButton.setBackgroundColor(Color.GREEN);
+        } else {
+            autoOptions = 0;
+            autoButton.setText(AUTONOMOUS_DRIVING_OFF);
+            autoButton.setBackgroundColor(Color.RED);
+        }
+        carConnect.publish(AUTO_TOPIC, Integer.toString(autoOptions), QOS, null);
     }
 }
