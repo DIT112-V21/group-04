@@ -37,7 +37,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
-                android:text="Title"
+                android:text="@string/rowsTitle"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/carLogo"
@@ -47,7 +47,7 @@
                 android:id="@+id/description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Description"
+                android:text="@string/rowsDescription"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/carNames"
                 app:layout_constraintTop_toBottomOf="@+id/carNames" />

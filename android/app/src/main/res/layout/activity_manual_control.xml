@@ -40,7 +40,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.07"></ImageView>
+        app:layout_constraintVertical_bias="0.07" />
 
     <TextView
         android:id="@+id/speedHeader"
@@ -50,7 +50,7 @@
         android:layout_marginLeft="28dp"
         android:layout_marginBottom="8dp"
         android:fontFamily="serif"
-        android:text="Speed:"
+        android:text="@string/speedIndicator"
         android:textColor="@color/teal_700"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -64,7 +64,7 @@
         android:layout_marginStart="44dp"
         android:layout_marginLeft="44dp"
         android:fontFamily="serif"
-        android:text="0%"
+        android:text="@string/initialSpeedIndicatorValue"
         android:textColor="@color/teal_700"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -78,7 +78,7 @@
         android:layout_marginRight="28dp"
         android:layout_marginBottom="8dp"
         android:fontFamily="serif"
-        android:text="Angle:"
+        android:text="@string/angleIndicator"
         android:textColor="@color/teal_700"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -92,7 +92,7 @@
         android:layout_marginEnd="44dp"
         android:layout_marginRight="44dp"
         android:fontFamily="serif"
-        android:text="90°"
+        android:text="@string/initialAngleIndicatorValue"
         android:textColor="@color/teal_700"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -119,7 +119,7 @@
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
         android:onClick="sendMessage"
-        android:text="AUTO"
+        android:text="@string/startingAutonomousButtonText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -24,7 +24,7 @@
         android:id="@+id/Introtext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Choose a server from the list below"
+        android:text="@string/chooseServerText"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

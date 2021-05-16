@@ -20,10 +20,6 @@ public class ManualControl extends AppCompatActivity {
     private static final String AUTO_TOPIC = "/smartcar/control/auto";
     private static final int IMPOSSIBLE_ANGLE_AND_SPEED = -1000;
     private static final int REVERSE_CAR_MOVEMENT = -1;
-    private static final String DISCONNECT_FROM_CAR_MESSAGE = "Disconnected from car.";
-    private static final String AUTONOMOUS_DRIVING_ON = "Auto-on";
-    private static final String AUTONOMOUS_DRIVING_OFF = "Auto-off";
-    private static final String STARTING_AUTONOMOUS = "AUTO";
     private static int autoOptions = 0;
     private Button autoButton;
     private CarConnect carConnect;
@@ -57,8 +53,10 @@ public class ManualControl extends AppCompatActivity {
                 turnCar(adjustedSpeed, adjustedAngle, previousAngle, previousSpeed);
                 previousAngle = adjustedAngle;
                 previousSpeed = adjustedSpeed;
-                speedIndicator.setText(adjustedSpeed + "%");
-                angleIndicator.setText(adjustedAngle + "°");
+                String percentageSymbol = getString(R.string.percentageSymbol);
+                String degreeSymbol = getString(R.string.degreeSymbol);
+                speedIndicator.setText(adjustedSpeed + percentageSymbol);
+                angleIndicator.setText(adjustedAngle + degreeSymbol);
             }
         });
     }
@@ -91,8 +89,13 @@ public class ManualControl extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        autoButton.setText(STARTING_AUTONOMOUS);
-        carConnect.feedbackMessage(DISCONNECT_FROM_CAR_MESSAGE);
+
+        String disconnectFromCarMessage = getString(R.string.disconnectFromCarMessage);
+        carConnect.feedbackMessage(disconnectFromCarMessage);
+
+        String startingAutonomousButtonText = getString(R.string.startingAutonomousButtonText);
+        autoButton.setText(startingAutonomousButtonText);
+
         carConnect.disconnect(null);
         Intent intent = new Intent(ManualControl.this,MainActivity.class);
         intent.putExtra("Restrict back", true);
@@ -111,11 +114,13 @@ public class ManualControl extends AppCompatActivity {
     public void sendMessage(View view) {
         if (autoOptions == 0){
             autoOptions = 1;
-            autoButton.setText(AUTONOMOUS_DRIVING_ON);
+            String autonomousDrivingOnButtonText = getString(R.string.autonomousDrivingOnButtonText);
+            autoButton.setText(autonomousDrivingOnButtonText);
             autoButton.setBackgroundColor(Color.GREEN);
         } else {
             autoOptions = 0;
-            autoButton.setText(AUTONOMOUS_DRIVING_OFF);
+            String autonomousDrivingOffButtonText = getString(R.string.autonomousDrivingOffButtonText);
+            autoButton.setText(autonomousDrivingOffButtonText);
             autoButton.setBackgroundColor(Color.RED);
         }
         carConnect.publish(AUTO_TOPIC, Integer.toString(autoOptions), QOS, null);

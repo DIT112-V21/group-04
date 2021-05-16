@@ -77,7 +77,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     public void adapterFeedbackMessage(int position){
         row_index = position;
         notifyDataSetChanged();
-        Toast toast = Toast.makeText(context, "You clicked on Medcar "+(position+1),Toast.LENGTH_SHORT);
+        String selectedMedcarMessage = context.getString(R.string.selectMedcarMessage);
+        Toast toast = Toast.makeText(context, selectedMedcarMessage+(position+1),Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.TOP,0,0);
         toast.show();
     }
