@@ -19,14 +19,14 @@ import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class CarConnect extends AppCompatActivity{
-    private static final String TAG = "SmartcarMqttController";
+    private static final String TAG = "user";
     private static final String OBSTACLE_TOPIC = "/smartcar/obstacle";
     private static final String SWITCH_SERVER_TOPIC = "/smartcar/switchServer";
     private static final String CAMERA_TOPIC = "Camera_Stream";
     private static final int QOS = 0;
     private static final int IMAGE_WIDTH = 160;
     private static final int IMAGE_HEIGHT = 120;
-    private static final String EXTERNAL_MQTT_BROKER = "tcp://3.138.188.190:1883";
+    private static final String EXTERNAL_MQTT_BROKER = "tcp://18.222.170.203:1883";
     private static final String LOCALHOST = "tcp://10.0.2.2:1883";
     private String MQTT_SERVER;
 
@@ -81,7 +81,7 @@ public class CarConnect extends AppCompatActivity{
             mMqttClient = mMqttClientLocal;
         }
         if (!isConnected) {
-            mMqttClient.connect(TAG, "", new IMqttActionListener() {
+            mMqttClient.connect(TAG, "password", new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     isConnected = true;
