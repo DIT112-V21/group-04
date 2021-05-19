@@ -63,8 +63,8 @@ void setup() {
       Serial.println("Got initial message");
       if (topic == "/smartcar/switchServer"){
         Serial.println("SWITCHED");
-        mqtt.setHost("3.138.188.190", 1883);
-        mqtt.connect("arduino", "public", "public");
+        mqtt.setHost("18.222.170.203", 1883);
+        mqtt.connect("arduino", "user", "user");
         mqtt.subscribe("/smartcar/control/#", 0);
         mqtt.publish("test", "test");
       }
