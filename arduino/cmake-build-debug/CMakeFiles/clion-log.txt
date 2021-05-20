@@ -24,14 +24,5 @@ CMake Deprecation Warning at test/googletest-release-1.10.0/googletest/CMakeList
 
 
 -- Configuring done
-CMake Error at test/CMakeLists.txt:57 (add_executable):
-  Cannot find source file:
-
-    //SimpleCarController.cpp
-
-
-CMake Error at test/CMakeLists.txt:57 (add_executable):
-  No SOURCES given to target: simplecarcontroller_test
-
-
-CMake Generate step failed.  Build files cannot be regenerated correctly.
+-- Generating done
+-- Build files have been written to: /home/younis/Desktop/Uni yr1/Study period 4/Systems Development/project/group-04/arduino/cmake-build-debug
