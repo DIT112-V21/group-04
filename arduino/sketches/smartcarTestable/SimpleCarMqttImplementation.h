@@ -15,7 +15,7 @@ namespace arduino_car{
         void begin() override;
 
     private:
-        MQTTClient& mqtt
+        MQTTClient& mqtt;
 
     };
 

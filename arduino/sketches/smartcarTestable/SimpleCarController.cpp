@@ -2,20 +2,20 @@
 //corresponds to MagicCarController.cpp
 namespace arduino_car{
 
-    SimpleCarController::SimpleCarController(Car& car, MQTTinterface mqtt)
+    SimpleCarController::SimpleCarController(Car& car, MQTTinterface& mqtt, Serial& serial)
+    : mCar{car}
     , mMQTT{mqtt}
     , mSerial{serial}
     {}
 
     void SimpleCarController::registerManualControl() {
         if (mMQTT.connect("arduino", "public", "public")) {
-            Serial.println("GENERAL CONNECTION");
+            mSerial.println("GENERAL CONNECTION");
             mMQTT.subscribe("/smartcar/switchServer", 0);
             mMQTT.subscribe("/smartcar/control/#", 0);
-            mMQTT.onMessage(+[](String& topic, String& message) {
-                mSerial.println("Got initial message");
+            mMQTT.onMessage(+[](std::string& topic, std::string& message) {mSerial.println("Got initial message");
                 if (topic == "/smartcar/switchServer"){
-                    Serial.println("SWITCHED");
+                    mSerial.println("SWITCHED");
                     mMQTT.setHost("3.138.188.190", 1883);
                     mMQTT.connect("arduino", "public", "public");
                     mMQTT.subscribe("/smartcar/control/#", 0);
@@ -32,11 +32,6 @@ namespace arduino_car{
             }
         }
     }
-
-    void SmartCar::begin(){
-        mMQTT.begin();
-    }
-
 
 }
 
