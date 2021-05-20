@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,25 +16,13 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements Adapter.ItemClickListener {
     RecyclerView rvAvailableCars;
-    Dialog creditDialog;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        creditDialog();
         carSelection();
         connectButton();
-    }
-
-    public void CreditPopup(View v) {
-        creditDialog.setContentView(R.layout.credit_popup);
-        creditDialog.setCanceledOnTouchOutside(true);
-        creditDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        creditDialog.show();
     }
 
     public void carSelection(){
@@ -70,10 +57,6 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
                 }
             }
         });
-    }
-
-    public void creditDialog(){
-        creditDialog = new Dialog(this);
     }
 
     @Override
