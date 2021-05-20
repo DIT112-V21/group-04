@@ -23,4 +23,4 @@ jobs:
           arduino-cli lib install "MQTT"
       - name: Build sketch
         run: |
-          arduino-cli compile -b esp32:esp32:esp32doit-devkit-v1 arduino/smartcar/smartcar.ino
+          arduino-cli compile -b esp32:esp32:esp32doit-devkit-v1 arduino/sketches/smartcar/smartcar.ino
