@@ -32,8 +32,10 @@ const auto stoppingSpeed = 0;
 const auto stopDistanceFront = 80;
 const auto stopDistanceBack = 100;
 const int stopAngle = 0;
-const int autoSpeed = 60;
+const int autoSpeed = 65;
 const int autoAngle = 90;
+const int turnRight = 1;
+const int turnLeft = -1;
 int autoDriving = 0;
 int carSpeed = 0;
 boolean isObstacleDetectedPublished = false; //keeps track of when an obstacle has been detected message is published to mqtt
@@ -151,18 +153,32 @@ void sendObstacleDetectedNotification(boolean shouldSend){
 }  
 
 void autonomousMoving(){
-  car.setSpeed(stoppingSpeed);
-        delay(1000);
+        car.setSpeed(stoppingSpeed);
+        delay(500);
         car.setSpeed(-autoSpeed);
-        delay(1000);
+        delay(500);
         car.setSpeed(stoppingSpeed);
-        delay(1000);
+        delay(500);
+        turning(turnLeft);
+        auto frontDistanceFromObject = frontSensorUS.getDistance();
+        boolean isFrontDetected = frontDistanceFromObject < stopDistanceFront && frontDistanceFromObject > 1 && !(carSpeed <= 0);
+        if (isFrontDetected){
+          turning(turnRight);
+          turning(turnRight);
+          frontDistanceFromObject = frontSensorUS.getDistance();
+          isFrontDetected = frontDistanceFromObject < stopDistanceFront && frontDistanceFromObject > 1 && !(carSpeed <= 0);
+          if (isFrontDetected){
+            turning(turnRight);
+          }
+        }
         car.setSpeed(autoSpeed);
-        car.setAngle(-autoAngle);
-        delay(1000);
-        car.setSpeed(stoppingSpeed);
-        car.setAngle(stopAngle);
-        delay(1000);
-        car.setSpeed(autoSpeed);
-        delay(1000);
+}
+
+void turning(int direction){
+  car.setSpeed(autoSpeed);
+  car.setAngle(direction*autoAngle);
+  delay(2000);
+  car.setSpeed(stoppingSpeed);
+  car.setAngle(stopAngle);
+  delay(500);
 }
