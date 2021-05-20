@@ -34,13 +34,13 @@ else()
     )
 endif()
 
-set(calculator_dir ${CMAKE_CURRENT_SOURCE_DIR}/smartcar/smartcar.ino)
 
 include_directories(.)
-include_directories(smartcar)
+include_directories(sketches/smartcar)
+set(magiccar_dir ${CMAKE_CURRENT_SOURCE_DIR}/sketches/smartcarTestable)
 
-add_executable(arduino
-        smartcar/smartcar.ino)
+#add_executable(arduino
+ #       sketches/smartcar/smartcar.ino sketches/smartcarTestable/Car.h sketches/smartcarTestable/MQTTwrapper.h sketches/smartcarTestable/SimpleCarController.h sketches/smartcarTestable/SimpleCarController.cpp sketches/smartcarTestable/Serial.h sketches/smartcarTestable/SimpleCarWrapper.cpp sketches/smartcarTestable/SimpleCarWrapper.h sketches/smartcarTestable/SimpleCarMQTTwrapper.cpp sketches/smartcarTestable/SimpleCarMQTTwrapper.h test/ut/SimpleCarController_test.cpp test/mocks/MockCar.h test/mocks/MockMQTT.h)
 
 enable_testing()
 add_subdirectory(test)

@@ -54,10 +54,10 @@ set(unit_tests ${CMAKE_CURRENT_SOURCE_DIR}/ut)
 set(mocks ${CMAKE_CURRENT_SOURCE_DIR}/mocks)
 
 # SmartCar test
-add_executable(smartcar_test
-        ${smartcar_dir}/smartcar.cpp
-        ${unit_tests}/smartcar_test.cpp)
-target_include_directories(smartcar_test PUBLIC
-        ${smartcar_dir}
+add_executable(simplecarcontroller_test
+        ${simplecar_dir}/SimpleCarController.cpp
+        ${unit_tests}/SimpleCarController_test.cpp)
+target_include_directories(simplecarcontroller_test PUBLIC
+        ${simplecar_dir}
         ${mocks})
-configure_test(smartcar_test)
+configure_test(simplecarcontroller_test)

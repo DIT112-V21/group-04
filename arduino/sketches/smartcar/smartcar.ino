@@ -8,6 +8,7 @@
 
 #include <Smartcar.h>
 
+
 #ifndef __SMCE__
 WiFiClient net;
 #endif
@@ -19,6 +20,7 @@ BrushedMotor rightMotor(arduinoRuntime, smartcarlib::pins::v2::rightMotorPins);
 DifferentialControl control(leftMotor, rightMotor);
 
 SimpleCar car(control);
+
 
 const auto oneSecond = 1UL;
 const auto triggerPin = 6;
