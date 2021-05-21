@@ -9,8 +9,8 @@
 
     <io.github.controlwear.virtual.joystick.android.JoystickView
         android:id="@+id/joystickView2"
-        android:layout_width="375dp"
-        android:layout_height="0dp"
+        android:layout_width="383dp"
+        android:layout_height="353dp"
         android:background="@drawable/joystickbg"
         app:JV_borderWidth="4dp"
         app:JV_buttonColor="#494747"
@@ -19,10 +19,9 @@
         app:JV_fixedCenter="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.111"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.875" />
+        app:layout_constraintVertical_bias="0.854" />
 
     <ImageView
         android:id="@+id/cameraView"
@@ -37,15 +36,15 @@
         android:src="@drawable/intermission"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.07" />
+        app:layout_constraintVertical_bias="0.068" />
 
     <TextView
         android:id="@+id/angleHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
         android:fontFamily="serif"
         android:text="@string/angleIndicator"
         android:textColor="@color/teal_700"
@@ -55,21 +54,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.097"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.416" />
+        app:layout_constraintTop_toBottomOf="@+id/cameraView"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/angleIndicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="320dp"
-        android:layout_marginRight="320dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="28dp"
         android:fontFamily="serif"
         android:text="@string/initialAngleIndicatorValue"
         android:textColor="@color/teal_700"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/angleHeader" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/angleHeader"
+        app:layout_constraintTop_toBottomOf="@+id/cameraView"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/connectionText"
@@ -100,15 +102,18 @@
 
     <com.github.anastr.speedviewlib.ProgressiveGauge
         android:id="@+id/speedometer"
-        android:layout_width="157dp"
-        android:layout_height="72dp"
+        android:layout_width="116dp"
+        android:layout_height="51dp"
         android:layout_marginTop="284dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.895"
+        app:layout_constraintHorizontal_bias="0.945"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:sv_endDegree="60"
+        app:sv_speedTextFormat="INTEGER"
+        app:sv_speedTextPosition="TOP_LEFT"
         app:sv_speedometerBackColor="@color/grey"
         app:sv_speedometerColor="@color/teal_200"
-        app:sv_startDegree="3" />
+        app:sv_startDegree="3"
+        app:sv_unitUnderSpeedText="false" />
 </androidx.constraintlayout.widget.ConstraintLayout>
