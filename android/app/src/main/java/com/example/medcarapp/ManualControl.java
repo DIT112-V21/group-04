@@ -140,6 +140,5 @@ public class ManualControl extends AppCompatActivity {
         String percentageSymbol = getString(R.string.percentageSymbol);
         speedometer.setUnit(percentageSymbol);
         speedometer.setWithTremble(false);
-        //speedometer.setOrientation(LinearGauge.Orientation.VERTICAL);
     }
 }
