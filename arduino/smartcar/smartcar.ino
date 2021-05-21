@@ -47,7 +47,7 @@ std::vector<char> frameBuffer;
 void setup() {
   Serial.begin(9600);
 #ifdef __SMCE__
-  //mqtt.begin("3.138.188.190", 1883, WiFi);
+  mqtt.begin("18.222.170.203", 1883, WiFi);
   //mqtt.begin("aerostun.dev", 1883, WiFi);
   mqtt.begin(WiFi); // Will connect to localhost
   Camera.begin(QQVGA, RGB888, 15);
@@ -55,16 +55,16 @@ void setup() {
 #else
   mqtt.begin(net);
 #endif
-  if (mqtt.connect("arduino", "public", "public")) {
+  if (mqtt.connect("arduino", "user", "password")) {
     Serial.println("GENERAL CONNECTION");
     mqtt.subscribe("/smartcar/switchServer", 0);
     mqtt.subscribe("/smartcar/control/#", 0);
-    mqtt.onMessage(+[](String& topic, String& message) {
+    mqtt.onMessage(+[](String topic, String message) {
       Serial.println("Got initial message");
       if (topic == "/smartcar/switchServer"){
         Serial.println("SWITCHED");
         mqtt.setHost("18.222.170.203", 1883);
-        mqtt.connect("arduino", "user", "user");
+        mqtt.connect("arduino", "user", "password");
         mqtt.subscribe("/smartcar/control/#", 0);
         mqtt.publish("test", "test");
       }
