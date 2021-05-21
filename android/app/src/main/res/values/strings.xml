@@ -59,6 +59,7 @@
     <!--Rows text-->
     <string name="rowsTitle">Title</string>
     <string name="rowsDescription">Description</string>
+    <string name="Login" />
 
     <string-array name="serverOption">
         <item>Offline mode</item>
