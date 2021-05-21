@@ -52,7 +52,7 @@ public class ManualControl extends AppCompatActivity {
             public void onMove(int angle, int strength) {
                 int adjustedAngle = adjustAngle(angle);
                 int adjustedSpeed = adjustSpeed(strength, angle);
-                int speed = speedometerSpeed(strength,angle);
+                int speedometerSpeed = speedometerSpeed(strength,angle);
                 turnCar(adjustedSpeed, adjustedAngle, previousAngle, previousSpeed);
                 previousAngle = adjustedAngle;
                 previousSpeed = adjustedSpeed;
