@@ -30,6 +30,9 @@
         <activity android:name=".ServerSelection">
 
         </activity>
+        <activity android:name=".login">
+
+        </activity>
         <service android:name="org.eclipse.paho.android.service.MqttService">
         </service>
     </application>

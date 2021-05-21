@@ -44,7 +44,7 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ViewHolder
                     intent = new Intent(context, MainActivity.class);
                     intent.putExtra("Switch server", false);
                 } else if(holder.getAdapterPosition()==1){
-                    intent = new Intent(context, MainActivity.class);
+                    intent = new Intent(context, login.class);
                     intent.putExtra("Switch server", true);
                 }
                 context.startActivity(intent);
@@ -69,4 +69,5 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ViewHolder
             internetIcon = itemView.findViewById(R.id.serverPic);
         }
     }
+
 }

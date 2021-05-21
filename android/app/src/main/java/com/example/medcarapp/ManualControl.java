@@ -38,7 +38,9 @@ public class ManualControl extends AppCompatActivity {
 
         autoButton = findViewById(R.id.autonomousDrivingButton);
         boolean shouldSwitch = getIntent().getExtras().getBoolean("Switch server");
-        carConnect = new CarConnect(this.getApplicationContext(), carCamera, shouldSwitch, autoButton);
+        String user= getIntent().getExtras().getString("userKey");
+        String pass= getIntent().getExtras().getString("passKey");
+        carConnect = new CarConnect(this.getApplicationContext(), carCamera, shouldSwitch, autoButton,user,pass);
         carConnect.connectToMqttBroker(connectionText);
 
         JoystickView joystick = (JoystickView) findViewById(R.id.joystickView2);

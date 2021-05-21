@@ -12,6 +12,8 @@ import android.widget.Toast;
 import vibrator.VibratorWrapper;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.medcarapp.R;
+import com.example.medcarapp.login;
+
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
@@ -19,7 +21,9 @@ import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class CarConnect extends AppCompatActivity{
-    private static final String TAG = "user";
+    private String User;
+    private String Pass;
+    private static final String TAG="SmartcarmqttController";
     private static final String OBSTACLE_TOPIC = "/smartcar/obstacle";
     private static final String SWITCH_SERVER_TOPIC = "/smartcar/switchServer";
     private static final String CAMERA_TOPIC = "Camera_Stream";
@@ -29,8 +33,6 @@ public class CarConnect extends AppCompatActivity{
     private static final String EXTERNAL_MQTT_BROKER = "tcp://18.222.170.203:1883";
     private static final String LOCALHOST = "tcp://10.0.2.2:1883";
     private String MQTT_SERVER;
-
-
     Context context;
 
     private MqttClient mMqttClientLocal;
@@ -40,17 +42,19 @@ public class CarConnect extends AppCompatActivity{
     private ImageView mCameraView;
     private Button autoButton;
 
-    public CarConnect(Context context, ImageView mCameraView, boolean shouldSwitch, Button autoButton) {
+    public CarConnect(Context context, ImageView mCameraView, boolean shouldSwitch, Button autoButton,String user, String password) {
         this.context = context;
         MQTT_SERVER = LOCALHOST;
-        mMqttClientLocal = new MqttClient(context, LOCALHOST, TAG);
-        mMqttClientExternal = new MqttClient(context, EXTERNAL_MQTT_BROKER, TAG);
+        mMqttClientLocal = new MqttClient(context, LOCALHOST, user);
+        mMqttClientExternal = new MqttClient(context, EXTERNAL_MQTT_BROKER, user);
         if (shouldSwitch){
             MQTT_SERVER = EXTERNAL_MQTT_BROKER;
             switchServer();
         }
         this.mCameraView = mCameraView;
         this.autoButton = autoButton;
+        this.User=user;
+        this.Pass=password;
     }
 
     @Override
@@ -65,7 +69,7 @@ public class CarConnect extends AppCompatActivity{
         mMqttClient.disconnect(new IMqttActionListener() {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {
-                Log.i(TAG, "Disconnected from broker");
+                Log.i(User, "Disconnected from broker");
             }
 
             @Override
@@ -81,7 +85,7 @@ public class CarConnect extends AppCompatActivity{
             mMqttClient = mMqttClientLocal;
         }
         if (!isConnected) {
-            mMqttClient.connect(TAG, "password", new IMqttActionListener() {
+            mMqttClient.connect(User, Pass, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     isConnected = true;

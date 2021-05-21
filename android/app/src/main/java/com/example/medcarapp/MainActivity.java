@@ -74,7 +74,11 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
                 } else {
                     Intent intent = new Intent(MainActivity.this, ManualControl.class);
                     boolean shouldSwitch = getIntent().getExtras().getBoolean("Switch server");
+                    String user= getIntent().getExtras().getString("userKey");
+                    String pass= getIntent().getExtras().getString("passKey");
                     intent.putExtra("Switch server", shouldSwitch);
+                    intent.putExtra("userKey",user);
+                    intent.putExtra("passKey",pass);
                     startActivity(intent);
                 }
             }
