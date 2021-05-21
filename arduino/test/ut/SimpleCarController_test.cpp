@@ -18,7 +18,7 @@ namespace arduino_car{
     struct registerManualControlTest : public Test {
 
         void SetUp() override {
-            EXPECT_CALL(mMQTT, connect("arduino", "public", "public"));
+            EXPECT_CALL(mMQTT, connect(_, _, _));
         }
 
         MockCar mCar;
