@@ -34,25 +34,25 @@ namespace arduino_car{
             mSerial.println("GENERAL CONNECTION");
             mMQTT.subscribe("/smartcar/switchServer", 0);
             mMQTT.subscribe("/smartcar/control/#", 0);
-            mMQTT.onMessage(+[](std::string& topic, std::string& message) {
+            mMQTT.onMessage([&](std::string topic, std::string message) {
                 mSerial.println("Got initial message");
                 if (topic == "/smartcar/switchServer") {
-                    Serial.println("SWITCHED");
+                    mSerial.println("SWITCHED");
                     mMQTT.setHost("3.138.188.190", 1883);
                     mMQTT.connect("arduino", "public", "public");
                     mMQTT.subscribe("/smartcar/control/#", 0);
                     mMQTT.publish("test", "test");
                 }
                 if (topic == "/smartcar/control/speed" && autoDriving == 0) {
-                    carSpeed = message.toInt();
+                    carSpeed = std::stoi(message);
                     if (!(obstacleAvoidance())) {
-                        mCar.setSpeed(carSpeed);
+                        mCar.setSpeed(static_cast<float>(carSpeed));
                     }
                 } else if (topic == "/smartcar/control/turning" && autoDriving == 0) {
-                    mCar.setAngle(message.toInt());
+                    mCar.setAngle(std::stoi(message));
                 } else if (topic == "/smartcar/control/auto") {
-                    autoDriving = message.toInt();
-                    Serial.println(autoDriving);
+                    autoDriving = std::stoi(message);
+                    mSerial.println(autoDriving);
                     if (autoDriving == 0) {
                         mCar.setSpeed(stoppingSpeed);
                         mCar.setAngle(stopAngle);
@@ -62,12 +62,16 @@ namespace arduino_car{
                         carSpeed = autoSpeed;
                     }
                 } else {
-                    Serial.println(topic + " " + message);
+                    mSerial.println(topic + " " + message);
                 }
             });
         }
+
     }
+
+
 }
+
 
 
 

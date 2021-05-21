@@ -28,6 +28,9 @@ namespace arduino_car{
     void SimpleCarMqttImplementation::connect(int hostname, int id, int password) {
         mMqtt.connect(hostname, id, password);
     }
+    void SimpleCarMqttImplementation::setHost(std::string ip_address, int portNumber) {
+        mMqtt.setHost(ip_address, portNumber);
+    }
 
 
 }

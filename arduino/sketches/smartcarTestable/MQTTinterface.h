@@ -14,7 +14,7 @@ namespace arduino_car {
         virtual void publish(std::string topic, std::string message) = 0;
         virtual void onMessage(std::function<void(std::string, std::string)> callback) = 0;
         virtual void begin() = 0;
-        virtual void setHost() = 0;
+        virtual void setHost(std::string ip_address, int portNumber) = 0;
     };
 
 }

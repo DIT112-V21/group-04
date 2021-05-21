@@ -13,10 +13,10 @@ namespace arduino_car{
         void publish(String topic, String message) override;
         void onMessage(std::function<void(std::string, std::string)> callback) override;
         void begin() override;
-        void setHost() override;
+        void setHost(std::string ip_address, int portNumber) override;
 
     private:
-        MQTTClient& mqtt;
+        MQTTClient& mMqtt;
 
     };
 
