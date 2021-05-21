@@ -58,7 +58,7 @@ public class ManualControl extends AppCompatActivity {
                 previousSpeed = adjustedSpeed;
                 String degreeSymbol = getString(R.string.degreeSymbol);
                 angleIndicator.setText(adjustedAngle + degreeSymbol);
-                speedometer.speedTo(speed,1);
+                speedometer.speedTo(speedometerSpeed,1);
             }
         });
     }
