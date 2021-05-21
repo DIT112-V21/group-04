@@ -11,8 +11,9 @@ namespace arduino_car{
         bool connect(String hostname, String id, String password) override;
         void subscribe(String topic, int qos) override;
         void publish(String topic, String message) override;
-        void onMessage(std::function<void(String, String)> callback) override;
+        void onMessage(std::function<void(std::string, std::string)> callback) override;
         void begin() override;
+        void setHost() override;
 
     private:
         MQTTClient& mqtt;

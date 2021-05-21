@@ -9,7 +9,7 @@ namespace arduino_car{
         mCar.setSpeed(speed);
     }
 
-    void MagicCar::setAngle(int angle)
+    void SimpleCarWrapper::setAngle(int angle)
     {
         mCar.setAngle(angle);
     }

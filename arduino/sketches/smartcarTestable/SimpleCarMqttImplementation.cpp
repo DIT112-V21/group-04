@@ -1,4 +1,3 @@
-#include <Arduino.h>
 #include "SimpleCarMqttImplementation.h"
 
 //corresponds to ESP32RestServer.cpp
@@ -14,8 +13,8 @@ namespace arduino_car{
         mMqtt.begin();
     }
 
-    void SimpleCarMqttImplementation::onMessage(std::function<void(String, String)> callback) {
-        mMqtt.on(callback);
+    void SimpleCarMqttImplementation::onMessage(std::function<void(std::string, std::string)> callback) {
+        mMqtt.onMessage(callback);
     }
 
     void SimpleCarMqttImplementation::publish(int topic, int message) {
