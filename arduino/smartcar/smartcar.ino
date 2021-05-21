@@ -110,7 +110,11 @@ void loop() {
   }
 #ifdef __SMCE__
   // Avoid over-using the CPU if we are running in the emulator
-  obstacleAvoidance();
+  if (obstacleAvoidance()) {
+         if (autoDriving == 1){
+              autonomousMoving();
+          }
+      }
   delay(35);
 #endif
 }
@@ -125,17 +129,13 @@ boolean obstacleAvoidance(){
   boolean isBackDetected = backDistanceFromObject < stopDistanceBack && backDistanceFromObject > 1 && (carSpeed < 0);
   
   
-  if (isFrontDetected || isBackDetected){
+  if (isFrontDetected || isBackDetected) {
     sendObstacleDetectedNotification(true);
-    if(autoDriving == 0){
-      car.setSpeed(stoppingSpeed);
-      isObstacleDetected = true;
-    } else {
-      autonomousMoving();
-    }
+    car.setSpeed(stoppingSpeed);
+    isObstacleDetected = true;
   } else {
-      sendObstacleDetectedNotification(false);
-  }  
+    sendObstacleDetectedNotification(false);
+  }
   
   return isObstacleDetected;
 }
