@@ -1,5 +1,6 @@
 #include "MockCar.h"
 #include "MockMQTT.h"
+#include "MockSerial.h"
 #include "SimpleCarController.h"
 #include "gtest/gtest.h"
 
@@ -10,7 +11,8 @@ namespace arduino_car{
     struct SimpleCarControllerTest : public Test {
         MockCar mCar;
         MockMQTT mMQTT;
-        SimpleCarController mSimpleCarController{mCar, mMQTT};
+        MockSerial mSerial;
+        SimpleCarController mSimpleCarController{mCar, mMQTT, mSerial};
     };
 
     struct registerManualControlTest : public Test {
@@ -21,7 +23,8 @@ namespace arduino_car{
 
         MockCar mCar;
         MockMQTT mMQTT;
-        SimpleCarController mSimpleCarController{mCar, mMQTT};
+        MockSerial mSerial;
+        SimpleCarController mSimpleCarController{mCar, mMQTT, mSerial};
 
     };
 
