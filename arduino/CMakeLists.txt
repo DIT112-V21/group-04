@@ -1,5 +1,5 @@
 # Adapted from https://github.com/platisd/reusable-testable-arduino-tutorial
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.15)
 project(arduino)
 
 set(CMAKE_CXX_STANDARD 14)
@@ -35,11 +35,11 @@ else()
 endif()
 
 
-include_directories(.)
-include_directories(sketches/smartcar)
+#include_directories(.)
+#include_directories(sketches/smartcar sketches/smartcarTestable)
 set(simplecar_dir ${CMAKE_CURRENT_SOURCE_DIR}/sketches/smartcarTestable)
 
-add_executable(arduino/sketches/smartcar/smartcar.ino sketches/smartcarTestable/Car.h   sketches/smartcarTestable/SerialImplementation.h sketches/smartcarTestable/SerialImplementation.cpp sketches/smartcarTestable/MQTTinterface.h sketches/smartcarTestable/SimpleCarController.h sketches/smartcarTestable/SimpleCarController.cpp sketches/smartcarTestable/Serial.h sketches/smartcarTestable/SimpleCarWrapper.cpp sketches/smartcarTestable/SimpleCarWrapper.h sketches/smartcarTestable/SimpleCarMQTTwrapper.cpp sketches/smartcarTestable/SimpleCarMQTTwrapper.h test/ut/SimpleCarController_test.cpp test/mocks/MockCar.h test/mocks/MockMQTT.h test/mocks/MockSerial.h)
+#add_executable(arduino/sketches/smartcar/smartcar.ino sketches/smartcarTestable/Car.h sketches/smartcarTestable/SerialImplementation.h sketches/smartcarTestable/SerialImplementation.cpp sketches/smartcarTestable/MQTTinterface.h sketches/smartcarTestable/SimpleCarController.h sketches/smartcarTestable/SimpleCarController.cpp sketches/smartcarTestable/Serial.h sketches/smartcarTestable/SimpleCarWrapper.cpp sketches/smartcarTestable/SimpleCarWrapper.h sketches/smartcarTestable/SimpleCarMqttImplementation.cpp sketches/smartcarTestable/SimpleCarMqttImplementation.h test/ut/SimpleCarController_test.cpp test/mocks/MockCar.h test/mocks/MockMQTT.h test/mocks/MockSerial.h)
 
 enable_testing()
 add_subdirectory(test)
