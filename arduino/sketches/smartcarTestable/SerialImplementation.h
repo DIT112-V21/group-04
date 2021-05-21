@@ -10,6 +10,7 @@ namespace arduino_car{
         SerialImplementation(Serial& serial);
 
         void println(std::string output) override;
+        void println(int output) override;
 
     private:
         Serial& serial;

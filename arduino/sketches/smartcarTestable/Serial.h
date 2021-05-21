@@ -6,6 +6,7 @@ namespace arduino_car{
         virtual ~Serial() = default;
 
         virtual void println(std::string output) = 0;
+        virtual void println(int output) = 0;
     };
 
 }
