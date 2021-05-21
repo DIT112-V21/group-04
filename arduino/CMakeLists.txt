@@ -25,7 +25,7 @@ if(NOT MSVC)
             -Wstrict-aliasing
             -Wall
             -Wextra
-            -Werror
+           
     )
 else()
     add_compile_options(
