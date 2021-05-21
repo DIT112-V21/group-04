@@ -1,3 +1,5 @@
+// joystick adapted from: https://github.com/controlwear/virtual-joystick-android
+// Speedometer adapted from: https://github.com/anastr/SpeedView
 package com.example.medcarapp;
 
 import android.content.Intent;
@@ -8,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.github.anastr.speedviewlib.Gauge;
 import com.github.anastr.speedviewlib.LinearGauge;
 import com.github.anastr.speedviewlib.ProgressiveGauge;
@@ -16,8 +17,7 @@ import io.github.controlwear.virtual.joystick.android.JoystickView;
 import mqttController.CarConnect;
 
 public class ManualControl extends AppCompatActivity {
-    // joystick adapted from: https://github.com/controlwear/virtual-joystick-android
-
+    
     private static final int QOS = 0;
     private static final String TURNING_TOPIC = "/smartcar/control/turning";
     private static final String SPEED_TOPIC = "/smartcar/control/speed";
