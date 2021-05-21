@@ -160,14 +160,10 @@ void autonomousMoving(){
         car.setSpeed(stoppingSpeed);
         delay(500);
         turning(turnLeft);
-        auto frontDistanceFromObject = frontSensorUS.getDistance();
-        boolean isFrontDetected = frontDistanceFromObject < stopDistanceFront && frontDistanceFromObject > 1 && !(carSpeed <= 0);
-        if (isFrontDetected){
-          turning(turnRight);
-          turning(turnRight);
-          frontDistanceFromObject = frontSensorUS.getDistance();
-          isFrontDetected = frontDistanceFromObject < stopDistanceFront && frontDistanceFromObject > 1 && !(carSpeed <= 0);
-          if (isFrontDetected){
+if (obstacleAvoidance()) {
+    turning(turnRight);
+    turning(turnRight);
+    if (obstacleAvoidance()) {
             turning(turnRight);
           }
         }
