@@ -14,12 +14,9 @@ import static org.junit.Assert.*;
 public class IntroductoryActivityTest {
 
     private IntroductoryActivity introductoryActivity;
-    private ServerSelection serverSelection;
 
     @Rule
     public ActivityTestRule<IntroductoryActivity> introductoryActivityActivityTestRule = new ActivityTestRule<>(IntroductoryActivity.class);
-
-    @Rule ActivityTestRule<ServerSelection> serverSelectionActivityTestRule = new ActivityTestRule<>(ServerSelection.class,true,false);
 
     @Before
     public void setUp() throws Exception {

@@ -34,7 +34,7 @@ public class ServerSelection extends AppCompatActivity {
 
     public void serverSelection(){
         String[] serverName, serverDesc;
-        int images[] = {R.drawable.offline,R.drawable.online};
+        int[] images = {R.drawable.offline,R.drawable.online};
         rvServerSelection = findViewById(R.id.rvServerSelection);
 
         serverName = getResources().getStringArray(R.array.serverOption);
