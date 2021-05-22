@@ -60,5 +60,14 @@
         app:layout_constraintTop_toBottomOf="@+id/Introtext"
         tools:itemCount="2" />
 
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/medcarGif"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="260dp"
+        android:src="@drawable/medcar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
