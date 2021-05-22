@@ -1,3 +1,5 @@
+// joystick adapted from: https://github.com/controlwear/virtual-joystick-android
+// Speedometer adapted from: https://github.com/anastr/SpeedView
 package com.example.medcarapp;
 
 import android.content.Intent;
@@ -8,12 +10,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
+import com.github.anastr.speedviewlib.Gauge;
+import com.github.anastr.speedviewlib.LinearGauge;
+import com.github.anastr.speedviewlib.ProgressiveGauge;
 import io.github.controlwear.virtual.joystick.android.JoystickView;
 import mqttController.CarConnect;
 
 public class ManualControl extends AppCompatActivity {
-    // joystick adapted from: https://github.com/controlwear/virtual-joystick-android
-
+    
     private static final int QOS = 0;
     private static final String TURNING_TOPIC = "/smartcar/control/turning";
     private static final String SPEED_TOPIC = "/smartcar/control/speed";
@@ -30,12 +34,10 @@ public class ManualControl extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_control);
         TextView connectionText = (TextView)findViewById(R.id.connectionText);
-
         ImageView carCamera = findViewById(R.id.cameraView);
-
         TextView angleIndicator = (TextView)findViewById(R.id.angleIndicator);
-        TextView speedIndicator = (TextView)findViewById(R.id.speedIndicator);
-
+        ProgressiveGauge speedometer = (ProgressiveGauge) findViewById(R.id.speedometer);
+        createSpeedometer(speedometer);
         autoButton = findViewById(R.id.autonomousDrivingButton);
         boolean shouldSwitch = getIntent().getExtras().getBoolean("Switch server");
         carConnect = new CarConnect(this.getApplicationContext(), carCamera, shouldSwitch, autoButton);
@@ -50,13 +52,13 @@ public class ManualControl extends AppCompatActivity {
             public void onMove(int angle, int strength) {
                 int adjustedAngle = adjustAngle(angle);
                 int adjustedSpeed = adjustSpeed(strength, angle);
+                int speedometerSpeed = speedometerSpeed(strength,angle);
                 turnCar(adjustedSpeed, adjustedAngle, previousAngle, previousSpeed);
                 previousAngle = adjustedAngle;
                 previousSpeed = adjustedSpeed;
-                String percentageSymbol = getString(R.string.percentageSymbol);
                 String degreeSymbol = getString(R.string.degreeSymbol);
-                speedIndicator.setText(adjustedSpeed + percentageSymbol);
                 angleIndicator.setText(adjustedAngle + degreeSymbol);
+                speedometer.speedTo(speedometerSpeed,1);
             }
         });
     }
@@ -84,6 +86,12 @@ public class ManualControl extends AppCompatActivity {
 
         }
         return (int) adjustedSpeed;
+    }
+
+    private int speedometerSpeed (int strength, int angle){
+        double speed;
+            speed = strength*0.6;
+        return (int) speed;
     }
 
     @Override
@@ -124,5 +132,13 @@ public class ManualControl extends AppCompatActivity {
             autoButton.setBackgroundColor(Color.RED);
         }
         carConnect.publish(AUTO_TOPIC, Integer.toString(autoOptions), QOS, null);
+    }
+
+    private void createSpeedometer(ProgressiveGauge speedometer) {
+        speedometer.setMinSpeed(0);
+        speedometer.setMaxSpeed(60);
+        String percentageSymbol = getString(R.string.percentageSymbol);
+        speedometer.setUnit(percentageSymbol);
+        speedometer.setWithTremble(false);
     }
 }
