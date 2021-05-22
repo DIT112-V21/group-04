@@ -2,14 +2,13 @@
 
 #include "Car.h"
 #include "MQTTinterface.h"
-#include "SerialImplementation.h"
 
 //corresponds to MagicCarController.h
 namespace arduino_car{
 
     class SimpleCarController{
     public:
-        SimpleCarController(Car& car, MQTTinterface& mqtt /*Serial& mSerial*/);
+        SimpleCarController(Car& car, MQTTinterface& mqtt);
 
         void registerManualControl();
         //void registerCameraPublishing();
@@ -19,7 +18,6 @@ namespace arduino_car{
     private:
         Car& mCar;
         MQTTinterface& mMQTT;
-        /*Serial& mSerial;*/
     };
 
 }
