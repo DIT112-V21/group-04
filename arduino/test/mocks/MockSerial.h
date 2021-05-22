@@ -1,4 +1,4 @@
-#pragma once
+/*#pragma once
 
 #include "Serial.h"
 #include "gmock/gmock.h"
@@ -12,4 +12,4 @@ namespace arduino_car{
         MOCK_METHOD(void, println, (int output), (override));
         MOCK_METHOD (void, begin, (int beginNumber), (override));
     };
-}
+}*/

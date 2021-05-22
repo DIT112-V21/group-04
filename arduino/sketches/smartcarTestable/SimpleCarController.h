@@ -9,7 +9,7 @@ namespace arduino_car{
 
     class SimpleCarController{
     public:
-        SimpleCarController(Car& car, MQTTinterface& mqtt, Serial& mSerial);
+        SimpleCarController(Car& car, MQTTinterface& mqtt /*Serial& mSerial*/);
 
         void registerManualControl();
         //void registerCameraPublishing();
@@ -19,7 +19,7 @@ namespace arduino_car{
     private:
         Car& mCar;
         MQTTinterface& mMQTT;
-        Serial& mSerial;
+        /*Serial& mSerial;*/
     };
 
 }

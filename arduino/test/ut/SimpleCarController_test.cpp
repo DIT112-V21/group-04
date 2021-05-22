@@ -1,6 +1,6 @@
 #include "MockCar.h"
 #include "MockMQTT.h"
-#include "MockSerial.h"
+//#include "MockSerial.h"
 #include "SimpleCarController.h"
 #include "gtest/gtest.h"
 
@@ -11,8 +11,8 @@ namespace arduino_car{
     struct SimpleCarControllerTest : public Test {
         MockCar mCar;
         MockMQTT mMQTT;
-        MockSerial mSerial;
-        SimpleCarController mSimpleCarController{mCar, mMQTT, mSerial};
+        //MockSerial mSerial;
+        SimpleCarController mSimpleCarController{mCar, mMQTT /*mSerial*/};
     };
 
     struct registerManualControlTest : public Test {
@@ -23,14 +23,15 @@ namespace arduino_car{
 
         MockCar mCar;
         MockMQTT mMQTT;
-        MockSerial mSerial;
-        SimpleCarController mSimpleCarController{mCar, mMQTT, mSerial};
+       // MockSerial mSerial;
+        SimpleCarController mSimpleCarController{mCar, mMQTT/* mSerial*/};
 
     };
 
     TEST_F(SimpleCarControllerTest, registerManualControl_WhenCalled_WillSubscribeToCorrectChannels){ // _F means we dont need to repeat instatiation of all the mocks.
-        EXPECT_CALL(mMQTT, subscribe("/smartcar/switchServer", _)); //Will make sure that the .subscribe method from the mMQTT object is called.
-        EXPECT_CALL(mMQTT, subscribe("/smartcar/control/#", _)); // Underscore is wildcar - wont match particular argument. Test case just checks if endpoint is registered.
+        EXPECT_CALL(mMQTT, connect(_, _, _));
+        //EXPECT_CALL(mMQTT, subscribe("/smartcar/switchServer", _)); //Will make sure that the .subscribe method from the mMQTT object is called.
+        //EXPECT_CALL(mMQTT, subscribe("/smartcar/control/#", _)); // Underscore is wildcar - wont match particular argument. Test case just checks if endpoint is registered.
 
         mSimpleCarController.registerManualControl();
     }
