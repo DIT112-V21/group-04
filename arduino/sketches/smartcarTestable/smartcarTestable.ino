@@ -26,7 +26,7 @@ DifferentialControl control(leftMotor, rightMotor);
 
 SimpleCar car(control);
 arduino_car::SimpleCarWrapper simpleCarWrapper{car};
-arduino_car::SimpleCarMQTTImplementation mqttWrapper{mqtt};
+arduino_car::SimpleCarMqttImplementation mqttWrapper{mqtt};
 arduino_car::SerialImplementation serialWrapper;
 
 arduino_car::SimpleCarController simpleCarController{simpleCarWrapper, mqttWrapper, serialWrapper};

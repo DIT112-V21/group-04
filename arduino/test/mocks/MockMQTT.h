@@ -13,5 +13,7 @@ namespace arduino_car{
         MOCK_METHOD(void, onMessage, (std::function<void(std::string, std::string)> callback), (override));
         MOCK_METHOD(void, begin, (), (override));
         MOCK_METHOD(void, setHost, (std::string ip_address, int portNumber), (override));
+        MOCK_METHOD(bool, connected, (), (override));
+        MOCK_METHOD(void, loop, (), (override));
     };
 }
