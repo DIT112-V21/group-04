@@ -11,6 +11,7 @@
 #include "SimpleCarMqttImplementation.h"
 #include "SimpleCarWrapper.h"
 #include "SimpleCarController.h"
+#include "SerialImplementation.h"
 
 
 #ifndef __SMCE__
@@ -26,8 +27,9 @@ DifferentialControl control(leftMotor, rightMotor);
 SimpleCar car(control);
 arduino_car::SimpleCarWrapper simpleCarWrapper{car};
 arduino_car::SimpleCarMQTTImplementation mqttWrapper{mqtt};
+arduino_car::SerialImplementation serialWrapper;
 
-arduino_car::SimpleCarController simpleCarController{simpleCarWrapper, mqttWrapper};
+arduino_car::SimpleCarController simpleCarController{simpleCarWrapper, mqttWrapper, serialWrapper};
 
 const auto oneSecond = 1UL;
 const auto triggerPin = 6;
@@ -54,30 +56,30 @@ GP2D120 backSensorIR(arduinoRuntime, BACK_PIN);
 std::vector<char> frameBuffer;
 
 void setup() {
-    Serial.begin(9600);
+    serialWrapper.begin(9600);
 #ifdef __SMCE__
     //mqtt.begin("3.138.188.190", 1883, WiFi);
   //mqtt.begin("aerostun.dev", 1883, WiFi);
-  mqtt.begin(WiFi); // Will connect to localhost
+  mqttWrapper.begin(WiFi); // Will connect to localhost
   Camera.begin(QQVGA, RGB888, 15);
   frameBuffer.resize(Camera.width() * Camera.height() * Camera.bytesPerPixel());
 #else
-    mqtt.begin(net);
+    mqttWrapper.begin(net);
 #endif
     simpleCarController.registerManualControl();
     }
 }
 
 void loop() {
-    if (mqtt.connected()) {
-        mqtt.loop();
+    if (mqttWrapper.connected()) {
+        mqttWrapper.loop();
         const auto currentTime = millis();
 #ifdef __SMCE__
         static auto previousTransmission = 0UL;
     if (currentTime - previousTransmission >= oneSecond) {
       previousTransmission = currentTime;
       Camera.readFrame(frameBuffer.data());
-      mqtt.publish("Camera_Stream", frameBuffer.data(), frameBuffer.size(), false, 0);
+      mqttWrapper.publish("Camera_Stream", frameBuffer.data(), frameBuffer.size(), false, 0);
     }
 #endif
     }
@@ -101,7 +103,7 @@ boolean obstacleAvoidance(){
     if (isFrontDetected || isBackDetected){
         sendObstacleDetectedNotification(true);
         if(autoDriving == 0){
-            car.setSpeed(stoppingSpeed);
+            simpleCarWrapper.setSpeed(stoppingSpeed);
             isObstacleDetected = true;
         } else {
             autonomousMoving();
@@ -117,7 +119,7 @@ boolean obstacleAvoidance(){
 void sendObstacleDetectedNotification(boolean shouldSend){
     if (shouldSend){
         if (!isObstacleDetectedPublished){
-            mqtt.publish("/smartcar/obstacle");
+            mqttWrapper.publish("/smartcar/obstacle");
             isObstacleDetectedPublished = true;
         }
     } else {
@@ -126,18 +128,18 @@ void sendObstacleDetectedNotification(boolean shouldSend){
 }
 
 void autonomousMoving(){
-    car.setSpeed(stoppingSpeed);
+    simpleCarWrapper.setSpeed(stoppingSpeed);
     delay(1000);
-    car.setSpeed(-autoSpeed);
+    simpleCarWrapper.setSpeed(-autoSpeed);
     delay(1000);
-    car.setSpeed(stoppingSpeed);
+    simpleCarWrapper.setSpeed(stoppingSpeed);
     delay(1000);
-    car.setSpeed(autoSpeed);
-    car.setAngle(-autoAngle);
+    simpleCarWrapper.setSpeed(autoSpeed);
+    simpleCarWrapper.setAngle(-autoAngle);
     delay(1000);
-    car.setSpeed(stoppingSpeed);
-    car.setAngle(stopAngle);
+    simpleCarWrapper.setSpeed(stoppingSpeed);
+    simpleCarWrapper.setAngle(stopAngle);
     delay(1000);
-    car.setSpeed(autoSpeed);
+    simpleCarWrapper.setSpeed(autoSpeed);
     delay(1000);
 }

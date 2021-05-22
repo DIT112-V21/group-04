@@ -31,7 +31,7 @@ namespace arduino_car{
 
     void SimpleCarController::registerManualControl() {
         if (mMQTT.connect("arduino", "public", "public")) {
-            mSerial.println("GENERAL CONNECTION");
+            SimpleCarController::mSerial.println("GENERAL CONNECTION");
             mMQTT.subscribe("/smartcar/switchServer", 0);
             mMQTT.subscribe("/smartcar/control/#", 0);
             mMQTT.onMessage([&](std::string topic, std::string message) {
@@ -45,9 +45,10 @@ namespace arduino_car{
                 }
                 if (topic == "/smartcar/control/speed" && autoDriving == 0) {
                     carSpeed = std::stoi(message);
-                    if (!(obstacleAvoidance())) {
+                    mCar.setSpeed(carSpeed);
+                   /* if (!(obstacleAvoidance())) {
                         mCar.setSpeed(static_cast<float>(carSpeed));
-                    }
+                    }*/
                 } else if (topic == "/smartcar/control/turning" && autoDriving == 0) {
                     mCar.setAngle(std::stoi(message));
                 } else if (topic == "/smartcar/control/auto") {

@@ -9,8 +9,8 @@ namespace arduino_car{
         {
         }
 
-    void SimpleCarMqttImplementation::begin() {
-        mMqtt.begin();
+    void SimpleCarMqttImplementation::begin(WiFiClient client) {
+        mMqtt.begin(client);
     }
 
     void SimpleCarMqttImplementation::onMessage(std::function<void(std::string, std::string)> callback) {
@@ -30,6 +30,14 @@ namespace arduino_car{
     }
     void SimpleCarMqttImplementation::setHost(std::string ip_address, int portNumber) {
         mMqtt.setHost(ip_address, portNumber);
+    }
+
+    bool SimpleCarMqttImplementation::connected() {
+        return mMqtt.connected();
+    }
+
+    void SimpleCarMqttImplementation::loop() {
+        mMqtt.loop();
     }
 
 
