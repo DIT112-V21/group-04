@@ -1,8 +1,14 @@
-#include <MQTTinterface.h>
-#include <Arduino.h>
+#include "MQTTinterface.h"
 #include <MQTT.h>
 #include <WiFi.h>
+
 //corresponds to ESP32RestServer.h
+
+#ifndef __SMCE__
+WiFiClient net;
+#endif
+
+
 namespace arduino_car{
 
     class SimpleCarMqttImplementation : public MQTTinterface{
@@ -12,9 +18,10 @@ namespace arduino_car{
         bool connect(String hostname, String id, String password) override;
         void subscribe(String topic, int qos) override;
         void publish(String topic, String message) override;
-        void onMessage(std::function<void(std::string, std::string)> callback) override;
-        void begin(WiFiClient client) override;
-        void setHost(std::string ip_address, int portNumber) override;
+        void publish(String topic) override;
+        void onMessage(std::function<void(String, String)> callback) override;
+        void begin() override;
+        void setHost(String ip_address, int portNumber) override;
         bool connected() override;
         void loop() override;
 

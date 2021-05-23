@@ -9,27 +9,32 @@ namespace arduino_car{
         {
         }
 
-    void SimpleCarMqttImplementation::begin(WiFiClient client) {
-        mMqtt.begin(client);
+    void SimpleCarMqttImplementation::begin() {
+        mMqtt.begin(net);
     }
 
-    void SimpleCarMqttImplementation::onMessage(std::function<void(std::string, std::string)> callback) {
-        mMqtt.onMessage(callback);
+    void SimpleCarMqttImplementation::onMessage(std::function<void(String, String)> callBack) {
+        mMqtt.onMessage(callBack);
     }
 
-    void SimpleCarMqttImplementation::publish(int topic, int message) {
-        mMqtt.publish(topic, message);
+    void SimpleCarMqttImplementation::publish(String topic, String message) {
+        mMqtt.publish(topic.c_str(), message.c_str());
     }
 
-    void SimpleCarMqttImplementation::subscribe(int topic, int qos) {
+    void SimpleCarMqttImplementation::publish(String topic) {
+        mMqtt.publish(topic.c_str());
+    }
+
+    void SimpleCarMqttImplementation::subscribe(String topic, int qos) {
         mMqtt.subscribe(topic, qos);
     }
 
-    void SimpleCarMqttImplementation::connect(int hostname, int id, int password) {
-        mMqtt.connect(hostname, id, password);
+    bool SimpleCarMqttImplementation::connect(String hostname, String id, String password) {
+        return mMqtt.connect(hostname.c_str(), id.c_str(), password.c_str());
     }
-    void SimpleCarMqttImplementation::setHost(std::string ip_address, int portNumber) {
-        mMqtt.setHost(ip_address, portNumber);
+
+    void SimpleCarMqttImplementation::setHost(String ip_address, int portNumber) {
+        mMqtt.setHost(ip_address.c_str(), portNumber);
     }
 
     bool SimpleCarMqttImplementation::connected() {

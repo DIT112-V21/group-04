@@ -1,4 +1,5 @@
 #include "SimpleCarController.h"
+
 //corresponds to MagicCarController.cpp
 
 namespace {
@@ -34,7 +35,7 @@ namespace arduino_car{
             //SimpleCarController::mSerial.println("GENERAL CONNECTION");
             mMQTT.subscribe("/smartcar/switchServer", 0);
             mMQTT.subscribe("/smartcar/control/#", 0);
-            mMQTT.onMessage([&](std::string topic, std::string message) {
+            mMQTT.onMessage([&](String topic, String message) {
                 //mSerial.println("Got initial message");
                 if (topic == "/smartcar/switchServer") {
                     //mSerial.println("SWITCHED");
@@ -44,15 +45,15 @@ namespace arduino_car{
                     mMQTT.publish("test", "test");
                 }
                 if (topic == "/smartcar/control/speed" && autoDriving == 0) {
-                    carSpeed = std::stoi(message);
+                    carSpeed = message.toInt().
                     mCar.setSpeed(static_cast<float>(carSpeed));
                    /* if (!(obstacleAvoidance())) {
                         mCar.setSpeed(static_cast<float>(carSpeed));
                     }*/
                 } else if (topic == "/smartcar/control/turning" && autoDriving == 0) {
-                    mCar.setAngle(std::stoi(message));
+                    mCar.setAngle(message.toInt());
                 } else if (topic == "/smartcar/control/auto") {
-                    autoDriving = std::stoi(message);
+                    autoDriving = message.toInt();
                     //mSerial.println(autoDriving);
                     if (autoDriving == 0) {
                         mCar.setSpeed(stoppingSpeed);

@@ -13,9 +13,6 @@
 #include "SimpleCarController.h"
 
 
-#ifndef __SMCE__
-WiFiClient net;
-#endif
 MQTTClient mqtt;
 
 ArduinoRuntime arduinoRuntime;
@@ -62,10 +59,9 @@ void setup() {
   Camera.begin(QQVGA, RGB888, 15);
   frameBuffer.resize(Camera.width() * Camera.height() * Camera.bytesPerPixel());
 #else
-    mqttWrapper.begin(net);
+    mqttWrapper.begin();
 #endif
     simpleCarController.registerManualControl();
-    }
 }
 
 void loop() {
