@@ -39,7 +39,7 @@ public class ManualControl extends AppCompatActivity {
         ProgressiveGauge speedometer = (ProgressiveGauge) findViewById(R.id.speedometer);
         createSpeedometer(speedometer);
         autoButton = findViewById(R.id.autonomousDrivingButton);
-        boolean shouldSwitch = getIntent().getExtras().getBoolean("Switch server");
+        boolean shouldSwitch = getIntent().getExtras().getBoolean(this.getApplicationContext().getString(R.string.switchServer));
         carConnect = new CarConnect(this.getApplicationContext(), carCamera, shouldSwitch, autoButton);
         carConnect.connectToMqttBroker(connectionText);
 
@@ -106,7 +106,7 @@ public class ManualControl extends AppCompatActivity {
 
         carConnect.disconnect(null);
         Intent intent = new Intent(ManualControl.this,MainActivity.class);
-        intent.putExtra("Restrict back", true);
+        intent.putExtra(this.getApplicationContext().getString(R.string.restrictBack), true);
         startActivity(intent);
     }
 

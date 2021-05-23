@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.rule.ActivityTestRule;
 import static androidx.test.espresso.intent.Intents.intended;
@@ -50,7 +51,7 @@ public class ServerSelectionTest {
     public ActivityTestRule<MainActivity> mainActivityActivityTestRule = new ActivityTestRule<>(MainActivity.class,true,false);
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         serverSelection = serverSelectionActivityTestRule.getActivity();
         Intents.init();
     }
@@ -76,7 +77,7 @@ public class ServerSelectionTest {
     }
 
     @Test
-    public void verifyLoadedIds(){
+    public void verifyLoadedElements(){
         View view = serverSelection.findViewById(R.id.rvServerSelection);
         assertNotNull(view);
         view = serverSelection.findViewById(R.id.serverNames);
@@ -85,42 +86,34 @@ public class ServerSelectionTest {
         assertNotNull(view);
         view = serverSelection.findViewById(R.id.serverPic);
         assertNotNull(view);
-    }
-
-    @Test
-    public void verifyImages(){
         onView(withDrawable(R.drawable.logo7));
     }
 
     @Test
     public void checkOfflineSwitch() {
-        //Check if adapter is not null
+        //Check if recyclerview is not null
         final RecyclerView rvServerSelection = serverSelection.findViewById(R.id.rvServerSelection);
         assertNotNull(rvServerSelection);
 
-        //Check adapter images
+        //Check recyclerview images
         onView(withRecyclerView(R.id.rvServerSelection).atPosition(0)).check(matches(hasDescendant(withDrawable(R.drawable.offline))));
 
-        //Check adapter text
+        //Check recyclerview text
         onView(withRecyclerView(R.id.rvServerSelection).atPosition(0)).check(matches(hasDescendant(withText("Offline mode"))));
         onView(withRecyclerView(R.id.rvServerSelection).atPosition(0)).check(matches(hasDescendant(withText("Use within the same department"))));
 
         //Check recyclerview click
-        //onView(withId(R.id.rvServerSelection)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
+        onView(withId(R.id.rvServerSelection)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
 
         /*//Check adapter intent
         Intent intent = new Intent(serverSelection, MainActivity.class);
         intent.putExtra("Switch Server", false);
         mainActivityActivityTestRule.launchActivity(intent);
-        intended(hasComponent(hasClassName(MainActivity.class.getName())));*/
+        intended(hasComponent(MainActivity.class.getName()));*/
     }
 
     @Test
     public void checkOnlineSwitch(){
-        //Check if adapter is not null
-        final RecyclerView rvServerSelection = serverSelection.findViewById(R.id.rvServerSelection);
-        assertNotNull(rvServerSelection);
-
         //Check adapter images
         onView(withRecyclerView(R.id.rvServerSelection).atPosition(1)).check(matches(hasDescendant(withDrawable(R.drawable.online))));
 
@@ -129,11 +122,11 @@ public class ServerSelectionTest {
         onView(withRecyclerView(R.id.rvServerSelection).atPosition(1)).check(matches(hasDescendant(withText("Use from a different department"))));
 
         //Check recyclerview click
-        //onView(withId(R.id.rvServerSelection)).perform(RecyclerViewActions.actionOnItemAtPosition(1,click()));
+        onView(withId(R.id.rvServerSelection)).perform(RecyclerViewActions.actionOnItemAtPosition(1,click()));
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         serverSelection = null;
         Intents.release();
     }

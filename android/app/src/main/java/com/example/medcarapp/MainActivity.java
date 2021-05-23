@@ -51,8 +51,8 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
                     return;
                 } else {
                     Intent intent = new Intent(MainActivity.this, ManualControl.class);
-                    boolean shouldSwitch = getIntent().getExtras().getBoolean("Switch server");
-                    intent.putExtra("Switch server", shouldSwitch);
+                    boolean shouldSwitch = getIntent().getExtras().getBoolean(getApplicationContext().getString(R.string.switchServer));
+                    intent.putExtra(getApplicationContext().getString(R.string.switchServer), shouldSwitch);
                     startActivity(intent);
                 }
             }
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
     @Override
     public void onBackPressed() {
         boolean allowBack;
-        allowBack = getIntent().getExtras().getBoolean("Restrict back");
+        allowBack = getIntent().getExtras().getBoolean(getApplicationContext().getString(R.string.restrictBack));
         if (!allowBack) {
             super.onBackPressed();
         } else {
