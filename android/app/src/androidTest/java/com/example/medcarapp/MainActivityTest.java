@@ -91,7 +91,6 @@ public class MainActivityTest {
         assertNotNull(view);
         view = mainActivity.findViewById(R.id.btnConnect);
         assertNotNull(view);
-        onView(withDrawable(R.drawable.logo7));
     }
 
     @Test

@@ -86,7 +86,6 @@ public class ServerSelectionTest {
         assertNotNull(view);
         view = serverSelection.findViewById(R.id.serverPic);
         assertNotNull(view);
-        onView(withDrawable(R.drawable.logo7));
     }
 
     @Test
