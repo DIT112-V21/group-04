@@ -33,6 +33,10 @@ namespace arduino_car{
         mMqtt.publish(topic.c_str());
     }
 
+    void SimpleCarMqttImplementation::publish(String topic, char* data,  std::vector<char>::size_type size, bool boolean, int qos) {
+        mMqtt.publish(topic.c_str(), data, size, boolean, qos);
+    }
+
     void SimpleCarMqttImplementation::subscribe(String topic, int qos) {
         mMqtt.subscribe(topic, qos);
     }

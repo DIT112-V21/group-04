@@ -1,12 +1,6 @@
 // adapted from https://github.com/platisd/reusable-testable-arduino-tutorial
+#include "StringUtil.h"
 #pragma once
-
-#if defined(ARDUINO)
-#include <Arduino.h>
-#else
-#include <string>
-using String = std::string;
-#endif
 
 namespace arduino_car{
 
