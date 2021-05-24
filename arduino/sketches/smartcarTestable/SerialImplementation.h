@@ -1,5 +1,7 @@
 #include "Serialinterface.h"
 
+#include <Arduino.h>
+
 namespace arduino_car{
 
     class SerialImplementation : public Serialinterface {

@@ -1,6 +1,6 @@
 #pragma once
 
-#if defined(ARDUINO)
+#if defined(ARDUINO) || defined(__SMCE__)
 #include <Arduino.h>
 #else
 #include <string>
