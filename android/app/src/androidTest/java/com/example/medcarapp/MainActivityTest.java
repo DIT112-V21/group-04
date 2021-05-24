@@ -18,6 +18,7 @@ import static android.service.autofill.Validators.not;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.pressBack;
+import static androidx.test.espresso.assertion.PositionAssertions.isCompletelyBelow;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Intents.getIntents;
 import static androidx.test.espresso.intent.Intents.intended;
@@ -93,7 +94,19 @@ public class MainActivityTest {
         assertNotNull(view);
         view = mainActivity.findViewById(R.id.btnConnect);
         assertNotNull(view);
+        view = mainActivity.findViewById(R.id.Introtext);
+        assertNotNull(view);
+        view = mainActivity.findViewById(R.id.btnConnect);
+        assertNotNull(view);
         onView(withTagValue(equalTo(R.drawable.logo7))).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void verifyLayoutPositions(){
+        //Using the top logo as a reference to every other component
+        onView(withId(R.id.Introtext)).check(isCompletelyBelow(withId(R.id.logo)));
+        onView(withId(R.id.rvAvaliableCars)).check(isCompletelyBelow(withId(R.id.logo)));
+        onView(withId(R.id.btnConnect)).check(isCompletelyBelow(withId(R.id.logo)));
     }
 
     @Test

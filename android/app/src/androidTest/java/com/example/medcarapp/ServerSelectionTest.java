@@ -9,6 +9,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.rule.ActivityTestRule;
+
+import static androidx.test.espresso.assertion.PositionAssertions.isCompletelyAbove;
+import static androidx.test.espresso.assertion.PositionAssertions.isCompletelyBelow;
+import static androidx.test.espresso.assertion.PositionAssertions.isPartiallyBelow;
+import static androidx.test.espresso.assertion.PositionAssertions.isPartiallyLeftOf;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.ComponentNameMatchers.hasClassName;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
@@ -91,10 +96,25 @@ public class ServerSelectionTest {
         assertNotNull(view);
         view = serverSelection.findViewById(R.id.serverPic);
         assertNotNull(view);
+        view = serverSelection.findViewById(R.id.Introtext);
+        assertNotNull(view);
+        view = serverSelection.findViewById(R.id.logo);
+        assertNotNull(view);
+        view = serverSelection.findViewById(R.id.btnCredit);
+        assertNotNull(view);
         GifImageView gifImageView = serverSelection.findViewById(R.id.medcarGif);
         assertNotNull(gifImageView);
         onView(withTagValue(equalTo(R.drawable.logo7))).check(matches(isDisplayed()));
         onView(withTagValue(equalTo(R.drawable.medcar))).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void verifyLayoutPositions(){
+        //Using the top logo as a reference to every other component
+        onView(withId(R.id.rvServerSelection)).check(isCompletelyBelow(withId(R.id.logo)));
+        onView(withId(R.id.Introtext)).check(isPartiallyBelow(withId(R.id.logo)));
+        onView(withId(R.id.btnCredit)).check(isPartiallyLeftOf(withId(R.id.logo)));
+        onView(withId(R.id.medcarGif)).check(isCompletelyBelow(withId(R.id.logo)));
     }
 
     @Test

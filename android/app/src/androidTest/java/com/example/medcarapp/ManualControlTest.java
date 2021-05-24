@@ -25,6 +25,7 @@ import static androidx.test.espresso.action.ViewActions.swipeDown;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.action.ViewActions.swipeRight;
 import static androidx.test.espresso.action.ViewActions.swipeUp;
+import static androidx.test.espresso.assertion.PositionAssertions.isCompletelyBelow;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
@@ -77,6 +78,8 @@ public class ManualControlTest {
         assertNotNull(view);
         view = manualControl.findViewById(R.id.cameraView);
         assertNotNull(view);
+        view = manualControl.findViewById(R.id.angleHeader);
+        assertNotNull(view);
         view = manualControl.findViewById(R.id.angleIndicator);
         assertNotNull(view);
         view = manualControl.findViewById(R.id.speedometer);
@@ -86,6 +89,17 @@ public class ManualControlTest {
         view = manualControl.findViewById(R.id.joystickView2);
         assertNotNull(view);
         onView(withTagValue(equalTo(R.drawable.intermission))).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void verifyLayoutPositions(){
+        //Using cameraView as a reference to every other component
+        onView(withId(R.id.speedometer)).check(isCompletelyBelow(withId(R.id.cameraView)));
+        onView(withId(R.id.angleHeader)).check(isCompletelyBelow(withId(R.id.cameraView)));
+        onView(withId(R.id.angleIndicator)).check(isCompletelyBelow(withId(R.id.cameraView)));
+        onView(withId(R.id.joystickView2)).check(isCompletelyBelow(withId(R.id.cameraView)));
+        onView(withId(R.id.autonomousDrivingButton)).check(isCompletelyBelow(withId(R.id.cameraView)));
+        onView(withId(R.id.connectionText)).check(isCompletelyBelow(withId(R.id.cameraView)));
     }
 
     @Test
