@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MQTTinterface.h"
+#include "StringUtil.h"
 #include "gmock/gmock.h"
 
 namespace arduino_car{
