@@ -29,9 +29,11 @@ import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withTagValue;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
@@ -91,6 +93,7 @@ public class MainActivityTest {
         assertNotNull(view);
         view = mainActivity.findViewById(R.id.btnConnect);
         assertNotNull(view);
+        onView(withTagValue(equalTo(R.drawable.logo7))).check(matches(isDisplayed()));
     }
 
     @Test

@@ -3,6 +3,7 @@ package com.example.medcarapp;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.contrib.RecyclerViewActions;
@@ -14,6 +15,7 @@ import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withTagValue;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -29,6 +31,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.*;
 
@@ -86,6 +89,8 @@ public class ServerSelectionTest {
         assertNotNull(view);
         view = serverSelection.findViewById(R.id.serverPic);
         assertNotNull(view);
+        onView(withTagValue(equalTo(R.drawable.logo7))).check(matches(isDisplayed()));
+        onView(withTagValue(equalTo(R.drawable.medcar))).check(matches(isDisplayed()));
     }
 
     @Test

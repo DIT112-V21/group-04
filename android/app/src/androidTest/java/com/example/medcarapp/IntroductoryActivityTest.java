@@ -4,11 +4,17 @@ import android.content.Context;
 import android.view.View;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.rule.ActivityTestRule;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withTagValue;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.*;
 
 public class IntroductoryActivityTest {
@@ -19,7 +25,7 @@ public class IntroductoryActivityTest {
     public ActivityTestRule<IntroductoryActivity> introductoryActivityActivityTestRule = new ActivityTestRule<>(IntroductoryActivity.class);
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         introductoryActivity = introductoryActivityActivityTestRule.getActivity();
         Intents.init();
     }
@@ -31,13 +37,14 @@ public class IntroductoryActivityTest {
     }
 
     @Test
-    public void verifyLoadedIds(){
+    public void verifyLoadedElements(){
         View view = introductoryActivity.findViewById(R.id.logo);
         assertNotNull(view);
+        onView(withTagValue(equalTo(R.drawable.logo7))).check(matches(isDisplayed()));
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         introductoryActivity = null;
         Intents.release();
     }

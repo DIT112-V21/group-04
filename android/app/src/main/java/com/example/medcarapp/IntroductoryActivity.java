@@ -25,6 +25,7 @@ public class IntroductoryActivity extends AppCompatActivity {
         splashAnim = AnimationUtils.loadAnimation(this, R.anim.splash_animation);
 
         image = findViewById(R.id.logo);
+        image.setTag(R.drawable.logo7);
 
         image.setAnimation(splashAnim);
 

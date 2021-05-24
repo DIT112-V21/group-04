@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements Adapter.ItemClickListener {
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         setContentView(R.layout.activity_main);
         carSelection();
         connectButton();
+        loadImage();
     }
 
     public void carSelection(){
@@ -76,6 +78,12 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.TOP,0,0);
         toast.show();
+    }
+
+    public void loadImage(){
+        ImageView mainActivityLogo;
+        mainActivityLogo = (ImageView) findViewById(R.id.logo);
+        mainActivityLogo.setTag(R.drawable.logo7);
     }
 
     @Override
