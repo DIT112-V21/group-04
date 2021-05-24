@@ -1,6 +1,7 @@
 // adapted from https://github.com/platisd/reusable-testable-arduino-tutorial
-#include "StringUtil.h"
 #pragma once
+
+#include "StringUtil.h"
 
 namespace arduino_car{
 

@@ -1,12 +1,7 @@
 #pragma once
 
 #include <functional>
-#if defined(ARDUINO)
-#include <Arduino.h>
-#else
-#include <string>
-using String = std::string;
-#endif
+#include "StringUtil.h"
 
 namespace arduino_car {
 

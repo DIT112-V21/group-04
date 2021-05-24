@@ -3,6 +3,7 @@
 #include "Car.h"
 #include "MQTTinterface.h"
 #include "Serialinterface.h"
+#include "StringUtil.h"
 
 //corresponds to MagicCarController.h
 namespace arduino_car{
