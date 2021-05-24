@@ -30,6 +30,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import pl.droidsonroids.gif.GifImageView;
+
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
@@ -89,6 +91,8 @@ public class ServerSelectionTest {
         assertNotNull(view);
         view = serverSelection.findViewById(R.id.serverPic);
         assertNotNull(view);
+        GifImageView gifImageView = serverSelection.findViewById(R.id.medcarGif);
+        assertNotNull(gifImageView);
         onView(withTagValue(equalTo(R.drawable.logo7))).check(matches(isDisplayed()));
         onView(withTagValue(equalTo(R.drawable.medcar))).check(matches(isDisplayed()));
     }

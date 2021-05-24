@@ -35,6 +35,7 @@ public class ManualControl extends AppCompatActivity {
         setContentView(R.layout.activity_manual_control);
         TextView connectionText = (TextView)findViewById(R.id.connectionText);
         ImageView carCamera = findViewById(R.id.cameraView);
+        carCamera.setTag(R.drawable.intermission);
         TextView angleIndicator = (TextView)findViewById(R.id.angleIndicator);
         ProgressiveGauge speedometer = (ProgressiveGauge) findViewById(R.id.speedometer);
         createSpeedometer(speedometer);

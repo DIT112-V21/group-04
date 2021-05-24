@@ -138,7 +138,6 @@ public class MainActivityTest {
 
     @Test
     public void backToServerSelection(){
-        assertNotNull(mainActivity);
         Espresso.pressBackUnconditionally();
         serverSelectionActivityTestRule.launchActivity(null);
         intended(hasComponent(ServerSelection.class.getName()));
