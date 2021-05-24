@@ -24,36 +24,51 @@ namespace {
 
 namespace arduino_car{
 
-    SimpleCarController::SimpleCarController(Car& car, MQTTinterface& mqtt /*Serial& serial*/)
+    SimpleCarController::SimpleCarController(Car& car, MQTTinterface& mqtt, Serialinterface& serial)
     : mCar{car}
     , mMQTT{mqtt}
-   // , mSerial{serial}
+    , mSerial{serial}
     {}
 
     void SimpleCarController::registerManualControl() {
         if (mMQTT.connect("arduino", "public", "public")) {
-            //SimpleCarController::mSerial.println("GENERAL CONNECTION");
+            mSerial.println("GENERAL CONNECTION");
             mMQTT.subscribe("/smartcar/switchServer", 0);
             mMQTT.subscribe("/smartcar/control/#", 0);
             mMQTT.onMessage([&](String topic, String message) {
-                //mSerial.println("Got initial message");
+                mSerial.println("Got initial message");
                 if (topic == "/smartcar/switchServer") {
-                    //mSerial.println("SWITCHED");
+                    mSerial.println("SWITCHED");
                     mMQTT.setHost("3.138.188.190", 1883);
                     mMQTT.connect("arduino", "public", "public");
                     mMQTT.subscribe("/smartcar/control/#", 0);
                     mMQTT.publish("test", "test");
                 }
                 if (topic == "/smartcar/control/speed" && autoDriving == 0) {
-                    carSpeed = message.toInt().
+                    #if defined(ARDUINO)
+                    #include <Arduino.h>
+                        carSpeed = message.toInt();
+                    #else
+                        carSpeed = std::stoi(message);
+                    #endif
                     mCar.setSpeed(static_cast<float>(carSpeed));
                    /* if (!(obstacleAvoidance())) {
                         mCar.setSpeed(static_cast<float>(carSpeed));
                     }*/
                 } else if (topic == "/smartcar/control/turning" && autoDriving == 0) {
-                    mCar.setAngle(message.toInt());
+                    #if defined(ARDUINO)
+                    #include <Arduino.h>
+                        mCar.setAngle(message.toInt());
+                    #else
+                        mCar.setAngle(std::stoi(message));
+                    #endif
                 } else if (topic == "/smartcar/control/auto") {
-                    autoDriving = message.toInt();
+                    #if defined(ARDUINO)
+                    #include <Arduino.h>
+                        autoDriving = message.toInt();
+                    #else
+                    autoDriving = std::stoi(message);
+                    #endif
                     //mSerial.println(autoDriving);
                     if (autoDriving == 0) {
                         mCar.setSpeed(stoppingSpeed);
@@ -64,7 +79,7 @@ namespace arduino_car{
                         carSpeed = autoSpeed;
                     }
                 } else {
-                    //mSerial.println(topic + " " + message);
+                    mSerial.println(topic + " " + message);
                 }
             });
         }

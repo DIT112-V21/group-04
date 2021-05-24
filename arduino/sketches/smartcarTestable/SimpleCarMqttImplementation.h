@@ -4,9 +4,6 @@
 
 //corresponds to ESP32RestServer.h
 
-#ifndef __SMCE__
-WiFiClient net;
-#endif
 
 
 namespace arduino_car{

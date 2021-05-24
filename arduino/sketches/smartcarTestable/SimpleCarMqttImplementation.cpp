@@ -2,6 +2,10 @@
 
 //corresponds to ESP32RestServer.cpp
 
+#ifndef __SMCE__
+WiFiClient net;
+#endif
+
 namespace arduino_car{
 
     SimpleCarMqttImplementation::SimpleCarMqttImplementation(MQTTClient& mqtt)
@@ -10,7 +14,11 @@ namespace arduino_car{
         }
 
     void SimpleCarMqttImplementation::begin() {
-        mMqtt.begin(net);
+        #ifdef __SMCE__
+            mMqtt.begin(WiFi); // Will connect to localhost
+        #else
+            mMqtt.begin(net);
+        #endif
     }
 
     void SimpleCarMqttImplementation::onMessage(std::function<void(String, String)> callBack) {

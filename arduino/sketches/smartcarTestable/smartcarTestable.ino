@@ -11,6 +11,7 @@
 #include "SimpleCarMqttImplementation.h"
 #include "SimpleCarWrapper.h"
 #include "SimpleCarController.h"
+#include "SerialImplementation.h"
 
 
 MQTTClient mqtt;
@@ -23,8 +24,9 @@ DifferentialControl control(leftMotor, rightMotor);
 SimpleCar car(control);
 arduino_car::SimpleCarWrapper simpleCarWrapper{car};
 arduino_car::SimpleCarMqttImplementation mqttWrapper{mqtt};
+arduino_car::SerialImplementation serialWrapper;
 
-arduino_car::SimpleCarController simpleCarController{simpleCarWrapper, mqttWrapper};
+arduino_car::SimpleCarController simpleCarController{simpleCarWrapper, mqttWrapper, serialWrapper};
 
 const auto oneSecond = 1UL;
 const auto triggerPin = 6;
@@ -51,11 +53,11 @@ GP2D120 backSensorIR(arduinoRuntime, BACK_PIN);
 std::vector<char> frameBuffer;
 
 void setup() {
-    Serial.begin(9600);
+    serialWrapper.begin(9600);
 #ifdef __SMCE__
     //mqtt.begin("3.138.188.190", 1883, WiFi);
   //mqtt.begin("aerostun.dev", 1883, WiFi);
-  mqttWrapper.begin(WiFi); // Will connect to localhost
+  mqttWrapper.begin(); // Will connect to localhost
   Camera.begin(QQVGA, RGB888, 15);
   frameBuffer.resize(Camera.width() * Camera.height() * Camera.bytesPerPixel());
 #else
