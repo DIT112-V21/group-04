@@ -4,6 +4,7 @@
 #include "MQTTinterface.h"
 #include "Serialinterface.h"
 #include "StringUtil.h"
+#include "DistanceSensorInterface.h"
 
 //corresponds to MagicCarController.h
 
@@ -33,10 +34,12 @@ namespace arduino_car{
 
     class SimpleCarController{
     public:
-        SimpleCarController(Car& car, MQTTinterface& mqtt, Serialinterface& serial)
+        SimpleCarController(Car& car, MQTTinterface& mqtt, Serialinterface& serial, DistanceSensorInterface& frontUSsensor, DistanceSensorInterface& backIRSensor)
         : mCar{car}
         , mMQTT{mqtt}
         , mSerial{serial}
+        , mFrontSensor{frontUSsensor}
+        , mBackSensor{backIRSensor}
         {}
 
         void registerManualControl() {
@@ -97,8 +100,8 @@ namespace arduino_car{
         bool registerObstacleAvoidance(){
             bool isObstacleDetected = false;
 
-            auto frontDistanceFromObject = frontSensorUS.getDistance();
-            auto backDistanceFromObject = backSensorIR.getDistance();
+            auto frontDistanceFromObject = mFrontSensor.getDistance();
+            auto backDistanceFromObject = mBackSensor.getDistance();
 
             bool isFrontDetected = frontDistanceFromObject < stopDistanceFront && frontDistanceFromObject > 1 && (carSpeed > 0);
             bool isBackDetected = backDistanceFromObject < stopDistanceBack && backDistanceFromObject > 1 && (carSpeed < 0);
@@ -174,6 +177,8 @@ namespace arduino_car{
         Car& mCar;
         MQTTinterface& mMQTT;
         Serialinterface& mSerial;
+        DistanceSensorInterface& mFrontSensor;
+        DistanceSensorInterface& mBackSensor;
     };
 
 }

@@ -12,6 +12,8 @@
 #include "SimpleCarWrapper.h"
 #include "SimpleCarController.h"
 #include "SerialImplementation.h"
+#include "FrontDistanceSensorImplementation.h"
+#include "BackDistanceSensorImplementation.h"
 
 
 MQTTClient mqtt;
@@ -23,11 +25,16 @@ DifferentialControl control(leftMotor, rightMotor);
 
 SimpleCar car(control);
 
+SR04 frontSensorUS(arduinoRuntime, triggerPin, echoPin, maxDistance);
+GP2D120 backSensorIR(arduinoRuntime, BACK_PIN);
+
 arduino_car::SimpleCarWrapper simpleCarWrapper(car);
 arduino_car::SimpleCarMqttImplementation mqttWrapper(mqtt);
 arduino_car::SerialImplementation serialWrapper;
+arduino_car::FrontDistanceSensorImplementation frontUsSensorWrapper(frontSensorUS);
+arduino_car::BackDistanceSensorImplementation backIrSensorWrapper(backSensorIR);
 
-arduino_car::SimpleCarController simpleCarController(simpleCarWrapper, mqttWrapper, serialWrapper);
+arduino_car::SimpleCarController simpleCarController(simpleCarWrapper, mqttWrapper, serialWrapper, frontSensorUS, backSensorIR);
 
 /*const auto oneSecond = 1UL;
 const auto triggerPin = 6;
