@@ -55,7 +55,7 @@ set(mocks ${CMAKE_CURRENT_SOURCE_DIR}/mocks)
 
 # SmartCar test
 add_executable(simplecarcontroller_test
-        ${simplecar_dir}/SimpleCarController.cpp
+        ${simplecar_dir}/SimpleCarController.h
         ${unit_tests}/SimpleCarController_test.cpp)
 target_include_directories(simplecarcontroller_test PUBLIC
         ${simplecar_dir}

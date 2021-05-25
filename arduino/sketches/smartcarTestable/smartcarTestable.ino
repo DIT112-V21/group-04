@@ -22,13 +22,14 @@ BrushedMotor rightMotor(arduinoRuntime, smartcarlib::pins::v2::rightMotorPins);
 DifferentialControl control(leftMotor, rightMotor);
 
 SimpleCar car(control);
-arduino_car::SimpleCarWrapper simpleCarWrapper{car};
-arduino_car::SimpleCarMqttImplementation mqttWrapper{mqtt};
+
+arduino_car::SimpleCarWrapper simpleCarWrapper(car);
+arduino_car::SimpleCarMqttImplementation mqttWrapper(mqtt);
 arduino_car::SerialImplementation serialWrapper;
 
-arduino_car::SimpleCarController simpleCarController{simpleCarWrapper, mqttWrapper, serialWrapper};
+arduino_car::SimpleCarController simpleCarController(simpleCarWrapper, mqttWrapper, serialWrapper);
 
-const auto oneSecond = 1UL;
+/*const auto oneSecond = 1UL;
 const auto triggerPin = 6;
 const auto echoPin = 7;
 const auto maxDistance = 400;
@@ -44,7 +45,7 @@ const int autoSpeed = 60;
 const int autoAngle = 90;
 int autoDriving = 0;
 int carSpeed = 0;
-boolean isObstacleDetectedPublished = false; //keeps track of when an obstacle has been detected message is published to mqtt
+boolean isObstacleDetectedPublished = false; *///keeps track of when an obstacle has been detected message is published to mqtt
 
 
 SR04 frontSensorUS(arduinoRuntime, triggerPin, echoPin, maxDistance);

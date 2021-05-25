@@ -8,10 +8,16 @@ namespace arduino_car{
 
     class SimpleCarWrapper : public Car {
     public:
-        SimpleCarWrapper(SimpleCar& car);
+        SimpleCarWrapper(SimpleCar &car)
+        : mCar{car} {}
 
-        void setSpeed(float speed) override;
-        void setAngle(int angle) override;
+        void setSpeed(float speed) override {
+            mCar.setSpeed(speed);
+        }
+
+        void setAngle(int angle) override {
+            mCar.setAngle(angle);
+        }
         //void update() override;
         //int getHeading() override;
 
