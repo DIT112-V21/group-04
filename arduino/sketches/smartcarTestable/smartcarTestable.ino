@@ -34,7 +34,7 @@ arduino_car::SerialImplementation serialWrapper;
 arduino_car::FrontDistanceSensorImplementation frontUsSensorWrapper(frontSensorUS);
 arduino_car::BackDistanceSensorImplementation backIrSensorWrapper(backSensorIR);
 
-arduino_car::SimpleCarController simpleCarController(simpleCarWrapper, mqttWrapper, serialWrapper, frontSensorUS, backSensorIR);
+arduino_car::SimpleCarController simpleCarController(simpleCarWrapper, mqttWrapper, serialWrapper, frontUsSensorWrapper, backIrSensorWrapper);
 
 /*const auto oneSecond = 1UL;
 const auto triggerPin = 6;
@@ -53,10 +53,6 @@ const int autoAngle = 90;
 int autoDriving = 0;
 int carSpeed = 0;
 boolean isObstacleDetectedPublished = false; *///keeps track of when an obstacle has been detected message is published to mqtt
-
-
-SR04 frontSensorUS(arduinoRuntime, triggerPin, echoPin, maxDistance);
-GP2D120 backSensorIR(arduinoRuntime, BACK_PIN);
 
 std::vector<char> frameBuffer;
 

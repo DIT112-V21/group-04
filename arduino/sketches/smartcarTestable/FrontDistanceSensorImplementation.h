@@ -8,12 +8,12 @@ namespace arduino_car{
     class FrontDistanceSensorImplementation : public DistanceSensorInterface{
 
     public:
-        FrontDistanceSensorImplementation(SRO4& frontSensorUS)
+        FrontDistanceSensorImplementation(SR04& frontSensorUS)
         : mFrontSensor{frontSensorUS}
         {}
 
         unsigned int getDistance() override{
-            mFrontSensor.getDistance()
+            mFrontSensor.getDistance();
         }
 
     private:
