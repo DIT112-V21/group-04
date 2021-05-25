@@ -6,13 +6,13 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
-
 import androidx.annotation.DrawableRes;
-
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
 
-//Referenced by https://riptutorial.com/android/example/15712/espresso-custom-matchers
+/**
+ * Referenced by https://riptutorial.com/android/example/15712/espresso-custom-matchers
+ */
 
 public class DrawableMatcher extends TypeSafeMatcher<View> {
 
