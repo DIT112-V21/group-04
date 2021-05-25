@@ -60,6 +60,23 @@ namespace arduino_car{
         mCallBack("/smartcar/switchServer", "message");
     }
 
+    TEST_F(RegisterManualControlTest, registerManualControl_WhenCalledAndReceivesSpeedTopic_WillAdjustTheCarSpeed){
+        carSpeed = 40;
+        autoDriving = 0;
+        EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(110));
+        EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(10)); // Test still passes when this value is set to 10. This is because the speed is set to a positive value, hence an obstacle avoidance for the back would not trigger.
+        EXPECT_CALL(mCar, setSpeed(static_cast<float>(carSpeed)));
+
+
+        mCallBack("/smartcar/control/speed", "40");
+    }
+
+    //TODO: Add test to check that the car's angle can be adjusted
+    //TODO: Add test to check that car stops if obstacle detected in front
+    //TODO: Add test to check that car stops if obstacle detected in back
+    //TODO: Add test to check that car can move back if obstacle detected in front
+    //TODO: Add test to check that car can move forward if obstacle detected in back
+
 
 
 
