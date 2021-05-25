@@ -60,10 +60,9 @@ namespace arduino_car{
                         #else
                             carSpeed = std::stoi(message);
                         #endif
-                        mCar.setSpeed(static_cast<float>(carSpeed));
-                        /* if (!(obstacleAvoidance())) {
-                             mCar.setSpeed(static_cast<float>(carSpeed));
-                         }*/
+                        if (!(registerObstacleAvoidance())) {
+                            mCar.setSpeed(static_cast<float>(carSpeed));
+                        }
                     } else if (topic == "/smartcar/control/turning" && autoDriving == 0) {
                         #if defined(ARDUINO) || defined(__SMCE__)
                             #include <Arduino.h>
@@ -94,9 +93,82 @@ namespace arduino_car{
             }
 
         }
+
+        bool registerObstacleAvoidance(){
+            bool isObstacleDetected = false;
+
+            auto frontDistanceFromObject = frontSensorUS.getDistance();
+            auto backDistanceFromObject = backSensorIR.getDistance();
+
+            bool isFrontDetected = frontDistanceFromObject < stopDistanceFront && frontDistanceFromObject > 1 && (carSpeed > 0);
+            bool isBackDetected = backDistanceFromObject < stopDistanceBack && backDistanceFromObject > 1 && (carSpeed < 0);
+
+
+            if (isFrontDetected || isBackDetected) {
+                registerSendObstacleDetectedNotification(true);
+                mCar.setSpeed(stoppingSpeed);
+                isObstacleDetected = true;
+            } else {
+                registerSendObstacleDetectedNotification(false);
+            }
+
+            return isObstacleDetected;
+        }
+
+        void registerSendObstacleDetectedNotification(bool shouldSend){
+            if (shouldSend){
+                if (!isObstacleDetectedPublished){
+                    mMQTT.publish("/smartcar/obstacle");
+                    isObstacleDetectedPublished = true;
+                }
+            } else {
+                isObstacleDetectedPublished = false;
+            }
+        }
+
+        void registerAutonomousMoving(){
+            mCar.setSpeed(stoppingSpeed);
+            #if defined(ARDUINO) || defined(__SMCE__)
+                #include <Arduino.h>
+                delay(500);
+            #endif
+            mCar.setSpeed(-autoSpeed);
+            #if defined(ARDUINO) || defined(__SMCE__)
+                #include <Arduino.h>
+                delay(500);
+            #endif
+            mCar.setSpeed(stoppingSpeed);
+            #if defined(ARDUINO) || defined(__SMCE__)
+                #include <Arduino.h>
+                delay(500);
+            #endif
+            registerTurning(turnLeft);
+            if (registerObstacleAvoidance()) {
+                registerTurning(turnRight);
+                registerTurning(turnRight);
+                if (registerObstacleAvoidance()) {
+                    registerTurning(turnRight);
+                }
+            }
+            mCar.setSpeed(autoSpeed);
+        }
+
+        void registerTurning(int direction){
+            mCar.setSpeed(autoSpeed);
+            mCar.setAngle(direction*autoAngle);
+            #if defined(ARDUINO) || defined(__SMCE__)
+                #include <Arduino.h>
+                delay(2000);
+            #endif
+            mCar.setSpeed(stoppingSpeed);
+            mCar.setAngle(stopAngle);
+            #if defined(ARDUINO) || defined(__SMCE__)
+                #include <Arduino.h>
+                delay(500);
+            #endif
+        }
+
         //void registerCameraPublishing();
-        //void registerAutoDriving();
-       // bool registerObstacleAvoidance();
 
     private:
         Car& mCar;

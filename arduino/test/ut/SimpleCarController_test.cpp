@@ -48,10 +48,10 @@ namespace arduino_car{
     }
 
     TEST_F(RegisterManualControlTest, registerManualControl_WhenCalledAndRecievesSwitchServerMessage_MqttWillSetHostAndReconnectAndSubscribeToMqtt){
-        EXPECT_CALL(mMQTT, connect(_, _, _)).WillRepeatedly(Return(true));
         EXPECT_CALL(mMQTT, setHost(_, _));
+        EXPECT_CALL(mMQTT, connect(_, _, _)).WillOnce(Return(true));
         EXPECT_CALL(mMQTT, subscribe("/smartcar/control/#", _));
-
+        
         mCallBack("/smartcar/switchServer", "message");
     }
 

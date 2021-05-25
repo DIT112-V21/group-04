@@ -82,71 +82,15 @@ void loop() {
     }
 #ifdef __SMCE__
     // Avoid over-using the CPU if we are running in the emulator
-  if (obstacleAvoidance()) {
+  if (simpleCarController.registerObstacleAvoidance()) {
          if (autoDriving == 1){
-              autonomousMoving();
+              simpleCarController.registerAutonomousMoving();
           }
       }
   delay(35);
 #endif
 }
 
-boolean obstacleAvoidance(){
-    boolean isObstacleDetected = false;
-
-    auto frontDistanceFromObject = frontSensorUS.getDistance();
-    auto backDistanceFromObject = backSensorIR.getDistance();
-
-    boolean isFrontDetected = frontDistanceFromObject < stopDistanceFront && frontDistanceFromObject > 1 && (carSpeed > 0);
-    boolean isBackDetected = backDistanceFromObject < stopDistanceBack && backDistanceFromObject > 1 && (carSpeed < 0);
 
 
-    if (isFrontDetected || isBackDetected) {
-        sendObstacleDetectedNotification(true);
-        car.setSpeed(stoppingSpeed);
-        isObstacleDetected = true;
-    } else {
-        sendObstacleDetectedNotification(false);
-    }
 
-    return isObstacleDetected;
-}
-
-
-void sendObstacleDetectedNotification(boolean shouldSend){
-    if (shouldSend){
-        if (!isObstacleDetectedPublished){
-            mqttWrapper.publish("/smartcar/obstacle");
-            isObstacleDetectedPublished = true;
-        }
-    } else {
-        isObstacleDetectedPublished = false;
-    }
-}
-
-void autonomousMoving(){
-    car.setSpeed(stoppingSpeed);
-    delay(500);
-    car.setSpeed(-autoSpeed);
-    delay(500);
-    car.setSpeed(stoppingSpeed);
-    delay(500);
-    turning(turnLeft);
-    if (obstacleAvoidance()) {
-        turning(turnRight);
-        turning(turnRight);
-        if (obstacleAvoidance()) {
-            turning(turnRight);
-        }
-    }
-    car.setSpeed(autoSpeed);
-}
-
-void turning(int direction){
-    car.setSpeed(autoSpeed);
-    car.setAngle(direction*autoAngle);
-    delay(2000);
-    car.setSpeed(stoppingSpeed);
-    car.setAngle(stopAngle);
-    delay(500);
-}
