@@ -10,7 +10,9 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withTagValue;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import org.junit.After;
 import org.junit.Before;
@@ -24,13 +26,11 @@ public class IntroductoryActivityTest {
 
     private IntroductoryActivity introductoryActivity;
 
-    private ServerSelection serverSelection;
-
     @Rule
     public ActivityTestRule<IntroductoryActivity> introductoryActivityActivityTestRule = new ActivityTestRule<>(IntroductoryActivity.class);
 
     @Rule
-    public ActivityTestRule<ServerSelection> serverSelectionActivityTestRule = new ActivityTestRule<ServerSelection>(ServerSelection.class,true, false);
+    public ActivityTestRule<ServerSelection> serverSelectionActivityTestRule = new ActivityTestRule<>(ServerSelection.class, true, false);
 
     @Before
     public void setUp() {
@@ -56,6 +56,8 @@ public class IntroductoryActivityTest {
         Intent intent = new Intent(getInstrumentation().getTargetContext(),ServerSelection.class);
         serverSelectionActivityTestRule.launchActivity(intent);
         intended(hasComponent(ServerSelection.class.getName()));
+        onView(withId(R.id.logo)).check(matches(isDisplayed()));
+        onView(withId(R.id.Introtext)).check(matches(withText(R.string.chooseServerText)));
     }
 
     @After
