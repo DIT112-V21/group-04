@@ -1,21 +1,15 @@
 package com.example.medcarapp;
 
+import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
 import android.view.View;
-import android.widget.ImageView;
-
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.rule.ActivityTestRule;
-
-import static androidx.test.espresso.assertion.PositionAssertions.isCompletelyAbove;
 import static androidx.test.espresso.assertion.PositionAssertions.isCompletelyBelow;
 import static androidx.test.espresso.assertion.PositionAssertions.isPartiallyBelow;
 import static androidx.test.espresso.assertion.PositionAssertions.isPartiallyLeftOf;
-import static androidx.test.espresso.intent.Intents.intended;
-import static androidx.test.espresso.intent.matcher.ComponentNameMatchers.hasClassName;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -25,9 +19,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.Espresso.onData;
-import static org.hamcrest.Matchers.anyOf;
-import static org.hamcrest.Matchers.anything;
 
 import org.hamcrest.Matcher;
 import org.junit.After;
@@ -39,13 +30,11 @@ import pl.droidsonroids.gif.GifImageView;
 
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.*;
 
 public class ServerSelectionTest {
 
     private ServerSelection serverSelection;
-    private MainActivity mainActivity;
     public static Matcher<View> withDrawable(final int resourceId) {
         return new DrawableMatcher(resourceId);
     }
@@ -56,9 +45,6 @@ public class ServerSelectionTest {
 
     @Rule
     public ActivityTestRule<ServerSelection> serverSelectionActivityTestRule = new ActivityTestRule<>(ServerSelection.class);
-
-    @Rule
-    public ActivityTestRule<MainActivity> mainActivityActivityTestRule = new ActivityTestRule<>(MainActivity.class,true,false);
 
     @Before
     public void setUp() {
@@ -133,24 +119,28 @@ public class ServerSelectionTest {
         //Check recyclerview click
         onView(withId(R.id.rvServerSelection)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
 
-        /*//Check adapter intent
-        Intent intent = new Intent(serverSelection, MainActivity.class);
-        intent.putExtra("Switch Server", false);
-        mainActivityActivityTestRule.launchActivity(intent);
-        intended(hasComponent(MainActivity.class.getName()));*/
+        //Check intents
+        Intents.intended(hasComponent(new ComponentName(getInstrumentation().getTargetContext(),MainActivity.class)));
+        onView(withId(R.id.logo)).check(matches(isDisplayed()));
+        onView(withId(R.id.Introtext)).check(matches(withText(R.string.chooseCarFromListInstruction)));
     }
 
     @Test
     public void checkOnlineSwitch(){
-        //Check adapter images
+        //Check recyclerview images
         onView(withRecyclerView(R.id.rvServerSelection).atPosition(1)).check(matches(hasDescendant(withDrawable(R.drawable.online))));
 
-        //Check adapter text
+        //Check recyclerview text
         onView(withRecyclerView(R.id.rvServerSelection).atPosition(1)).check(matches(hasDescendant(withText("Online mode"))));
         onView(withRecyclerView(R.id.rvServerSelection).atPosition(1)).check(matches(hasDescendant(withText("Use from a different department"))));
 
         //Check recyclerview click
         onView(withId(R.id.rvServerSelection)).perform(RecyclerViewActions.actionOnItemAtPosition(1,click()));
+
+        //Check intents
+        Intents.intended(hasComponent(new ComponentName(getInstrumentation().getTargetContext(),MainActivity.class)));
+        onView(withId(R.id.logo)).check(matches(isDisplayed()));
+        onView(withId(R.id.Introtext)).check(matches(withText(R.string.chooseCarFromListInstruction)));
     }
 
     @After

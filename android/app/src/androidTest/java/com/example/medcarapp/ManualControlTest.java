@@ -1,19 +1,12 @@
 package com.example.medcarapp;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.view.View;
-import android.widget.TextView;
 import androidx.test.espresso.Espresso;
-import androidx.test.espresso.UiController;
-import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.intent.Intents;
-import androidx.test.espresso.matcher.BoundedMatcher;
 import androidx.test.rule.ActivityTestRule;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -27,24 +20,18 @@ import static androidx.test.espresso.action.ViewActions.swipeRight;
 import static androidx.test.espresso.action.ViewActions.swipeUp;
 import static androidx.test.espresso.assertion.PositionAssertions.isCompletelyBelow;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
-import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withTagValue;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
 public class ManualControlTest {
 
     private ManualControl manualControl;
-
-    private MainActivity mainActivity;
 
     @Rule
     public ActivityTestRule<ManualControl> manualControlActivityTestRule = new ActivityTestRule<ManualControl>(ManualControl.class) {
@@ -56,9 +43,6 @@ public class ManualControlTest {
             return result;
         }
     };
-
-    @Rule
-    public ActivityTestRule<MainActivity> mainActivityActivityTestRule = new ActivityTestRule<>(MainActivity.class,true,false);
 
     @Before
     public void setUp() {
@@ -127,9 +111,10 @@ public class ManualControlTest {
 
     @Test
     public void onBackPressed() {
-        /*Espresso.pressBackUnconditionally();
-        mainActivityActivityTestRule.launchActivity(null);
-        intended(hasComponent(MainActivity.class.getName()));*/
+        Espresso.pressBackUnconditionally();
+        Intents.intended(hasComponent(new ComponentName(getInstrumentation().getTargetContext(),MainActivity.class)));
+        onView(withId(R.id.logo)).check(matches(isDisplayed()));
+        onView(withId(R.id.Introtext)).check(matches(withText(R.string.chooseCarFromListInstruction)));
     }
 
     @After

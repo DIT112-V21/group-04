@@ -11,7 +11,7 @@ import android.widget.ImageView;
 
 public class IntroductoryActivity extends AppCompatActivity {
 
-    private static int SPLASH_DURATION = 5000;
+    private static final int SPLASH_DURATION = 5000;
 
     Animation splashAnim;
     ImageView image;
@@ -29,13 +29,10 @@ public class IntroductoryActivity extends AppCompatActivity {
 
         image.setAnimation(splashAnim);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(IntroductoryActivity.this, ServerSelection.class);
-                startActivity(intent);
-                finish();
-            }
+        new Handler().postDelayed(() -> {
+            Intent intent = new Intent(IntroductoryActivity.this, ServerSelection.class);
+            startActivity(intent);
+            finish();
         }, SPLASH_DURATION);
     }
 }
