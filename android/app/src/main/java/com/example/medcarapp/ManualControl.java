@@ -10,8 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
-import com.github.anastr.speedviewlib.Gauge;
-import com.github.anastr.speedviewlib.LinearGauge;
 import com.github.anastr.speedviewlib.ProgressiveGauge;
 import io.github.controlwear.virtual.joystick.android.JoystickView;
 import mqttController.CarConnect;
