@@ -20,8 +20,10 @@ namespace {
     const auto stopDistanceFront = 80;
     const auto stopDistanceBack = 100;
     const int stopAngle = 0;
-    const int autoSpeed = 60;
+    const int autoSpeed = 65;
     const int autoAngle = 90;
+    const int turnRight = 1;
+    const int turnLeft = -1;
     int autoDriving = 0;
     int carSpeed = 0;
     bool isObstacleDetectedPublished = false; //keeps track of when an obstacle has been detected message is published to mqtt

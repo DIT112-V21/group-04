@@ -82,7 +82,11 @@ void loop() {
     }
 #ifdef __SMCE__
     // Avoid over-using the CPU if we are running in the emulator
-  obstacleAvoidance();
+  if (obstacleAvoidance()) {
+         if (autoDriving == 1){
+              autonomousMoving();
+          }
+      }
   delay(35);
 #endif
 }
@@ -97,14 +101,10 @@ boolean obstacleAvoidance(){
     boolean isBackDetected = backDistanceFromObject < stopDistanceBack && backDistanceFromObject > 1 && (carSpeed < 0);
 
 
-    if (isFrontDetected || isBackDetected){
+    if (isFrontDetected || isBackDetected) {
         sendObstacleDetectedNotification(true);
-        if(autoDriving == 0){
-            simpleCarWrapper.setSpeed(stoppingSpeed);
-            isObstacleDetected = true;
-        } else {
-            autonomousMoving();
-        }
+        car.setSpeed(stoppingSpeed);
+        isObstacleDetected = true;
     } else {
         sendObstacleDetectedNotification(false);
     }
@@ -125,18 +125,28 @@ void sendObstacleDetectedNotification(boolean shouldSend){
 }
 
 void autonomousMoving(){
-    simpleCarWrapper.setSpeed(stoppingSpeed);
-    delay(1000);
-    simpleCarWrapper.setSpeed(-autoSpeed);
-    delay(1000);
-    simpleCarWrapper.setSpeed(stoppingSpeed);
-    delay(1000);
-    simpleCarWrapper.setSpeed(autoSpeed);
-    simpleCarWrapper.setAngle(-autoAngle);
-    delay(1000);
-    simpleCarWrapper.setSpeed(stoppingSpeed);
-    simpleCarWrapper.setAngle(stopAngle);
-    delay(1000);
-    simpleCarWrapper.setSpeed(autoSpeed);
-    delay(1000);
+    car.setSpeed(stoppingSpeed);
+    delay(500);
+    car.setSpeed(-autoSpeed);
+    delay(500);
+    car.setSpeed(stoppingSpeed);
+    delay(500);
+    turning(turnLeft);
+    if (obstacleAvoidance()) {
+        turning(turnRight);
+        turning(turnRight);
+        if (obstacleAvoidance()) {
+            turning(turnRight);
+        }
+    }
+    car.setSpeed(autoSpeed);
+}
+
+void turning(int direction){
+    car.setSpeed(autoSpeed);
+    car.setAngle(direction*autoAngle);
+    delay(2000);
+    car.setSpeed(stoppingSpeed);
+    car.setAngle(stopAngle);
+    delay(500);
 }
