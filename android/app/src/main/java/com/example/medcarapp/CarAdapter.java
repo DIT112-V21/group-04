@@ -13,14 +13,14 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
+public class CarAdapter extends RecyclerView.Adapter<CarAdapter.ViewHolder> {
 
     String names[], desc[];
     Context context;
     int row_index = -1;
     private ItemClickListener enableItemClickListener;
 
-    public Adapter(Context ct, String s1[], String s2[]) {
+    public CarAdapter(Context ct, String s1[], String s2[]) {
         context = ct;
         names = s1;
         desc = s2;

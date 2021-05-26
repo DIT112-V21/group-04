@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements Adapter.ItemClickListener {
+public class MainActivity extends AppCompatActivity implements CarAdapter.ItemClickListener {
     RecyclerView rvAvailableCars;
 
     @Override
@@ -32,9 +32,9 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         s1 = getResources().getStringArray(R.array.carNames);
         s2 = getResources().getStringArray(R.array.description);
 
-        Adapter adapter = new Adapter(this, s1, s2);
-        adapter.addItemClickListener(this);
-        rvAvailableCars.setAdapter(adapter);
+        CarAdapter carAdapter = new CarAdapter(this, s1, s2);
+        carAdapter.addItemClickListener(this);
+        rvAvailableCars.setAdapter(carAdapter);
         rvAvailableCars.setLayoutManager(new LinearLayoutManager(this));
     }
 
