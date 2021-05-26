@@ -11,4 +11,5 @@
     <color name="greenblue">#009d9d</color>
     <color name="disabled_text">#aaa</color>
     <color name="disabled_background">#10181818</color>
+    <color name="grey">#C3B2AE</color>
 </resources>

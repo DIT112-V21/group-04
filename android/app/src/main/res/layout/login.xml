@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/offwhite"
     android:layout_height="match_parent">
 
     <ImageView
@@ -35,6 +36,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:textColorHint="@color/grey"
+        android:textColor="@color/black"
         android:hint="Username"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/inputPassword"
@@ -48,6 +51,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="164dp"
         android:ems="10"
+        android:textColorHint="@color/grey"
+        android:textColor="@color/black"
         android:hint="Password"
         android:password="true"
         android:inputType="textPersonName"
