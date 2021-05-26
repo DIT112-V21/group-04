@@ -77,8 +77,6 @@ namespace arduino_car{
 
     //TODO: Add test to check that the car's angle can be adjusted
 
-    //TODO: Add test to check that car stops if obstacle detected in front
-
 
     TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_WhenCalledAndCarDrivingForwardAndObstacleDetectedWithinStopDistance_WillReturnTrue){
         carSpeed = 40; // Car will move forward. If speed was not set, obstacle avoidance would not be registered
@@ -98,7 +96,6 @@ namespace arduino_car{
         EXPECT_TRUE(mSimpleCarController.registerObstacleAvoidance());
     }
 
-    //TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_When)
 
     TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_WhenCalledAndCarStationaryAndObstacleDetectedWithinStopDistance_WillReturnFalse){
         carSpeed = 0;
@@ -110,11 +107,54 @@ namespace arduino_car{
     }
 
 
+    TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_WhenCalledAndObstacleDetectedInFrontOfCar_WillStopCar){
+        carSpeed = 50;
+        auto sensorReadingFront = 10;
+        auto sensorReadingBack = 300;
+        EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(sensorReadingFront));
+        EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(sensorReadingBack));
+        EXPECT_CALL(mCar, setSpeed(stoppingSpeed));
+
+        mSimpleCarController.registerObstacleAvoidance();
+    }
+
+    TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_WhenCalledAndObstacleDetectedBehindCar_WillStopCar){
+
+        carSpeed = -50;
+        auto sensorReadingFront = 300;
+        auto sensorReadingBack = 10;
+        EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(sensorReadingFront));
+        EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(sensorReadingBack));
+        EXPECT_CALL(mCar, setSpeed(stoppingSpeed));
+
+        mSimpleCarController.registerObstacleAvoidance();
+
+    }
 
 
-    //TODO: Add test to check that car stops if obstacle detected in back
-    //TODO: Add test to check that car can move back if obstacle detected in front
-    //TODO: Add test to check that car can move forward if obstacle detected in back
+    TEST_F(RegisterManualControlTest, registerManualControl_WhenCalledAndMoveBackwardsMessageReceivedWhenObstacleDetectedInFrontOfCar_WillMoveCarBackwards){
+        carSpeed = -40;
+        autoDriving = 0;
+        auto sensorReadingFront = 30;
+        auto sensorReadingBack = 3000;
+        EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(sensorReadingFront));
+        EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(sensorReadingBack));
+        EXPECT_CALL(mCar, setSpeed(static_cast<float>(carSpeed)));
+
+        mCallBack("/smartcar/control/speed", "-40");
+    }
+
+    TEST_F(RegisterManualControlTest, registerManualControl_WhenCalledAndMoveForwardMessageReceivedWhenObstacleDetectedBehindCar_WillMoveCarForwards){
+        carSpeed = 40;
+        autoDriving = 0;
+        auto sensorReadingFront = 4000;
+        auto sensorReadingBack = 20;
+        EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(sensorReadingFront));
+        EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(sensorReadingBack));
+        EXPECT_CALL(mCar, setSpeed(static_cast<float>(carSpeed)));
+
+        mCallBack("/smartcar/control/speed", "40");
+    }
 
 
 
