@@ -21,8 +21,8 @@ import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class CarConnect extends AppCompatActivity{
-    private String User;
-    private String Pass;
+    private final String User;
+    private final String Pass;
     private static final String TAG="SmartcarmqttController";
     private static final String OBSTACLE_TOPIC = "/smartcar/obstacle";
     private static final String SWITCH_SERVER_TOPIC = "/smartcar/switchServer";
@@ -34,13 +34,13 @@ public class CarConnect extends AppCompatActivity{
     private static final String LOCALHOST = "tcp://10.0.2.2:1883";
     private String MQTT_SERVER;
     Context context;
-
-    private MqttClient mMqttClientLocal;
-    private MqttClient mMqttClientExternal;
+    public login login;
+    private final MqttClient mMqttClientLocal;
+    private final MqttClient mMqttClientExternal;
     private MqttClient mMqttClient;
     private boolean isConnected = false;
-    private ImageView mCameraView;
-    private Button autoButton;
+    private final ImageView mCameraView;
+    private final Button autoButton;
 
     public CarConnect(Context context, ImageView mCameraView, boolean shouldSwitch, Button autoButton,String user, String password) {
         this.context = context;
@@ -135,6 +135,97 @@ public class CarConnect extends AppCompatActivity{
                     String disconnectedMessage = context.getString(R.string.disconnectedIndicator);
                     connectionText.setText(disconnectedMessage);
                     connectionText.setTextColor(Color.parseColor("#EF1919"));
+                }
+
+                @Override
+                public void messageArrived(String topic, MqttMessage message) throws Exception {
+
+                    if (topic.equals(OBSTACLE_TOPIC)) {
+                        String obstacleDetectedMessage = context.getString(R.string.obstacleDetectedMessage);
+                        Log.i(TAG, obstacleDetectedMessage);
+                        feedbackMessage(obstacleDetectedMessage);
+                        phoneVibration(1000);
+                    }
+
+                    if (topic.equals(CAMERA_TOPIC)) {
+                        final Bitmap bm = Bitmap.createBitmap(IMAGE_WIDTH, IMAGE_HEIGHT, Bitmap.Config.ARGB_8888);
+
+                        final byte[] payload = message.getPayload();
+                        final int[] colors = new int[IMAGE_WIDTH * IMAGE_HEIGHT];
+                        for (int ci = 0; ci < colors.length; ++ci) {
+                            final byte r = payload[3 * ci];
+                            final byte g = payload[3 * ci + 1];
+                            final byte b = payload[3 * ci + 2];
+                            colors[ci] = Color.rgb(r, g, b);
+                        }
+                        bm.setPixels(colors, 0, IMAGE_WIDTH, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
+
+                        mCameraView.setImageBitmap(bm);
+                    } else {
+                        Log.i(TAG, "[MQTT] Topic: " + topic + " | Message: " + message.toString());
+                    }
+                }
+
+                @Override
+                public void deliveryComplete(IMqttDeliveryToken token) {
+                    Log.d(TAG, "Message delivered");
+                }
+            });
+        }
+    }
+    public void connectingToMqttBroker(boolean status) {
+        if (MQTT_SERVER.equals(EXTERNAL_MQTT_BROKER)){
+            mMqttClient = mMqttClientExternal;
+        } else {
+            mMqttClient = mMqttClientLocal;
+        }
+        if (!isConnected) {
+            mMqttClient.connect(User, Pass, new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    isConnected = true;
+                    login.setStatus(true);
+                    String successfulConnectionMessage = context.getString(R.string.connectedToMQTTBrokerMessage);
+                    Log.i(TAG, successfulConnectionMessage);
+                    feedbackMessage(successfulConnectionMessage);
+
+                    String connectedMessage = context.getString(R.string.connectedIndicator);
+
+
+                    mMqttClient.subscribe(OBSTACLE_TOPIC,QOS,null);
+                    mMqttClient.subscribe(CAMERA_TOPIC, QOS, null);
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+
+                    String startingAutonomousButtonText = context.getString(R.string.startingAutonomousButtonText);
+                    autoButton.setText(startingAutonomousButtonText);
+
+                    mCameraView.setImageResource(R.drawable.intermission);
+                    String failedConnectionMessage = context.getString(R.string.failedToConnectToMQTTBrokerMessage);
+                    Log.e(TAG, failedConnectionMessage);
+                    feedbackMessage(failedConnectionMessage);
+
+                    String disconnectedMessage = context.getString(R.string.disconnectedIndicator);
+
+                }
+            }, new MqttCallback() {
+                @Override
+                public void connectionLost(Throwable cause) {
+
+                    String startingAutonomousButtonText = context.getString(R.string.startingAutonomousButtonText);
+                    autoButton.setText(startingAutonomousButtonText);
+
+
+                    mCameraView.setImageResource(R.drawable.intermission);
+
+                    String lostConnectionMessage = context.getString(R.string.connectionToMQTTBrokerLostMessage);
+                    Log.w(TAG, lostConnectionMessage);
+                    feedbackMessage(lostConnectionMessage);
+
+                    String disconnectedMessage = context.getString(R.string.disconnectedIndicator);
+
                 }
 
                 @Override

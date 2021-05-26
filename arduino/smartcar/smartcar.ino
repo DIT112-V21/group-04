@@ -55,6 +55,7 @@ void setup() {
 #else
   mqtt.begin(net);
 #endif
+
   if (mqtt.connect("arduino", "user", "password")) {
     Serial.println("GENERAL CONNECTION");
     mqtt.subscribe("/smartcar/switchServer", 0);

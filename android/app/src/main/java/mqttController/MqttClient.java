@@ -31,7 +31,6 @@ public class MqttClient {
             e.printStackTrace();
         }
     }
-
     public void disconnect(IMqttActionListener disconnectionCallback) {
         try {
             mMqttAndroidClient.disconnect(null, disconnectionCallback);
@@ -67,4 +66,7 @@ public class MqttClient {
             e.printStackTrace();
         }
     }
+
+
+
 }
