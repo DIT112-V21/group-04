@@ -78,21 +78,23 @@ namespace arduino_car{
     //TODO: Add test to check that car stops if obstacle detected in front
 
 
-    TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_WhenDrivingForwardAndDetectingObstacle_WillReturnTrue){
+    TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_WhenCalledAndCarDrivingForwardAndObstacleDetectedWithinStopDistance_WillReturnTrue){
         carSpeed = 40; // Car will move forward. If speed was not set, obstacle avoidance would not be registered
-        EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(30));
+        EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(60));
         EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(120));
         EXPECT_TRUE(mSimpleCarController.registerObstacleAvoidance());
     }
 
-    TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_WhenDrivingBackwardsAndDetectingObstacle_WillReturnTrue){
+    TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_WhenCalledAndCarDrivingBackwardsAndObstacleDetectedWithinStopDistance_WillReturnTrue){
         carSpeed = -40; // Car will move backwards. If speed was not set, obstacle avoidance would not be registered
         EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(120));
-        EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(10));
+        EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(40));
         EXPECT_TRUE(mSimpleCarController.registerObstacleAvoidance());
     }
 
-    TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_WhenStationaryAndDetectObstacleBackAndFront_WillReturnFalse){
+    //TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_When)
+
+    TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_WhenCalledAndCarStationaryAndObstacleDetectedWithinStopDistance_WillReturnFalse){
         carSpeed = 0;
         EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(10));
         EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(10));
