@@ -63,8 +63,10 @@ namespace arduino_car{
     TEST_F(RegisterManualControlTest, registerManualControl_WhenCalledAndReceivesSpeedTopic_WillAdjustTheCarSpeed){
         carSpeed = 40;
         autoDriving = 0;
-        EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(110)); //This and the line below ensures that obstacleAvoidance returns false!
-        EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(10)); // Test still passes when this value is set to 10. This is because the speed is set to a positive value, hence an obstacle avoidance for the back would not trigger.
+        auto sensorReadingFront = 110;
+        auto sensorReadingBack = 10;
+        EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(sensorReadingFront)); //This and the line below ensures that obstacleAvoidance returns false!
+        EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(sensorReadingBack)); // Test still passes when this value is set to 10. This is because the speed is set to a positive value, hence an obstacle avoidance for the back would not trigger.
         EXPECT_CALL(mCar, setSpeed(static_cast<float>(carSpeed)));
 
 
@@ -80,15 +82,19 @@ namespace arduino_car{
 
     TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_WhenCalledAndCarDrivingForwardAndObstacleDetectedWithinStopDistance_WillReturnTrue){
         carSpeed = 40; // Car will move forward. If speed was not set, obstacle avoidance would not be registered
-        EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(60));
-        EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(120));
+        auto sensorReadingFront = 60;
+        auto sensorReadingBack = 120;
+        EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(sensorReadingFront));
+        EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(sensorReadingBack));
         EXPECT_TRUE(mSimpleCarController.registerObstacleAvoidance());
     }
 
     TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_WhenCalledAndCarDrivingBackwardsAndObstacleDetectedWithinStopDistance_WillReturnTrue){
         carSpeed = -40; // Car will move backwards. If speed was not set, obstacle avoidance would not be registered
-        EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(120));
-        EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(40));
+        auto sensorReadingFront = 120;
+        auto sensorReadingBack = 40;
+        EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(sensorReadingFront));
+        EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(sensorReadingBack));
         EXPECT_TRUE(mSimpleCarController.registerObstacleAvoidance());
     }
 
@@ -96,8 +102,10 @@ namespace arduino_car{
 
     TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_WhenCalledAndCarStationaryAndObstacleDetectedWithinStopDistance_WillReturnFalse){
         carSpeed = 0;
-        EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(10));
-        EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(10));
+        auto sensorReadingFront = 10;
+        auto sensorReadingBack = 20;
+        EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(sensorReadingFront));
+        EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(sensorReadingBack));
         EXPECT_FALSE(mSimpleCarController.registerObstacleAvoidance());
     }
 
