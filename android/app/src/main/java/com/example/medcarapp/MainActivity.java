@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements CarAdapter.ItemCl
         setContentView(R.layout.activity_main);
         carSelection();
         connectButton();
-        loadImage();
+        setImageTag();
     }
 
     public void carSelection(){
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements CarAdapter.ItemCl
         toast.show();
     }
 
-    public void loadImage(){
+    public void setImageTag(){
         ImageView mainActivityLogo;
         mainActivityLogo = (ImageView) findViewById(R.id.logo);
         mainActivityLogo.setTag(R.drawable.logo7);
