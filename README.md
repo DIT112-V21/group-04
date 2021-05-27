@@ -122,7 +122,21 @@ NOTE: This setup guide was written considering <a href="https://github.com/ItJus
 3. Locate the group-04 cloned repository folder, and then navigate to the sketch which should be located in: group-04/arduino/sketches/smartcar/
 4. Afterwards, select to compile and start. You can then select which server option (offline/online) in the Android app.
 
+## User manual
 
+<img align="right" src="https://github.com/DIT112-V21/group-04/blob/FinalizeReadme/Documentation_GIFS/Android-App-Vertical.gif"  height="800"/>
+
+### Server selection screen
+
+On the "select server" screen the medical worker is able to either choose to drive the car within their own department or drive another department's car. To drive a car within their own department the worker needs to select the "offline mode". If the worker needs to drive a car that is located in another department then they should select the "online mode".<br/><br/>
+On the server selection screen the worker could also view a credits pop up where they could read which license the application is using and which library is used.<br/><br/>
+
+
+### Select a car screen
+On the "select a car" screen the medical worker is able to choose one of the four cars in use and connect to their selected car in the maneuvering screen. When the medical worker selects a car the application will notify the user via a pop up which car that have been selected. This allows multiple cars to be driven at the same time by different medical staff workers.<br/><br/>
+
+### Maneuvering screen
+On the "maneuvering screen" the medical worker can control the speed and direction of the car with the joystick. Video footage from the front of the car is also present in the screen to better maneuver the car. If an obstacle is detected while maneuvering the car the mobile device will vibrate and a pop up message will be displayed. The screen also displays both the speed (in percentage from 0 to 60 by a speedometer) and the angle of the input given by the joystick. Below the joystick is the autonomous driving button which turns the car’s auto-driving mode on and off. At the bottom left of the screen is the status of the connection to the MQTT broker so that the user can know if it is connected or not.<br/><br/>
 
 ## Progress log
 
