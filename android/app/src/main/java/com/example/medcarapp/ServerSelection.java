@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +20,7 @@ public class ServerSelection extends AppCompatActivity {
         setContentView(R.layout.server_selection);
         creditDialog();
         serverSelection();
+        setImageTag();
     }
 
     public void CreditPopup(View v) {
@@ -34,7 +36,7 @@ public class ServerSelection extends AppCompatActivity {
 
     public void serverSelection(){
         String[] serverName, serverDesc;
-        int images[] = {R.drawable.offline,R.drawable.online};
+        int[] images = {R.drawable.offline,R.drawable.online};
         rvServerSelection = findViewById(R.id.rvServerSelection);
 
         serverName = getResources().getStringArray(R.array.serverOption);
@@ -43,5 +45,14 @@ public class ServerSelection extends AppCompatActivity {
         ServerAdapter serverAdapter = new ServerAdapter(this, serverName, serverDesc, images);
         rvServerSelection.setAdapter(serverAdapter);
         rvServerSelection.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    public void setImageTag(){
+        ImageView serverSelectionLogo;
+        ImageView gif;
+        serverSelectionLogo = (ImageView) findViewById(R.id.logo);
+        gif = (ImageView) findViewById(R.id.medcarGif);
+        serverSelectionLogo.setTag(R.drawable.logo7);
+        gif.setTag(R.drawable.medcar);
     }
 }

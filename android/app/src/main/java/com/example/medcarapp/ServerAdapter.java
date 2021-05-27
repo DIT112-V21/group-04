@@ -42,10 +42,10 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ViewHolder
                 Intent intent = new Intent();
                 if(holder.getAdapterPosition()==0){
                     intent = new Intent(context, MainActivity.class);
-                    intent.putExtra("Switch server", false);
+                    intent.putExtra(context.getString(R.string.switchServer), false);
                 } else if(holder.getAdapterPosition()==1){
                     intent = new Intent(context, MainActivity.class);
-                    intent.putExtra("Switch server", true);
+                    intent.putExtra(context.getString(R.string.switchServer), true);
                 }
                 context.startActivity(intent);
             }

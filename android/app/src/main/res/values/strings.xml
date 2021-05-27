@@ -1,20 +1,6 @@
 <resources>
     <string name="app_name">MedCarApp</string>
 
-    <string-array name="carNames">
-        <item>Medcar 1</item>
-        <item>Medcar 2</item>
-        <item>Medcar 3</item>
-        <item>Medcar 4</item>
-    </string-array>
-
-    <string-array name="description">
-        <item>This is the medical car 1.</item>
-        <item>This is the medical car 2.</item>
-        <item>This is the medical car 3.</item>
-        <item>This is the medical car 4.</item>
-    </string-array>
-
     <!--Button Text-->
     <string name="autonomousDrivingOnButtonText">Auto-on</string>
     <string name="autonomousDrivingOffButtonText">Auto-off</string>
@@ -60,15 +46,35 @@
     <string name="rowsTitle">Title</string>
     <string name="rowsDescription">Description</string>
 
+    <!--Intent putExtra Keys-->
+    <string name="switchServer">Switch server</string>
+    <string name="restrictBack">Restrict back</string>
+
+    <!--Main Activity Recyclerview Car Names-->
+    <string-array name="carNames">
+        <item>Medcar 1</item>
+        <item>Medcar 2</item>
+        <item>Medcar 3</item>
+        <item>Medcar 4</item>
+    </string-array>
+
+    <!--Main Activity Recyclerview Car Description-->
+    <string-array name="description">
+        <item>This is the medical car 1.</item>
+        <item>This is the medical car 2.</item>
+        <item>This is the medical car 3.</item>
+        <item>This is the medical car 4.</item>
+    </string-array>
+
+    <!--Server Selection Recyclerview Server Options-->
     <string-array name="serverOption">
         <item>Offline mode</item>
         <item>Online mode</item>
     </string-array>
 
+    <!--Server Selection Recyclerview Server Description-->
     <string-array name="serverDescription">
         <item>Use within the same department</item>
         <item>Use from a different department</item>
     </string-array>
-
-
 </resources>

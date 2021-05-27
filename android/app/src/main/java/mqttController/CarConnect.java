@@ -29,16 +29,13 @@ public class CarConnect extends AppCompatActivity{
     private static final String EXTERNAL_MQTT_BROKER = "tcp://3.138.188.190:1883";
     private static final String LOCALHOST = "tcp://10.0.2.2:1883";
     private String MQTT_SERVER;
-
-
-    Context context;
-
     private MqttClient mMqttClientLocal;
     private MqttClient mMqttClientExternal;
     private MqttClient mMqttClient;
     private boolean isConnected = false;
     private ImageView mCameraView;
     private Button autoButton;
+    Context context;
 
     public CarConnect(Context context, ImageView mCameraView, boolean shouldSwitch, Button autoButton) {
         this.context = context;
