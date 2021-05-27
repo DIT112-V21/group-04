@@ -282,6 +282,36 @@ namespace arduino_car{
 
 
 
+    TEST_F(SimpleCarControllerTest, registerAutonomousMoving_WhenCalled_WillProvideMovementInstructionsToTheCar){
+        EXPECT_CALL(mCar, setSpeed(stoppingSpeed)).Times(3);
+        EXPECT_CALL(mCar, setSpeed(autoSpeed)).Times(2);
+        EXPECT_CALL(mCar, setSpeed(-autoSpeed)).Times(1);
+
+
+        mSimpleCarController.registerAutonomousMoving();
+    }
+
+    TEST_F(SimpleCarControllerTest, registerTurning_WhenCalled_WillSetTheProperAngles){
+        const auto angle = 10;
+        const auto autonomousAngle = 90;
+        const auto expectedAngle = autonomousAngle * angle;
+        EXPECT_CALL(mCar, setAngle(expectedAngle));
+        EXPECT_CALL(mCar, setAngle(0));
+
+        mSimpleCarController.registerTurning(10);
+    }
+
+    TEST_F(SimpleCarControllerTest, registerTurning_WhenCalled_WillSetTheProperSpeeds){
+        const auto autoSpeed = 65;
+        const auto stoppingSpeed = 0;
+        EXPECT_CALL(mCar, setSpeed(autoSpeed));
+        EXPECT_CALL(mCar, setSpeed(stoppingSpeed));
+
+        mSimpleCarController.registerTurning(-1000);
+    }
+
+
+
 //TODO check if autodriving on, should not let manual speed control
 //TODO check if autodrive on, should not let manual angle control
 
