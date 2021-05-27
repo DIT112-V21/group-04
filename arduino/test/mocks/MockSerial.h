@@ -10,6 +10,7 @@ namespace arduino_car{
 
     public:
         MOCK_METHOD(void, println, (String outputMessage), (override));
+        MOCK_METHOD(void, println, (int outputMessage), (override));
         MOCK_METHOD(void, begin, (int beginNumber), (override));
     };
 

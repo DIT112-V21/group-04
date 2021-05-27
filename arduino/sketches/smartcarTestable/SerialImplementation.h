@@ -11,6 +11,10 @@ namespace arduino_car{
             Serial.println(outputMessage);
         };
 
+        void println(int outputMessage) override{
+            Serial.println(outputMessage);
+        }
+
         void begin(int beginNumber) override {
             Serial.begin(beginNumber);
         };

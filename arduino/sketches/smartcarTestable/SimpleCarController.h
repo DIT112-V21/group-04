@@ -80,7 +80,7 @@ namespace arduino_car{
                         #else
                             autoDriving = std::stoi(message);
                         #endif
-                        //mSerial.println(autoDriving);
+                        mSerial.println(autoDriving);
                         if (autoDriving == 0) {
                             mCar.setSpeed(stoppingSpeed);
                             mCar.setAngle(stopAngle);
