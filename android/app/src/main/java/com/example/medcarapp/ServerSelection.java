@@ -20,7 +20,7 @@ public class ServerSelection extends AppCompatActivity {
         setContentView(R.layout.server_selection);
         creditDialog();
         serverSelection();
-        loadImage();
+        setImageTag();
     }
 
     public void CreditPopup(View v) {
@@ -47,7 +47,7 @@ public class ServerSelection extends AppCompatActivity {
         rvServerSelection.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    public void loadImage(){
+    public void setImageTag(){
         ImageView serverSelectionLogo;
         ImageView gif;
         serverSelectionLogo = (ImageView) findViewById(R.id.logo);
