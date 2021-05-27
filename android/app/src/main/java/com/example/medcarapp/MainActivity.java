@@ -10,9 +10,10 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements Adapter.ItemClickListener {
+public class MainActivity extends AppCompatActivity implements CarAdapter.ItemClickListener {
     RecyclerView rvAvailableCars;
 
     @Override
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         setContentView(R.layout.activity_main);
         carSelection();
         connectButton();
+        setImageTag();
     }
 
     public void carSelection(){
@@ -30,9 +32,9 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         s1 = getResources().getStringArray(R.array.carNames);
         s2 = getResources().getStringArray(R.array.description);
 
-        Adapter adapter = new Adapter(this, s1, s2);
-        adapter.addItemClickListener(this);
-        rvAvailableCars.setAdapter(adapter);
+        CarAdapter carAdapter = new CarAdapter(this, s1, s2);
+        carAdapter.addItemClickListener(this);
+        rvAvailableCars.setAdapter(carAdapter);
         rvAvailableCars.setLayoutManager(new LinearLayoutManager(this));
     }
 
@@ -49,8 +51,8 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
                     return;
                 } else {
                     Intent intent = new Intent(MainActivity.this, ManualControl.class);
-                    boolean shouldSwitch = getIntent().getExtras().getBoolean("Switch server");
-                    intent.putExtra("Switch server", shouldSwitch);
+                    boolean shouldSwitch = getIntent().getExtras().getBoolean(getApplicationContext().getString(R.string.switchServer));
+                    intent.putExtra(getApplicationContext().getString(R.string.switchServer), shouldSwitch);
                     startActivity(intent);
                 }
             }
@@ -76,10 +78,16 @@ public class MainActivity extends AppCompatActivity implements Adapter.ItemClick
         toast.show();
     }
 
+    public void setImageTag(){
+        ImageView mainActivityLogo;
+        mainActivityLogo = (ImageView) findViewById(R.id.logo);
+        mainActivityLogo.setTag(R.drawable.logo7);
+    }
+
     @Override
     public void onBackPressed() {
         boolean allowBack;
-        allowBack = getIntent().getExtras().getBoolean("Restrict back");
+        allowBack = getIntent().getExtras().getBoolean(getApplicationContext().getString(R.string.restrictBack));
         if (!allowBack) {
             super.onBackPressed();
         } else {
