@@ -73,6 +73,7 @@ The feedback feature gives the user visual information about the status of both 
 The car should be able to enter a auto driving mode where it will move forward while considering any obstacles.
 
 #### <a href="https://github.com/DIT112-V21/group-04/wiki/Security">Security</a>
+The app will use an AWS external server so that the connection to an external server cannot be accessed by unauthorised users.
 
 ## Progress log
 
