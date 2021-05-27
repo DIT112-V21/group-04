@@ -12,6 +12,12 @@ namespace arduino_car{
 
     struct SimpleCarControllerTest : public Test {
 
+        void SetUp() override {
+            carSpeed = 0;
+            isObstacleDetectedPublished = false;
+            autoDriving = 0;
+        }
+
         void TearDown() override {
             carSpeed = 0;
             isObstacleDetectedPublished = false;
@@ -29,6 +35,9 @@ namespace arduino_car{
     struct RegisterManualControlTest : public Test {
 
         void SetUp() override {
+            carSpeed = 0;
+            isObstacleDetectedPublished = false;
+            autoDriving = 0;
             EXPECT_CALL(mMQTT, connect(_, _, _)).WillOnce(Return(true));
             EXPECT_CALL(mMQTT, onMessage(_)).WillOnce(SaveArg<0>(&mCallBack));
 
@@ -49,6 +58,38 @@ namespace arduino_car{
         SimpleCarController mSimpleCarController{mCar, mMQTT, mSerial, mFrontSensor, mBackSensor};
         std::function<void(String, String)> mCallBack;
     };
+
+
+    /* Test(s) relating to adjusting car speed */
+
+
+    TEST_F(RegisterManualControlTest, registerManualControl_WhenCalledAndReceivesSpeedTopic_WillAdjustTheCarSpeed){
+        carSpeed = 40;
+        autoDriving = 0;
+        auto sensorReadingFront = 110;
+        auto sensorReadingBack = 200;
+        EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(sensorReadingFront)); //This and the line below ensures that obstacleAvoidance returns false!
+        EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(sensorReadingBack)); // Test still passes when this value is set to 10. This is because the speed is set to a positive value, hence an obstacle avoidance for the back would not trigger.
+        EXPECT_CALL(mCar, setSpeed(static_cast<float>(carSpeed)));
+
+
+        mCallBack("/smartcar/control/speed", "40");
+    }
+
+
+    /* Test(s) relating to adjusting car direction */
+
+
+    TEST_F(RegisterManualControlTest, registerManualControl_WhenCalledAndReceivesTurningTopic_WillAdjustTheCarTurningAngle){
+        const auto turningAngle = 80;
+        EXPECT_CALL(mCar, setAngle(turningAngle));
+
+        mCallBack("/smartcar/control/turning", "80");
+    }
+
+
+    /* Test(s) relating to MQTT connection */
+
 
     TEST_F(SimpleCarControllerTest, registerManualControl_WhenCalled_WillSubscribeToCorrectChannels){ // _F means we dont need to repeat instatiation of all the mocks.
         EXPECT_CALL(mMQTT, connect(_, _, _)).WillOnce(Return(true));
@@ -73,43 +114,8 @@ namespace arduino_car{
         mCallBack("/smartcar/switchServer", "message");
     }
 
-    TEST_F(RegisterManualControlTest, registerManualControl_WhenCalledAndReceivesSpeedTopic_WillAdjustTheCarSpeed){
-        carSpeed = 40;
-        autoDriving = 0;
-        auto sensorReadingFront = 110;
-        auto sensorReadingBack = 200;
-        EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(sensorReadingFront)); //This and the line below ensures that obstacleAvoidance returns false!
-        EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(sensorReadingBack)); // Test still passes when this value is set to 10. This is because the speed is set to a positive value, hence an obstacle avoidance for the back would not trigger.
-        EXPECT_CALL(mCar, setSpeed(static_cast<float>(carSpeed)));
 
-
-        mCallBack("/smartcar/control/speed", "40");
-    }
-
-
-    TEST_F(RegisterManualControlTest, registerManualControl_WhenCalledAndReceivesTurningTopic_WillAdjustTheCarTurningAngle){
-        const auto turningAngle = 80;
-        EXPECT_CALL(mCar, setAngle(turningAngle));
-
-        mCallBack("/smartcar/control/turning", "80");
-    }
-
-    TEST_F(RegisterManualControlTest, registerManualControl_WhenCalledAndReceivesAutoTopicAndMessageIs1_WillSwitchToAutonomousDriving){
-        const auto speed = 65;
-        EXPECT_CALL(mCar, setSpeed(speed));
-
-        mCallBack("/smartcar/control/auto", "1");
-    }
-
-    TEST_F(RegisterManualControlTest, registerManualControl_WhenCalledAndReceivesAutoTopicAndMessageIs0_WillStopAndSwitchToManualDriving){
-
-        const auto speed = 0;
-        const auto angle = 0;
-        EXPECT_CALL(mCar, setSpeed(speed));
-        EXPECT_CALL(mCar, setAngle(angle));
-
-        mCallBack("/smartcar/control/auto", "0");
-    }
+    /* Test(s) relating to Obstacle Avoidance */
 
 
     TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_WhenCalledAndCarDrivingForwardAndObstacleDetectedWithinStopDistance_WillReturnTrue){
@@ -187,6 +193,10 @@ namespace arduino_car{
 
         mCallBack("/smartcar/control/speed", "40");
     }
+
+
+    /* Test(s) relating to Obstacle Avoidance Notification */
+
 
     TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_WhenCalledAndObstacleDetectedInFrontOfCar_WillSendObstacleDetectedNotification){
         carSpeed = 50;
@@ -281,6 +291,8 @@ namespace arduino_car{
     }
 
 
+    /* Test(s) relating to autonomous moving */
+
 
     TEST_F(SimpleCarControllerTest, registerAutonomousMoving_WhenCalled_WillProvideMovementInstructionsToTheCar){
         EXPECT_CALL(mCar, setSpeed(stoppingSpeed)).Times(3);
@@ -309,6 +321,7 @@ namespace arduino_car{
 
         mSimpleCarController.registerTurning(-1000);
     }
+
 
 
 

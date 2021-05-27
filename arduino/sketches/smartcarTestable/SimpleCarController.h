@@ -171,8 +171,6 @@ namespace arduino_car{
             #endif
         }
 
-        //void registerCameraPublishing();
-
     private:
         Car& mCar;
         MQTTinterface& mMQTT;
