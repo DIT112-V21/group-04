@@ -68,10 +68,26 @@ namespace arduino_car{
         autoDriving = 0;
         auto sensorReadingFront = 110;
         auto sensorReadingBack = 200;
-        EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(sensorReadingFront)); //This and the line below ensures that obstacleAvoidance returns false!
+        EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(sensorReadingFront)); // This and the line below ensures that obstacleAvoidance returns false.
         EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(sensorReadingBack)); // Test still passes when this value is set to 10. This is because the speed is set to a positive value, hence an obstacle avoidance for the back would not trigger.
         EXPECT_CALL(mCar, setSpeed(static_cast<float>(carSpeed)));
 
+
+        mCallBack("/smartcar/control/speed", "40");
+    }
+
+    TEST_F(RegisterManualControlTest, registerManualControl_WhenCalledAndDoesNotReceiveSpeedTopic_WillNotAdjustCarSpeed){
+        carSpeed = 40;
+        autoDriving = 0;
+        EXPECT_CALL(mCar, setSpeed(static_cast<float>(carSpeed))).Times(0);
+
+        mCallBack("/smartcar/control/turning", "40");
+    }
+
+    TEST_F(RegisterManualControlTest, registerManualControl_WhenCalledAndReceivesSpeedTopicAndAutoDrivingIsEnabled_WillNotAdjustCarSpeed){
+        carSpeed = 40;
+        autoDriving = 1;
+        EXPECT_CALL(mCar, setSpeed(static_cast<float>(carSpeed))).Times(0);
 
         mCallBack("/smartcar/control/speed", "40");
     }
@@ -80,9 +96,26 @@ namespace arduino_car{
     /* Test(s) relating to adjusting car direction */
 
 
-    TEST_F(RegisterManualControlTest, registerManualControl_WhenCalledAndReceivesTurningTopic_WillAdjustTheCarTurningAngle){
+    TEST_F(RegisterManualControlTest, registerManualControl_WhenCalledAndReceivesTurningTopic_WillNotAdjustTheCarTurningAngle){
         const auto turningAngle = 80;
+        autoDriving = 0;
         EXPECT_CALL(mCar, setAngle(turningAngle));
+
+        mCallBack("/smartcar/control/turning", "80");
+    }
+
+    TEST_F(RegisterManualControlTest, registerManualControl_WhenCalledAndDoesNotReceiveTurningTopic_WillNotAdjustTheCarTurningAngle){
+        const auto turningAngle = 80;
+        autoDriving = 0;
+        EXPECT_CALL(mCar, setAngle(turningAngle)).Times(0);
+
+        mCallBack("/smartcar/control/speed", "80");
+    }
+
+    TEST_F(RegisterManualControlTest, registerManualControl_WhenCalledAndDoesNotReceiveTurningTopicAndAutoDrivingIsEnabled_WillNotAdjustTheCarTurningAngle){
+        const auto turningAngle = 80;
+        autoDriving = 1;
+        EXPECT_CALL(mCar, setAngle(turningAngle)).Times(0);
 
         mCallBack("/smartcar/control/turning", "80");
     }
@@ -321,11 +354,4 @@ namespace arduino_car{
 
         mSimpleCarController.registerTurning(-1000);
     }
-
-
-
-
-//TODO check if autodriving on, should not let manual speed control
-//TODO check if autodrive on, should not let manual angle control
-
 }
