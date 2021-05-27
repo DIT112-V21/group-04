@@ -248,6 +248,38 @@ namespace arduino_car{
         mSimpleCarController.registerObstacleAvoidance();
     }
 
+    TEST_F(SimpleCarControllerTest, registerSendObstacleDetectedNotification_WhenCalledAndParameterIsTrueAndHasNotYetPublished_WillPublishObstacleDetectedNotification){
+        const auto obstacleTopic = "/smartcar/obstacle";
+        isObstacleDetectedPublished = false;
+        EXPECT_CALL(mMQTT, publish(obstacleTopic));
+
+        mSimpleCarController.registerSendObstacleDetectedNotification(true);
+    }
+
+    TEST_F(SimpleCarControllerTest, registerSendObstacleDetectedNotification_WhenCalledAndParameterIsFalseAndHasNotYetPublished_WillNotPublishObstacleDetectedNotification){
+        const auto obstacleTopic = "/smartcar/obstacle";
+        isObstacleDetectedPublished = false;
+        EXPECT_CALL(mMQTT, publish(obstacleTopic)).Times(0);
+
+        mSimpleCarController.registerSendObstacleDetectedNotification(false);
+    }
+
+    TEST_F(SimpleCarControllerTest, registerSendObstacleDetectedNotification_WhenCalledAndParameterIsTrueAndHasPublished_WillNotPublishObstacleDetectedNotification){
+        const auto obstacleTopic = "/smartcar/obstacle";
+        isObstacleDetectedPublished = true;
+        EXPECT_CALL(mMQTT, publish(obstacleTopic)).Times(0);
+
+        mSimpleCarController.registerSendObstacleDetectedNotification(true);
+    }
+
+    TEST_F(SimpleCarControllerTest, registerSendObstacleDetectedNotification_WhenCalledAndParameterIsFalseAndHasPublished_WillNotPublishObstacleDetectedNotification){
+        const auto obstacleTopic = "/smartcar/obstacle";
+        isObstacleDetectedPublished = true;
+        EXPECT_CALL(mMQTT, publish(obstacleTopic)).Times(0);
+
+        mSimpleCarController.registerSendObstacleDetectedNotification(false);
+    }
+
 
 
 //TODO check if autodriving on, should not let manual speed control
