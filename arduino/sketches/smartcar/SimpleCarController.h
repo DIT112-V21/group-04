@@ -22,7 +22,6 @@ namespace {
     const int turnRight = 1;
     const int turnLeft = -1;
     int autoDriving = 0;
-    int carSpeed = 0;
     bool isObstacleDetectedPublished = false; //keeps track of when an obstacle has been detected message is published to mqtt
 }
 
@@ -53,7 +52,7 @@ namespace arduino_car{
                         mMQTT.publish("test", "test");
                     }
                     if (topic == "/smartcar/control/speed" && autoDriving == 0) {
-                        carSpeed = StringToIntUtil::stringToInt(message);
+                        auto carSpeed = StringToIntUtil::stringToInt(message);
                         if (!(registerObstacleAvoidance())) {
                             mCar.setSpeed(static_cast<float>(carSpeed));
                         }
@@ -65,10 +64,8 @@ namespace arduino_car{
                         if (autoDriving == 0) {
                             mCar.setSpeed(stoppingSpeed);
                             mCar.setAngle(stopAngle);
-                            carSpeed = stoppingSpeed;
                         } else {
                             mCar.setSpeed(autoSpeed);
-                            carSpeed = autoSpeed;
                         }
                     } else {
                         mSerial.println(topic + " " + message);
@@ -84,8 +81,8 @@ namespace arduino_car{
             auto frontDistanceFromObject = mFrontSensor.getDistance();
             auto backDistanceFromObject = mBackSensor.getDistance();
 
-            bool isFrontDetected = frontDistanceFromObject < stopDistanceFront && frontDistanceFromObject > 1 && (carSpeed > 0);
-            bool isBackDetected = backDistanceFromObject < stopDistanceBack && backDistanceFromObject > 1 && (carSpeed < 0);
+            bool isFrontDetected = frontDistanceFromObject < stopDistanceFront && frontDistanceFromObject > 1 && (mCar.getSpeed() > 0);
+            bool isBackDetected = backDistanceFromObject < stopDistanceBack && backDistanceFromObject > 1 && (mCar.getSpeed() < 0);
 
 
             if (isFrontDetected || isBackDetected) {
@@ -125,6 +122,7 @@ namespace arduino_car{
             #endif
             registerTurning(turnLeft);
             if (registerObstacleAvoidance()) {
+                mSerial.println("Checking if registered");
                 registerTurning(turnRight);
                 registerTurning(turnRight);
                 if (registerObstacleAvoidance()) {
@@ -135,12 +133,13 @@ namespace arduino_car{
         }
 
         void registerTurning(int direction){
+            const auto registerTurningStopSpeed = 1; // ensures that obstacles will still be detected.
             mCar.setSpeed(autoSpeed);
             mCar.setAngle(direction*autoAngle);
             #if defined(ARDUINO) || defined(__SMCE__)
                 delay(2000);
             #endif
-            mCar.setSpeed(stoppingSpeed);
+            mCar.setSpeed(registerTurningStopSpeed);
             mCar.setAngle(stopAngle);
             #if defined(ARDUINO) || defined(__SMCE__)
                 delay(500);
