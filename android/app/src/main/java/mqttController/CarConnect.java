@@ -170,7 +170,7 @@ public class CarConnect extends AppCompatActivity{
     public void disconnect(IMqttActionListener disconnectionCallback) {
         mMqttClient.disconnect(disconnectionCallback);
     }
-
+    //TODO safe to remove?
     public void subscribe(String topic, int qos, IMqttActionListener subscriptionCallback) {
         mMqttClient.subscribe(topic, qos, subscriptionCallback);
     }

@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements CarAdapter.ItemCl
         setImageTag();
     }
 
-    public void carSelection(){
+    private void carSelection(){
         String[] s1, s2;
         rvAvailableCars = findViewById(R.id.rvAvaliableCars);
 
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements CarAdapter.ItemCl
         rvAvailableCars.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    public void connectButton(){
+    private void connectButton(){
         Button button = findViewById(R.id.btnConnect);
         button.setActivated(false);
         buttonStatus(getApplicationContext(),R.color.disabled_background,R.color.disabled_text);
@@ -66,13 +66,13 @@ public class MainActivity extends AppCompatActivity implements CarAdapter.ItemCl
         buttonStatus(getApplicationContext(),R.color.teal_200,R.color.white);
     }
 
-    public void buttonStatus(Context context, int backgroundColor, int textColor) {
+    private void buttonStatus(Context context, int backgroundColor, int textColor) {
         Button button = findViewById(R.id.btnConnect);
         button.setBackgroundColor(ContextCompat.getColor(context, backgroundColor));
         button.setTextColor(ContextCompat.getColor(context, textColor));
     }
 
-    public void disabledFeedbackMessage(String message){
+    private void disabledFeedbackMessage(String message){
         Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.TOP,0,0);
         toast.show();
