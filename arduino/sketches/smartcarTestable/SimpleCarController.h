@@ -5,6 +5,11 @@
 #include "Serialinterface.h"
 #include "StringUtil.h"
 #include "DistanceSensorInterface.h"
+#include "StringToIntUtil.h"
+
+#if defined(ARDUINO) || defined(__SMCE__)
+    #include <Arduino.h>
+#endif
 
 //corresponds to MagicCarController.h
 
@@ -57,29 +62,14 @@ namespace arduino_car{
                         mMQTT.publish("test", "test");
                     }
                     if (topic == "/smartcar/control/speed" && autoDriving == 0) {
-                        #if defined(ARDUINO) || defined(__SMCE__)
-                            #include <Arduino.h>
-                            carSpeed = message.toInt();
-                        #else
-                            carSpeed = std::stoi(message);
-                        #endif
+                        carSpeed = StringToIntUtil::stringToInt(message);
                         if (!(registerObstacleAvoidance())) {
                             mCar.setSpeed(static_cast<float>(carSpeed));
                         }
                     } else if (topic == "/smartcar/control/turning" && autoDriving == 0) {
-                        #if defined(ARDUINO) || defined(__SMCE__)
-                            #include <Arduino.h>
-                            mCar.setAngle(message.toInt());
-                        #else
-                            mCar.setAngle(std::stoi(message));
-                        #endif
+                        mCar.setAngle(StringToIntUtil::stringToInt(message));
                     } else if (topic == "/smartcar/control/auto") {
-                        #if defined(ARDUINO) || defined(__SMCE__)
-                            #include <Arduino.h>
-                            autoDriving = message.toInt();
-                        #else
-                            autoDriving = std::stoi(message);
-                        #endif
+                        autoDriving = StringToIntUtil::stringToInt(message);
                         mSerial.println(autoDriving);
                         if (autoDriving == 0) {
                             mCar.setSpeed(stoppingSpeed);
@@ -132,17 +122,14 @@ namespace arduino_car{
         void registerAutonomousMoving(){
             mCar.setSpeed(stoppingSpeed);
             #if defined(ARDUINO) || defined(__SMCE__)
-                #include <Arduino.h>
                 delay(500);
             #endif
             mCar.setSpeed(-autoSpeed);
             #if defined(ARDUINO) || defined(__SMCE__)
-                #include <Arduino.h>
                 delay(500);
             #endif
             mCar.setSpeed(stoppingSpeed);
             #if defined(ARDUINO) || defined(__SMCE__)
-                #include <Arduino.h>
                 delay(500);
             #endif
             registerTurning(turnLeft);
@@ -160,13 +147,11 @@ namespace arduino_car{
             mCar.setSpeed(autoSpeed);
             mCar.setAngle(direction*autoAngle);
             #if defined(ARDUINO) || defined(__SMCE__)
-                #include <Arduino.h>
                 delay(2000);
             #endif
             mCar.setSpeed(stoppingSpeed);
             mCar.setAngle(stopAngle);
             #if defined(ARDUINO) || defined(__SMCE__)
-                #include <Arduino.h>
                 delay(500);
             #endif
         }
