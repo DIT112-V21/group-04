@@ -33,7 +33,7 @@ public class VibratorWrapper {
         mExecutor = new ScheduledThreadPoolExecutor(1);
     }
 
-    public boolean hasVibrator() {
+    private boolean hasVibrator() {
         return mVibrator.hasVibrator();
     }
 
@@ -49,8 +49,7 @@ public class VibratorWrapper {
 
     }
 
-
-    public boolean isVibrating() {
+    private boolean isVibrating() {
         return mIsVibrating;
     }
 
@@ -65,5 +64,4 @@ public class VibratorWrapper {
             Log.e(TAG, e.getMessage());
         }
     }
-
 }
