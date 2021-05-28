@@ -1,3 +1,4 @@
+//code adapted from: https://github.com/platisd/reusable-testable-arduino-tutorial
 #pragma once
 
 #include "Car.h"
@@ -11,17 +12,7 @@
     #include <Arduino.h>
 #endif
 
-//corresponds to MagicCarController.h
-
 namespace {
-    const auto oneSecond = 1UL;
-    const auto triggerPin = 6;
-    const auto echoPin = 7;
-    const auto maxDistance = 400;
-    const int TRIGGER_PIN           = 6; // D6
-    const int ECHO_PIN              = 7; // D7
-    const unsigned int MAX_DISTANCE = 100;
-    const auto BACK_PIN = 3;
     const auto stoppingSpeed = 0;
     const auto stopDistanceFront = 80;
     const auto stopDistanceBack = 100;
