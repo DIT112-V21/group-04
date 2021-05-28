@@ -36,10 +36,10 @@ endif()
 
 
 #include_directories(.)
-#include_directories(sketches/smartcar sketches/smartcarTestable)
-set(simplecar_dir ${CMAKE_CURRENT_SOURCE_DIR}/sketches/smartcarTestable)
+#include_directories(sketches/smartcar sketches/smartcar)
+set(simplecar_dir ${CMAKE_CURRENT_SOURCE_DIR}/sketches/smartcar)
 
-#add_executable(arduino/sketches/smartcar/smartcar.ino sketches/smartcarTestable/Car.h sketches/smartcarTestable/MQTTinterface.h sketches/smartcarTestable/SimpleCarController.h sketches/smartcarTestable/SimpleCarWrapper.h sketches/smartcarTestable/SimpleCarMqttImplementation.h test/ut/SimpleCarController_test.cpp test/mocks/MockCar.h test/mocks/MockMQTT.h)
+#add_executable(arduino/sketches/smartcar/smartcar.ino sketches/smartcar/Car.h sketches/smartcar/MQTTinterface.h sketches/smartcar/SimpleCarController.h sketches/smartcar/SimpleCarWrapper.h sketches/smartcar/SimpleCarMqttImplementation.h test/ut/SimpleCarController_test.cpp test/mocks/MockCar.h test/mocks/MockMQTT.h)
 
 enable_testing()
 add_subdirectory(test)
