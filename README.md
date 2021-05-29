@@ -2,20 +2,33 @@
 
 ![logo7](https://user-images.githubusercontent.com/68125677/116778243-6825bb00-aa79-11eb-83d6-5405cf059f2a.png)
 
+## Contents
+* <a href="https://github.com/DIT112-V21/group-04/tree/FinalizeReadme#what-are-you-going-to-make">What are you going to make</a>
+* <a href="https://github.com/DIT112-V21/group-04/tree/FinalizeReadme#why-will-you-make-it">Why will you make it</a>
+* <a href="https://github.com/DIT112-V21/group-04/tree/FinalizeReadme#how-are-you-going-to-make-it">How are you going to make it</a>
+* <a href="https://github.com/DIT112-V21/group-04/tree/FinalizeReadme#technologies-we-used">Technologies we used</a>
+* <a href="https://github.com/DIT112-V21/group-04/tree/FinalizeReadme#licensing">Licensing</a>
+* <a href="https://github.com/DIT112-V21/group-04/tree/FinalizeReadme#feature-summary">Feature Summary</a>
+* <a href="https://github.com/DIT112-V21/group-04/tree/FinalizeReadme#hardware-and-software-architecture">Hardware and Software Architecture</a>
+* <a href="https://github.com/DIT112-V21/group-04/tree/FinalizeReadme#set-up-and-get-started-guide">Set-up and Get Started Guide</a>
+* <a href="https://github.com/DIT112-V21/group-04/tree/FinalizeReadme#user-manual">User Manual</a>
+* <a href="https://github.com/DIT112-V21/group-04/tree/FinalizeReadme#progress-log">Progress Log</a>
+* <a href="https://github.com/DIT112-V21/group-04/tree/FinalizeReadme#team-overview">Team Overview</a>
+
 ## What are you going to make? 
 
 For this project, we plan to create an Android app which will control Arduino cars. The cars will assist medical staff by performing certain tasks within a hospital, such as transporting food and medicine to patients/other medical staff.
 
 The car will be traveling through corridors within a hospital, which we plan to take into consideration by providing features which would prevent damage to the car. These features would include but are not limited to: obstacle avoidance, notifications on certain situations that the car encounters, and a camera view.
 
-Along with manually maneuvering the car, the car would also be able to drive autonomously, not requiring any input from the user unless necessary. This would make manuvering the car more effortless as medical staff won't have to constantly provide input for the car to move. 
+Along with manually maneuvering the car, the car would also be able to drive autonomously, not requiring any input from the user unless necessary. This would make maneuvering the car more effortless as medical staff won't have to constantly provide input for the car to move. 
 
 
 ## Why will you make it?
 
 Due to the current pandemic, the medical system is overwhelmed with the amount of cases. Contact between medical staff and patients put medical staff at higher risk of contracting the virus. In addition, medical care becomes difficult to deliver to immune deficient patients due to them being at high risk of contracting the virus. This is where our project comes in. By using Arduino cars, the contact between medical staff and patients can be limited to only when necessary. The cars will be able to carry out certain tasks, such as delivering medicine/doctor messages to patients.
 
-Although, the question arises, will these cars still be useful after the pandemic? Yes! Due to these cars carrying out certain tasks for medical staff as stated previously, they may reduce the medical staff's work load, and allow them to focus on more advanced tasks where human intercation is necessary. Furthermore, features such as autonomous driving and live camera streaming enable the car to be adapted/reused to help other scenarios outside of the medical field, such as security montioring in buildings and delivering food.
+Although, the question arises, will these cars still be useful after the pandemic? Yes! Due to these cars carrying out certain tasks for medical staff as stated previously, they may reduce the medical staff's work load, and allow them to focus on more advanced tasks where human intercation is necessary. Furthermore, features such as autonomous driving and live camera streaming enable the car to be adapted/reused to help other scenarios outside of the medical field, such as security monitoring in buildings and delivering food.
 
 ## How are you going to make it?
 To allow medical staff to control the car, an Android app will be developed by using java for the back-end, and XML for the front-end. The app will allow medical staff to choose which car they connect to. Within the app, staff members will then be able to switch between manually maneuvering the car with a joystick, and letting the car drive autonomously.
@@ -24,7 +37,7 @@ The connection between the Android app and Arduino cars will be set up by using 
 
 We plan to add obstacle detection, which will stop the car from accelerating in the direction that the obstacle has been detected. This will be done by using ultrasonic sensors and infrared sensors detecting when obstacles are about 30cm away from the car. This will be implemented using C++. The car will also provide feedback and visualization to the app on its status. Feedback and visualization would include connection status notifications, obstacle detected notifications, the speed and angle the car is traveling at, and a live camera stream.
 
-### Technologies that we will use:
+### Technologies we used:
 
 * <a href="https://github.com/ItJustWorksTM/smce-gd">SMCE</a>
 * <a href="https://github.com/platisd/smartcar_shield">Smartcar shield</a>
@@ -147,7 +160,7 @@ NOTE: This setup guide was written considering <a href="https://github.com/ItJus
 
 ### Set-up Android app
 
-1. In order to use the Android application, use Android studio to open the android directory located in the cloned group-04 reposoitroy folder. 
+1. In order to use the Android application, use Android studio to open the android directory located in the cloned group-04 repository folder. 
 2. After opening the project, select File -> "Sync Project with Gradle Files".
 3. Then build the apk via: Build -> Build Bundle(s)/APK(s) -> Build APK(s) and install it on an Android device. To use the AWS server, select online mode when launching the app. If it is preferred to use the local host, select offline mode.
 
