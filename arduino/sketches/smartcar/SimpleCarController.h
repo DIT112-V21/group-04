@@ -53,7 +53,7 @@ namespace arduino_car{
                     }
                     if (topic == "/smartcar/control/speed" && autoDriving == 0) {
                         auto carSpeed = StringToIntUtil::stringToInt(message);
-                        if (!(registerObstacleAvoidance())) {
+                        if (!(registerObstacleAvoidance(carSpeed))) {
                             mCar.setSpeed(static_cast<float>(carSpeed));
                         }
                     } else if (topic == "/smartcar/control/turning" && autoDriving == 0) {
@@ -83,6 +83,27 @@ namespace arduino_car{
 
             bool isFrontDetected = frontDistanceFromObject < stopDistanceFront && frontDistanceFromObject > 1 && (mCar.getSpeed() > 0);
             bool isBackDetected = backDistanceFromObject < stopDistanceBack && backDistanceFromObject > 1 && (mCar.getSpeed() < 0);
+
+
+            if (isFrontDetected || isBackDetected) {
+                registerSendObstacleDetectedNotification(true);
+                mCar.setSpeed(stoppingSpeed);
+                isObstacleDetected = true;
+            } else {
+                registerSendObstacleDetectedNotification(false);
+            }
+
+            return isObstacleDetected;
+        }
+
+        bool registerObstacleAvoidance(int speedFromMQTTMessage){
+            bool isObstacleDetected = false;
+
+            auto frontDistanceFromObject = mFrontSensor.getDistance();
+            auto backDistanceFromObject = mBackSensor.getDistance();
+
+            bool isFrontDetected = frontDistanceFromObject < stopDistanceFront && frontDistanceFromObject > 1 && ((mCar.getSpeed() > 0) || (speedFromMQTTMessage > 0));
+            bool isBackDetected = backDistanceFromObject < stopDistanceBack && backDistanceFromObject > 1 && ((mCar.getSpeed() < 0) || (speedFromMQTTMessage < 0));
 
 
             if (isFrontDetected || isBackDetected) {
