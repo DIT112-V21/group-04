@@ -122,7 +122,7 @@ NOTE: This setup guide was written considering <a href="https://github.com/ItJus
 
 (NOTE: SMCE-GD install instructions were provided by the following <a href="https://github.com/ItJustWorksTM/smce-gd">repository</a>) 
 
-### Setup Arduino IDE
+### Set-up Arduino IDE
 1. <a href="https://www.arduino.cc/en/software">Install Arduino IDE</a>.
 2.  To set up the board in Arduino IDE:
     * <a href="https://github.com/espressif/arduino-esp32/blob/master/docs/arduino-ide/boards_manager.md">Follow these instructions</a>
@@ -136,7 +136,7 @@ NOTE: This setup guide was written considering <a href="https://github.com/ItJus
  (NOTE: Arduino board library install instructions were provided by the following <a href="https://github.com/espressif/arduino-esp32">repository</a>)<br />
  (NOTE: Smartcar shield library install instructions were provided by the following <a href="https://github.com/platisd/smartcar_shield">repository</a>)
 
-### Set up Android app
+### Set-up Android app
 
 1. In order to use the Android application, use Android studio to open the android directory located in the cloned group-04 reposoitroy folder. 
 2. After opening the project, select File -> "Sync Project with Gradle Files".
@@ -149,6 +149,26 @@ NOTE: This setup guide was written considering <a href="https://github.com/ItJus
 2. Select the + option in the left bar, and then choose to Add new.
 3. Locate the group-04 cloned repository folder, and then navigate to the sketch which should be located in: group-04/arduino/sketches/smartcar/
 4. Afterwards, select to compile and start. You can then select which server option (offline/online) in the Android app.
+
+### Setting up Unit testing for developers
+
+This section covers how to run the unit tests that have been created for both, the Android app and Arduino sketch. (Note, please follow the above set up before moving on with this section).
+
+#### Android
+For the Android Unit tests, Android Studio is required.
+1. Using Android Studio, Open the Android folder within the cloned group-04 repository directory.
+2. Next, sync the gradle project: File -> select File -> "Sync Project with Gradle Files".
+3. Afterwards, navigate to the directory: app/java/com.example.medcarapp (androidTest).
+4. To run the tests, navigate to the specific class you want to test (e.g: ManualControlTest contains the tests related to the manual control screen).
+5. To the left of the class name, there will be a green arrow. When selected, all tests within the test file will run.
+#### Arduino
+For the Arduino Unit tests, CLion and CMake are required.
+1. Using CLion, open the arduino folder within the cloned group-04 repository directory.
+2. Next, load the CMake project. To do this, open the root CMake file, at the top of the text editor window, there should be a blue bar. Select "Load CMake project". 
+3. Navigate to the test/ut directory and open SimpleCarController_test.cpp
+4. There will be two structs: RegisterManualControlTest and SimpleCarControllerTest. To the left of those two, there will be a green arrow. Press those to run the tests related to the specific struct. Alternatively to run the tests, in the top bar, there should also be an option to run all tests.
+
+NOTE: The Arduino unit testing was implemented by following and adapting files/code from the following repository: https://github.com/platisd/reusable-testable-arduino-tutorial
 
 ## User manual
 
