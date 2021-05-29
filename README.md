@@ -49,6 +49,15 @@ We plan to add obstacle detection, which will stop the car from accelerating in 
 * Amazon AWS
 * Gradle
 
+### Licensing
+
+This repository additionally contains adapted code components licensed under the following:
+
+* MIT - https://mit-license.org
+* Apache 2.0 - https://www.apache.org/licenses/LICENSE-2.0.html
+* EPL 1.0 - https://www.eclipse.org/legal/epl-v10.html
+* BSD 3-Clause - https://opensource.org/licenses/BSD-3-Clause
+
 ## Feature Summary
 
 
