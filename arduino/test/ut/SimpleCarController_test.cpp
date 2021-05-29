@@ -230,6 +230,28 @@ namespace arduino_car{
         mCallBack("/smartcar/control/speed", "40");
     }
 
+    TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_WhenCalledAndMoveForwardMessageReceivedWhenObstaclePreviouslyDetected_WillNotMoveCarForward){
+        const auto stoppingSpeed = 0;
+        const auto sensorReadingFront = 20;
+        const auto sensorReadingBack = 500;
+        EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(sensorReadingFront));
+        EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(sensorReadingBack));
+        EXPECT_CALL(mCar, setSpeed(static_cast<float>(stoppingSpeed)));
+
+        mSimpleCarController.registerObstacleAvoidance(40);
+    }
+
+    TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_WhenCalledAndMoveBackwardsMessageReceivedWhenObstaclePreviouslyDetected_WillNotMoveCarBackwards){
+        const auto stoppingSpeed = 0;
+        const auto sensorReadingFront = 500;
+        const auto sensorReadingBack = 20;
+        EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(sensorReadingFront));
+        EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(sensorReadingBack));
+        EXPECT_CALL(mCar, setSpeed(static_cast<float>(stoppingSpeed)));
+
+        mSimpleCarController.registerObstacleAvoidance(-40);
+    }
+
 
     /* Test(s) relating to Obstacle Avoidance Notification */
 
