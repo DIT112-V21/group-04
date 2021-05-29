@@ -13,7 +13,7 @@ namespace arduino_car{
         {}
 
         unsigned int getDistance() override{
-            mFrontSensor.getDistance();
+            return mFrontSensor.getDistance();
         }
 
     private:
