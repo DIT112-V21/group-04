@@ -186,7 +186,7 @@ For the Android Unit tests, Android Studio is required.
 #### Arduino
 For the Arduino Unit tests, CLion and CMake are required.
 1. Using CLion, open the arduino folder within the cloned group-04 repository directory.
-2. Next, load the CMake project. To do this, open the root CMake file, at the top of the text editor window, there should be a blue bar. Select "Load CMake project". 
+2. Next, if the CMake project does not load automatically, open the root CMake file, at the top of the text editor window there should be a blue bar. Select "Load CMake project". 
 3. Navigate to the test/ut directory and open SimpleCarController_test.cpp
 4. There will be two structs: RegisterManualControlTest and SimpleCarControllerTest. To the left of those two, there will be a green arrow. Press those to run the tests related to the specific struct. Alternatively to run the tests, in the top bar, there should also be an option to run all tests.
 
