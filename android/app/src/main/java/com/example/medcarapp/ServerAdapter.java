@@ -62,7 +62,7 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ViewHolder
         TextView serverName, serverDesc;
         ImageView internetIcon;
 
-        public ViewHolder(@NonNull View itemView) {
+        private ViewHolder(@NonNull View itemView) {
             super(itemView);
             serverName = itemView.findViewById(R.id.serverNames);
             serverDesc = itemView.findViewById(R.id.serverDescription);

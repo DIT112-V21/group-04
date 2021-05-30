@@ -8,8 +8,7 @@ namespace arduino_car{
     public:
         MOCK_METHOD(void, setSpeed, (float speed), (override));
         MOCK_METHOD(void, setAngle, (int angle), (override));
-       // MOCK_METHOD(void, update, (), (override));
-       // MOCK_METHOD(int, getHeading, (), (override));
+        MOCK_METHOD(float, getSpeed, (), (override));
 
     };
 }

@@ -34,7 +34,7 @@ public class ServerSelection extends AppCompatActivity {
         creditDialog = new Dialog(this);
     }
 
-    public void serverSelection(){
+    private void serverSelection(){
         String[] serverName, serverDesc;
         int[] images = {R.drawable.offline,R.drawable.online};
         rvServerSelection = findViewById(R.id.rvServerSelection);

@@ -6,9 +6,6 @@
 #ifndef __SMCE__
 WiFiClient net;
 #endif
-//corresponds to ESP32RestServer.h
-
-
 
 namespace arduino_car{
 
@@ -66,7 +63,6 @@ namespace arduino_car{
 
     private:
         MQTTClient& mMqtt;
-
     };
 
 }

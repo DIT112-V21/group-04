@@ -74,7 +74,7 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.ViewHolder> {
             row_ConstraintLayout = (ConstraintLayout) itemView.findViewById(R.id.constraintrv);
         }
     }
-    public void adapterFeedbackMessage(int position){
+    private void adapterFeedbackMessage(int position){
         row_index = position;
         notifyDataSetChanged();
         String selectedMedcarMessage = context.getString(R.string.selectMedcarMessage);

@@ -1,15 +1,13 @@
-// adapted from https://github.com/platisd/reusable-testable-arduino-tutorial
 #pragma once
+
 #include <functional>
 #include <vector>
 #include "StringUtil.h"
 
-//corresponds to RestServer.h
 namespace arduino_car {
 
     struct MQTTinterface{
         virtual ~MQTTinterface() = default;
-
 
         virtual bool connect(String hostname, String id, String password) = 0;
         virtual void subscribe(String topic, int qos) = 0;

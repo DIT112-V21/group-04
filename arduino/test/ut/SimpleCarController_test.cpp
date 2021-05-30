@@ -1,3 +1,5 @@
+// adapted from https://github.com/platisd/reusable-testable-arduino-tutorial
+
 #include "MockCar.h"
 #include "MockMQTT.h"
 #include "MockSerial.h"
@@ -13,13 +15,11 @@ namespace arduino_car{
     struct SimpleCarControllerTest : public Test {
 
         void SetUp() override {
-            carSpeed = 0;
             isObstacleDetectedPublished = false;
             autoDriving = 0;
         }
 
         void TearDown() override {
-            carSpeed = 0;
             isObstacleDetectedPublished = false;
             autoDriving = 0;
         }
@@ -35,7 +35,6 @@ namespace arduino_car{
     struct RegisterManualControlTest : public Test {
 
         void SetUp() override {
-            carSpeed = 0;
             isObstacleDetectedPublished = false;
             autoDriving = 0;
             EXPECT_CALL(mMQTT, connect(_, _, _)).WillOnce(Return(true));
@@ -45,7 +44,6 @@ namespace arduino_car{
         }
 
         void TearDown() override {
-            carSpeed = 0;
             isObstacleDetectedPublished = false;
             autoDriving = 0;
         }
@@ -63,7 +61,7 @@ namespace arduino_car{
     /* Test(s) relating to adjusting car speed */
 
 
-    TEST_F(RegisterManualControlTest, registerManualControl_WhenCalledAndReceivesSpeedTopic_WillAdjustTheCarSpeed){
+    TEST_F(RegisterManualControlTest, registerManualControl_WhenCalledAndReceivesSpeedTopicAndAutoDrivingIsDisabled_WillAdjustTheCarSpeed){
         const auto carSpeed = 40;
         autoDriving = 0;
         auto sensorReadingFront = 110;
@@ -76,7 +74,7 @@ namespace arduino_car{
         mCallBack("/smartcar/control/speed", "40");
     }
 
-    TEST_F(RegisterManualControlTest, registerManualControl_WhenCalledAndDoesNotReceiveSpeedTopic_WillNotAdjustCarSpeed){
+    TEST_F(RegisterManualControlTest, registerManualControl_WhenCalledAndDoesNotReceiveSpeedTopicAndAutoDrivingIsDisabled_WillNotAdjustCarSpeed){
         const auto carSpeed = 40;
         autoDriving = 0;
         EXPECT_CALL(mCar, setSpeed(static_cast<float>(carSpeed))).Times(0);
@@ -96,7 +94,7 @@ namespace arduino_car{
     /* Test(s) relating to adjusting car direction */
 
 
-    TEST_F(RegisterManualControlTest, registerManualControl_WhenCalledAndReceivesTurningTopic_WillNotAdjustTheCarTurningAngle){
+    TEST_F(RegisterManualControlTest, registerManualControl_WhenCalledAndReceivesTurningTopicAndAutoDrivingIsDisabled_WillAdjustTheCarTurningAngle){
         const auto turningAngle = 80;
         autoDriving = 0;
         EXPECT_CALL(mCar, setAngle(turningAngle));
@@ -104,7 +102,7 @@ namespace arduino_car{
         mCallBack("/smartcar/control/turning", "80");
     }
 
-    TEST_F(RegisterManualControlTest, registerManualControl_WhenCalledAndDoesNotReceiveTurningTopic_WillNotAdjustTheCarTurningAngle){
+    TEST_F(RegisterManualControlTest, registerManualControl_WhenCalledAndDoesNotReceiveTurningTopicAndAutoDrivingIsDisabled_WillNotAdjustTheCarTurningAngle){
         const auto turningAngle = 80;
         autoDriving = 0;
         EXPECT_CALL(mCar, setAngle(turningAngle)).Times(0);
@@ -112,7 +110,7 @@ namespace arduino_car{
         mCallBack("/smartcar/control/speed", "80");
     }
 
-    TEST_F(RegisterManualControlTest, registerManualControl_WhenCalledAndDoesNotReceiveTurningTopicAndAutoDrivingIsEnabled_WillNotAdjustTheCarTurningAngle){
+    TEST_F(RegisterManualControlTest, registerManualControl_WhenCalledAndReceivesTurningTopicAndAutoDrivingIsEnabled_WillNotAdjustTheCarTurningAngle){
         const auto turningAngle = 80;
         autoDriving = 1;
         EXPECT_CALL(mCar, setAngle(turningAngle)).Times(0);
@@ -153,54 +151,54 @@ namespace arduino_car{
 
 
     TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_WhenCalledAndCarDrivingForwardAndObstacleDetectedWithinStopDistance_WillReturnTrue){
-        carSpeed = 40; // Car will move forward. If speed was not set, obstacle avoidance would not be registered
         const auto sensorReadingFront = 60;
         const auto sensorReadingBack = 120;
         EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(sensorReadingFront));
         EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(sensorReadingBack));
+        EXPECT_CALL(mCar, getSpeed()).WillOnce(Return(40)); // Car will move forward. If speed was not set, obstacle avoidance would not be registered
         EXPECT_TRUE(mSimpleCarController.registerObstacleAvoidance());
     }
 
     TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_WhenCalledAndCarDrivingBackwardsAndObstacleDetectedWithinStopDistance_WillReturnTrue){
-        carSpeed = -40; // Car will move backwards. If speed was not set, obstacle avoidance would not be registered
         const auto sensorReadingFront = 120;
         const auto sensorReadingBack = 40;
         EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(sensorReadingFront));
         EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(sensorReadingBack));
+        EXPECT_CALL(mCar, getSpeed()).WillOnce(Return(-40)); // Car will move backwards. If speed was not set, obstacle avoidance would not be registered
+
         EXPECT_TRUE(mSimpleCarController.registerObstacleAvoidance());
     }
 
 
     TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_WhenCalledAndCarStationaryAndObstacleDetectedWithinStopDistance_WillReturnFalse){
-        carSpeed = 0;
         const auto sensorReadingFront = 10;
         const auto sensorReadingBack = 20;
         EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(sensorReadingFront));
         EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(sensorReadingBack));
+        EXPECT_CALL(mCar, getSpeed()).WillRepeatedly(Return(0));
         EXPECT_FALSE(mSimpleCarController.registerObstacleAvoidance());
     }
 
 
     TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_WhenCalledAndObstacleDetectedInFrontOfCar_WillStopCar){
-        carSpeed = 50;
         const auto stoppingSpeed = 0;
         const auto sensorReadingFront = 10;
         const auto sensorReadingBack = 300;
         EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(sensorReadingFront));
         EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(sensorReadingBack));
+        EXPECT_CALL(mCar, getSpeed()).WillRepeatedly(Return(50));
         EXPECT_CALL(mCar, setSpeed(stoppingSpeed));
 
         mSimpleCarController.registerObstacleAvoidance();
     }
 
     TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_WhenCalledAndObstacleDetectedBehindCar_WillStopCar){
-
-        carSpeed = -50;
         const auto sensorReadingFront = 300;
         const auto sensorReadingBack = 10;
         const auto stoppingSpeed = 0;
         EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(sensorReadingFront));
         EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(sensorReadingBack));
+        EXPECT_CALL(mCar, getSpeed()).WillRepeatedly(Return(-50));
         EXPECT_CALL(mCar, setSpeed(stoppingSpeed));
 
         mSimpleCarController.registerObstacleAvoidance();
@@ -209,25 +207,49 @@ namespace arduino_car{
 
 
     TEST_F(RegisterManualControlTest, registerManualControl_WhenCalledAndMoveBackwardsMessageReceivedWhenObstacleDetectedInFrontOfCar_WillMoveCarBackwards){
-        carSpeed = -40;
+        const auto carSpeed = -40;
         const auto sensorReadingFront = 30;
         const auto sensorReadingBack = 3000;
         EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(sensorReadingFront));
         EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(sensorReadingBack));
+        EXPECT_CALL(mCar, getSpeed()).WillRepeatedly(Return(carSpeed));
         EXPECT_CALL(mCar, setSpeed(static_cast<float>(carSpeed)));
 
         mCallBack("/smartcar/control/speed", "-40");
     }
 
     TEST_F(RegisterManualControlTest, registerManualControl_WhenCalledAndMoveForwardMessageReceivedWhenObstacleDetectedBehindCar_WillMoveCarForwards){
-        carSpeed = 40;
+        const auto carSpeed = 40;
         const auto sensorReadingFront = 4000;
         const auto sensorReadingBack = 20;
         EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(sensorReadingFront));
         EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(sensorReadingBack));
+        EXPECT_CALL(mCar, getSpeed()).WillRepeatedly(Return(carSpeed));
         EXPECT_CALL(mCar, setSpeed(static_cast<float>(carSpeed)));
 
         mCallBack("/smartcar/control/speed", "40");
+    }
+
+    TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_WhenCalledAndMoveForwardMessageReceivedWhenObstaclePreviouslyDetected_WillNotMoveCarForward){
+        const auto stoppingSpeed = 0;
+        const auto sensorReadingFront = 20;
+        const auto sensorReadingBack = 500;
+        EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(sensorReadingFront));
+        EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(sensorReadingBack));
+        EXPECT_CALL(mCar, setSpeed(static_cast<float>(stoppingSpeed)));
+
+        mSimpleCarController.registerObstacleAvoidance(40);
+    }
+
+    TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_WhenCalledAndMoveBackwardsMessageReceivedWhenObstaclePreviouslyDetected_WillNotMoveCarBackwards){
+        const auto stoppingSpeed = 0;
+        const auto sensorReadingFront = 500;
+        const auto sensorReadingBack = 20;
+        EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(sensorReadingFront));
+        EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(sensorReadingBack));
+        EXPECT_CALL(mCar, setSpeed(static_cast<float>(stoppingSpeed)));
+
+        mSimpleCarController.registerObstacleAvoidance(-40);
     }
 
 
@@ -235,60 +257,60 @@ namespace arduino_car{
 
 
     TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_WhenCalledAndObstacleDetectedInFrontOfCar_WillSendObstacleDetectedNotification){
-        carSpeed = 50;
         const auto obstacleTopic = "/smartcar/obstacle";
         const auto sensorReadingFront = 10;
         const auto sensorReadingBack = 200;
         EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(sensorReadingFront));
         EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(sensorReadingBack));
+        EXPECT_CALL(mCar, getSpeed()).WillOnce(Return(50));
         EXPECT_CALL(mMQTT, publish(obstacleTopic));
 
         mSimpleCarController.registerObstacleAvoidance();
     }
 
     TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_WhenCalledAndObstacleDetectedBehindCar_WillSendObstacleDetectedNotification){
-        carSpeed = -50;
         const auto obstacleTopic = "/smartcar/obstacle";
         const auto sensorReadingFront = 200;
         const auto sensorReadingBack = 10;
         EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(sensorReadingFront));
         EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(sensorReadingBack));
+        EXPECT_CALL(mCar, getSpeed()).WillOnce(Return(-50));
         EXPECT_CALL(mMQTT, publish(obstacleTopic));
 
         mSimpleCarController.registerObstacleAvoidance();
     }
 
     TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_WhenCalledAndObstacleNotDetectedInFrontOfCar_WillNotSendObstacleDetectedNotification){
-        carSpeed = 50;
         const auto obstacleTopic = "/smartcar/obstacle";
         const auto sensorReadingFront = 300;
         const auto sensorReadingBack = 200;
         EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(sensorReadingFront));
         EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(sensorReadingBack));
+        EXPECT_CALL(mCar, getSpeed()).WillRepeatedly(Return(50));
         EXPECT_CALL(mMQTT, publish(obstacleTopic)).Times(0);
 
         mSimpleCarController.registerObstacleAvoidance();
     }
 
     TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_WhenCalledAndObstacleNotDetectedBehindCar_WillNotSendObstacleDetectedNotification){
-        carSpeed = -50;
         const auto obstacleTopic = "/smartcar/obstacle";
         const auto sensorReadingFront = 300;
         const auto sensorReadingBack = 200;
         EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(sensorReadingFront));
         EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(sensorReadingBack));
+        EXPECT_CALL(mCar, getSpeed()).WillRepeatedly(Return(-50));
         EXPECT_CALL(mMQTT, publish(obstacleTopic)).Times(0);
 
         mSimpleCarController.registerObstacleAvoidance();
     }
 
     TEST_F(SimpleCarControllerTest, registerObstacleAvoidance_WhenCalledAndObstacleDetectedAndCarStationary_WillNotSendObstacleDetectedNotification){
-        carSpeed = 0;
         const auto obstacleTopic = "/smartcar/obstacle";
         const auto sensorReadingFront = 13;
         const auto sensorReadingBack = 10;
         EXPECT_CALL(mFrontSensor, getDistance()).WillOnce(Return(sensorReadingFront));
         EXPECT_CALL(mBackSensor, getDistance()).WillOnce(Return(sensorReadingBack));
+        EXPECT_CALL(mCar, getSpeed()).WillRepeatedly(Return(0));
         EXPECT_CALL(mMQTT, publish(obstacleTopic)).Times(0);
 
         mSimpleCarController.registerObstacleAvoidance();
@@ -331,9 +353,11 @@ namespace arduino_car{
 
 
     TEST_F(SimpleCarControllerTest, registerAutonomousMoving_WhenCalled_WillProvideMovementInstructionsToTheCar){
-        const auto stoppingSpeed = 0;
+        const auto stoppingSpeedRegisterTurning = 1;
+        const auto stoppingSpeedAutonomous = 0;
         const auto autoSpeed = 65;
-        EXPECT_CALL(mCar, setSpeed(stoppingSpeed)).Times(3);
+        EXPECT_CALL(mCar, setSpeed(stoppingSpeedAutonomous)).Times(2);
+        EXPECT_CALL(mCar, setSpeed(stoppingSpeedRegisterTurning)).Times(1);
         EXPECT_CALL(mCar, setSpeed(autoSpeed)).Times(2);
         EXPECT_CALL(mCar, setSpeed(-autoSpeed)).Times(1);
 
@@ -353,7 +377,7 @@ namespace arduino_car{
 
     TEST_F(SimpleCarControllerTest, registerTurning_WhenCalled_WillSetTheProperSpeeds){
         const auto autoSpeed = 65;
-        const auto stoppingSpeed = 0;
+        const auto stoppingSpeed = 1;
         EXPECT_CALL(mCar, setSpeed(autoSpeed));
         EXPECT_CALL(mCar, setSpeed(stoppingSpeed));
 

@@ -9,7 +9,7 @@ namespace arduino_car{
     public:
         void println(String outputMessage) override {
             Serial.println(outputMessage);
-        };
+        }
 
         void println(int outputMessage) override{
             Serial.println(outputMessage);
@@ -17,7 +17,7 @@ namespace arduino_car{
 
         void begin(int beginNumber) override {
             Serial.begin(beginNumber);
-        };
+        }
 
     };
 
