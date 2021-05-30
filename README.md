@@ -1,6 +1,9 @@
 # Group-04 - Medcar
 
-![logo7](https://user-images.githubusercontent.com/68125677/116778243-6825bb00-aa79-11eb-83d6-5405cf059f2a.png)
+![logo](https://github.com/DIT112-V21/group-04/blob/FinalizeReadme/Documentation_Images/Logo.PNG)
+
+[![Android CI](https://github.com/DIT112-V21/group-04/actions/workflows/android-ci.yml/badge.svg)](https://github.com/DIT112-V21/group-04/actions/workflows/android-ci.yml)
+[![Arduino CI](https://github.com/DIT112-V21/group-04/actions/workflows/arduino-build.yml/badge.svg)](https://github.com/DIT112-V21/group-04/actions/workflows/arduino-build.yml)
 
 ## Contents
 * <a href="https://github.com/DIT112-V21/group-04/tree/FinalizeReadme#what-are-you-going-to-make">What are you going to make</a>
