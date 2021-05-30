@@ -84,11 +84,11 @@ The autonomous driving feature keeps the MedCar moving and avoiding obstacles ev
 
 #### <a href="https://github.com/DIT112-V21/group-04/wiki/Connectivity-between-car-emulator-and-Android-app"> Connectivity between car emulator and Android app</a>
 
-The connectivity feature is responsible for having the car emulator and the android app being able to connect to each other. When the car emulator and the android app are connected to each other via an AWS server or a local one they could communicate and send over different commands. Every piece of information that the app and car needs to send to each other is going to be through MQTT.
+The connectivity feature is responsible for having the car emulator and the Android app being able to connect to each other. When the car emulator and the Android app are connected to each other via an AWS server or a local one they could communicate and send over different commands. Every piece of information that the app and car needs to send to each other is going to be through MQTT.
 
 #### <a href="https://github.com/DIT112-V21/group-04/wiki/Continuous-integration">Continuous Integration</a>
 
-The project implements continuous integration by utilizing Github actions. There are two automated tests, an arduino CI and android CI test that run each time a developer pushes or creates a pr in the github page. The tests are runned on a universal system ensuring that our product works on all various types of systems. Following the continuous integration principle, allows the developers to quickly understand errors.
+The project implements continuous integration by utilizing Github actions. There are two automated tests, an Arduino CI and Android CI test that run each time a developer pushes or creates a pr in the github page. The tests are runned on a universal system ensuring that our product works on all various types of systems. Following the continuous integration principle, allows the developers to quickly understand errors.
 
 #### <a href="https://github.com/DIT112-V21/group-04/wiki/Documentation">Documentation</a>
 
@@ -122,7 +122,7 @@ Unit testing will be implemented for both the Android app and Arduino parts of t
 
 ##  Hardware and Software Architecture
 
-When designing the Android application, we decided to adhere to object oriented principles. During the development process the team decided to stay consistent with discussed/planned naming conventions and general code structure. For the Android app, the business logic was implemented via Java and the user interface was implemented by using XML files. The Medcar sketch was implemented via C++/Arduino code. The Arduino code also makes use of an ultrasonic and infrared sensor, which are mainly used to detect obstacles. Both, the app code and Arduino sketch code, encapsulate majority of their business logic in methods, which allows for code reuse, improved readability, and also makes the system more testable. Communication between the smartcar and android application is carried out via an MQTT broker, which resides on an AWS server. The Medcar and Android application can also communicate via an MQTT broker that is located on a local host instead of an external server if preferred. The sketch can also be run on the SMCE-GD emulator, allowing for remote testing, and hence not actually needing the physical car to implement new features. 
+When designing the Android application, we decided to adhere to object oriented principles. During the development process the team decided to stay consistent with discussed/planned naming conventions and general code structure. For the Android app, the business logic was implemented via Java and the user interface was implemented by using XML files. The Medcar sketch was implemented via C++/Arduino code. The Arduino code also makes use of an ultrasonic and infrared sensor, which are mainly used to detect obstacles. Both, the app code and Arduino sketch code, encapsulate majority of their business logic in methods, which allows for code reuse, improved readability, and also makes the system more testable. Communication between the smartcar and Android application is carried out via an MQTT broker, which resides on an AWS server. The Medcar and Android application can also communicate via an MQTT broker that is located on a local host instead of an external server if preferred. The sketch can also be run on the SMCE-GD emulator, allowing for remote testing, and hence not actually needing the physical car to implement new features. 
 
 ## Set-up and Get Started Guide
 
@@ -132,7 +132,7 @@ NOTE: This setup guide was written considering <a href="https://github.com/ItJus
 
 #### Before getting started with using the Medcar application, you will need to clone and install the following repository/software:
 
-1. In order to get started with the Medcar application, clone the repository: https://github.com/DIT112-V21/group-04.git.
+1. Clone the repository: https://github.com/DIT112-V21/group-04.git.
 2. <a href="https://developer.android.com/studio">Install Android studio</a> 
 
 #### In order to run the sketch on the SMCE-GD emulator, you will need to follow the install guide that corresponds to your operating system:
@@ -148,7 +148,7 @@ NOTE: This setup guide was written considering <a href="https://github.com/ItJus
 1. <a href="https://www.arduino.cc/en/software">Install Arduino IDE</a>.
 2.  To set up the board in Arduino IDE:
     * <a href="https://github.com/espressif/arduino-esp32/blob/master/docs/arduino-ide/boards_manager.md">Follow these instructions</a>
-    * In the Arduio IDE, navigate to Tools -> Board and select "DOIT ESP32 devkit v1"
+    * In the Arduino IDE, navigate to Tools -> Board and select "DOIT ESP32 devkit v1"
 3.  Next, <a href="https://github.com/platisd/smartcar_shield">install the Smartcar shield library</a>.
 4.  In the Arduino IDE, navigate to: Sketch -> Include library -> Manage libraries and search for "Smartcar shield"
 5.  Once found, press the install button.
@@ -160,7 +160,7 @@ NOTE: This setup guide was written considering <a href="https://github.com/ItJus
 
 ### Set-up Android app
 
-1. In order to use the Android application, use Android studio to open the android directory located in the cloned group-04 repository folder. 
+1. In order to use the Android application, use Android studio to open the Android directory located in the cloned group-04 repository folder. 
 2. After opening the project, select File -> "Sync Project with Gradle Files".
 3. Then build the apk via: Build -> Build Bundle(s)/APK(s) -> Build APK(s) and install it on an Android device. To use the AWS server, select online mode when launching the app. If it is preferred to use the local host, select offline mode.
 
@@ -185,7 +185,7 @@ For the Android Unit tests, Android Studio is required.
 5. To the left of the class name, there will be a green arrow. When selected, all tests within the test file will run.
 #### Arduino
 For the Arduino Unit tests, CLion and CMake are required.
-1. Using CLion, open the arduino folder within the cloned group-04 repository directory.
+1. Using CLion, open the Arduino folder within the cloned group-04 repository directory.
 2. Next, if the CMake project does not load automatically, open the root CMake file, at the top of the text editor window there should be a blue bar. Select "Load CMake project". 
 3. Navigate to the test/ut directory and open SimpleCarController_test.cpp
 4. There will be two structs: RegisterManualControlTest and SimpleCarControllerTest. To the left of those two, there will be a green arrow. Press those to run the tests related to the specific struct. Alternatively to run the tests, in the top bar, there should also be an option to run all tests.
