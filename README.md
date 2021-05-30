@@ -219,6 +219,9 @@ On the "maneuvering screen" the medical worker can control the speed and directi
 #### Sprint 3 progress
 [![Sprint 3 progress video](https://img.youtube.com/vi/L3fd38SwvSY/0.jpg)](https://www.youtube.com/watch?v=L3fd38SwvSY)
 
+#### Demo video
+[![Demo video](https://img.youtube.com/vi/lejZjGalVLY/0.jpg)](https://youtu.be/lejZjGalVLY)
+
 ## Team Overview
 - [Nils Dunlop](https://github.com/NilsDunlop) - gusdunlni@student.gu.se
 - [Markus Emilio Puerto Gutiérrez](https://github.com/puerto-hub) - guspuema@student.gu.se
