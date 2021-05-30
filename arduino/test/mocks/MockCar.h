@@ -1,0 +1,14 @@
+#pragma once
+
+#include "Car.h"
+#include "gmock/gmock.h"
+
+namespace arduino_car{
+    class MockCar : public Car{
+    public:
+        MOCK_METHOD(void, setSpeed, (float speed), (override));
+        MOCK_METHOD(void, setAngle, (int angle), (override));
+        MOCK_METHOD(float, getSpeed, (), (override));
+
+    };
+}

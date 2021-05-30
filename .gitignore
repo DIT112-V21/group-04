@@ -35,3 +35,4 @@
 .idea/
 Assignment1/.DS_Store
 arduino/.DS_Store
+arduino/cmake-build-debug

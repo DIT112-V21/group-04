@@ -2,6 +2,7 @@
 // Speedometer adapted from: https://github.com/anastr/SpeedView
 package com.example.medcarapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -25,16 +26,18 @@ public class ManualControl extends AppCompatActivity {
     private static int autoOptions = 0;
     private Button autoButton;
     private CarConnect carConnect;
+    private ImageView carCamera;
+    private TextView connectionText;
+    private TextView angleIndicator;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_control);
-        TextView connectionText = (TextView)findViewById(R.id.connectionText);
-        ImageView carCamera = findViewById(R.id.cameraView);
-        carCamera.setTag(R.drawable.intermission);
-        TextView angleIndicator = (TextView)findViewById(R.id.angleIndicator);
+        connectionText = createConnectionText();
+        carCamera = createCamera();
+        angleIndicator = createAngleIndicator();
         ProgressiveGauge speedometer = (ProgressiveGauge) findViewById(R.id.speedometer);
         createSpeedometer(speedometer);
         autoButton = findViewById(R.id.autonomousDrivingButton);
@@ -139,5 +142,22 @@ public class ManualControl extends AppCompatActivity {
         String percentageSymbol = getString(R.string.percentageSymbol);
         speedometer.setUnit(percentageSymbol);
         speedometer.setWithTremble(false);
+    }
+
+    private ImageView createCamera(){
+        ImageView carCamera;
+        carCamera = (ImageView) findViewById(R.id.cameraView);
+        carCamera.setTag(R.drawable.intermission);
+        return carCamera;
+    }
+
+    private TextView createConnectionText(){
+        TextView connectionText = (TextView)findViewById(R.id.connectionText);
+        return connectionText;
+    }
+
+    private TextView createAngleIndicator(){
+        TextView angleIndicator = (TextView)findViewById(R.id.angleIndicator);
+        return angleIndicator;
     }
 }

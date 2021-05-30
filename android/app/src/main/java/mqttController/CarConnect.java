@@ -171,14 +171,6 @@ public class CarConnect extends AppCompatActivity{
         mMqttClient.disconnect(disconnectionCallback);
     }
 
-    public void subscribe(String topic, int qos, IMqttActionListener subscriptionCallback) {
-        mMqttClient.subscribe(topic, qos, subscriptionCallback);
-    }
-
-    public void unsubscribe(String topic, IMqttActionListener unsubscriptionCallback) {
-        mMqttClient.unsubscribe(topic, unsubscriptionCallback);
-    }
-
    public void publish(String topic, String message, int qos, IMqttActionListener publishCallback){
         mMqttClient.publish(topic, message, qos, publishCallback);
     }
