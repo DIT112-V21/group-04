@@ -1,6 +1,6 @@
 # Group-04 - Medcar  [![Android CI](https://github.com/DIT112-V21/group-04/actions/workflows/android-ci.yml/badge.svg)](https://github.com/DIT112-V21/group-04/actions/workflows/android-ci.yml)  [![Arduino CI](https://github.com/DIT112-V21/group-04/actions/workflows/arduino-build.yml/badge.svg)](https://github.com/DIT112-V21/group-04/actions/workflows/arduino-build.yml)
 
-[![Sprint 3 progress video](https://github.com/DIT112-V21/group-04/blob/FinalizeReadme/Documentation_Images/Thumbnail.png)](https://www.youtube.com/watch?v=lejZjGalVLY)
+[![Sprint 3 progress video](https://github.com/DIT112-V21/group-04/blob/FinalizeReadme/Documentation_Images/Thumbnail.png)](https://www.youtube.com/watch?v=lejZjGalVLY "Medcar - Group 4 Project")
 
 ## Contents
 * <a href="https://github.com/DIT112-V21/group-04/tree/FinalizeReadme#what-are-you-going-to-make">What are you going to make</a>
